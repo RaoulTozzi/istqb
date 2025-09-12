@@ -104,11 +104,17 @@ async function __ensurePdf(){
   return __pdfDoc;
 }
 async function renderPdfPages(startPage, endPage){
-  const doc = await __ensurePdf();
   const host = $$("#reading");
   host.innerHTML = "";
+  if(!window.pdfjsLib){
+    host.innerHTML = `<div class="tag">Podgląd sylabusa</div><div class="hint">Ładowanie podglądu PDF…</div>`;
+    setTimeout(()=>renderPdfPages(startPage, endPage), 400);
+    return;
+  }
+  const doc = await __ensurePdf();
   if(!doc){
-    host.innerHTML = `<div class="tag">Podgląd sylabusa</div><div class="hint">Nie udało się wczytać PDF (<code>${PDF_URL}</code>). Upewnij się, że plik istnieje.</div>`;
+    host.innerHTML = `<div class="tag">Podgląd sylabusa</div><div class="hint">Ładowanie PDF…</div>`;
+    setTimeout(()=>renderPdfPages(startPage, endPage), 500);
     return;
   }
   const tag = document.createElement("div");
@@ -125,8 +131,8 @@ async function renderPdfPages(startPage, endPage){
     await page.render({ canvasContext: ctx, viewport }).promise;
   }
 }
-// Zakresy stron PDF dla rozdziałów (przybliżone na podstawie dostarczonego materiału)
-const chapterToPdf = { r1:{from:17,to:27}, r2:{from:28,to:37}, r3:{from:38,to:44}, r4:{from:45,to:55}, r5:{from:56,to:68}, r6:{from:69,to:70} };
+// Zakresy stron PDF dla rozdziałów (przybliżone; możesz skorygować jeśli potrzebujesz)
+const chapterToPdf = { r1:{from:17,to:36}, r2:{from:37,to:60}, r3:{from:61,to:70}, r4:{from:71,to:120}, r5:{from:121,to:170}, r6:{from:171,to:186} };
 const syllabus = [
   {
     id:"r1",
