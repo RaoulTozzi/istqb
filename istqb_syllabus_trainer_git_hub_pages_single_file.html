@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ISTQB Syllabus Trainer</title>
+<style>
+  :root{
+    --bg:#f1d6be; --panel:#ffeede; --card:#f6e6d6; --ink:#2b3a3a; --muted:#6b7a7a; --accent:#3b6a64; --accent-2:#2e4e4a; --ok:#2f855a; --warn:#b7791f; --err:#c53030;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif}
+  header{position:sticky;top:0;z-index:10;background:var(--panel);box-shadow:0 1px 0 rgba(0,0,0,.05)}
+  .bar{max-width:1200px;margin:auto;padding:12px 16px;display:flex;gap:12px;align-items:center}
+  .brand{font-weight:800;letter-spacing:.3px}
+  .spacer{flex:1}
+  .btn{cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:#fff;padding:10px 14px;font-weight:600}
+  .btn.secondary{background:var(--accent-2)}
+  .btn.flat{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+  .hint{color:var(--muted);font-size:12px}
+  .layout{max-width:1200px;margin:14px auto;display:grid;grid-template-columns:280px 1fr;gap:16px;padding:0 16px}
+  aside{background:var(--panel);border-radius:16px;padding:12px 10px;height:calc(100vh - 120px);position:sticky;top:86px;overflow:auto}
+  .toc h3{margin:6px 10px 8px;font-size:14px;text-transform:uppercase;color:var(--muted)}
+  .toc button{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:12px;padding:10px 12px;margin:4px 0;font-weight:600;color:var(--accent-2)}
+  .toc button.active{background:var(--card);color:var(--ink)}
+  main{min-height:60vh}
+  .card{background:var(--panel);border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.05);padding:18px}
+  .reading{padding:4px 8px}
+  .reading h2{margin:10px 0 6px}
+  .reading p{margin:8px 0}
+  .reading ul{margin:8px 0 8px 20px}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+  .flash{display:grid;place-items:center;gap:12px;padding:10px}
+  .flash .flip{width:min(700px,100%);min-height:170px;background:var(--card);border-radius:18px;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.08)}
+  .flip.flipped{background:#fff}
+  .flash .row{display:flex;gap:8px}
+  .tag{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;background:var(--card);color:var(--muted);margin-right:6px}
+  .quiz .q{margin:10px 0;padding:14px;border-radius:14px;background:var(--panel);border:1px solid rgba(0,0,0,.06)}
+  .opt{display:block;margin:6px 0;padding:10px;border-radius:10px;cursor:pointer;border:1px solid rgba(0,0,0,.08)}
+  .opt input{margin-right:6px}
+  .opt.correct{background:rgba(47,133,90,.10);border-color:var(--ok)}
+  .opt.wrong{background:rgba(197,48,48,.10);border-color:var(--err)}
+  .explain{font-size:13px;color:var(--muted)}
+  .result{padding:10px;border-radius:12px;background:#fff;margin:12px 0;border-left:6px solid var(--accent)}
+  .muted{color:var(--muted)}
+  footer{padding:30px 16px;text-align:center;color:var(--muted)}
+  @media (max-width: 880px){
+    .layout{grid-template-columns:1fr}
+    aside{position:static;height:auto}
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="bar">
+      <div class="brand">ISTQB Syllabus Trainer</div>
+      <div class="hint">Nauka rozdziałami → fiszki → mini‑testy → egzamin końcowy</div>
+      <div class="spacer"></div>
+      <button class="btn flat" id="resetBtn" title="Wyczyść postęp">Reset</button>
+      <button class="btn" id="fullExamBtn">Egzamin końcowy</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside>
+      <div class="toc" id="toc"></div>
+      <div class="card" style="margin-top:12px">
+        <div style="font-weight:700;margin-bottom:6px">Postęp</div>
+        <div class="hint" id="progressHint">—</div>
+      </div>
+    </aside>
+
+    <main>
+      <div class="card reading" id="reading"></div>
+      <div class="card" style="margin-top:12px">
+        <div class="controls">
+          <button class="btn" id="showFlash">Fiszki</button>
+          <button class="btn secondary" id="showQuiz">Mini‑test</button>
+          <button class="btn flat" id="nextChapter">Następny rozdział →</button>
+        </div>
+        <div id="after"></div>
+      </div>
+    </main>
+  </div>
+
+  <footer>Nieoficjalny trener do nauki zgodnie z sylabusem ISTQB FL 4.0.1. Pytania są autorskie (tematycznie zgodne), nie są to pytania egzaminacyjne.
+  </footer>
+
+<script>
+/** -------------------------------------------------------
+ *  DANE – skróty treści, fiszki i pytania (PL)
+ *  Wszystko w jednym pliku dla prostoty GitHub Pages.
+ *  Możesz swobodnie rozszerzać.
+ * ------------------------------------------------------*/
+const syllabus = [
+  {
+    id:"r1",
+    title:"1. Podstawy testowania",
+    read:`<h2>1. Podstawy testowania</h2>
+      <p>Testowanie to <b>zbiór czynności</b> służących do wykrywania defektów i oceny jakości produktów pracy. Obejmuje cały proces (planowanie→analiza→projektowanie→implementacja→wykonywanie→ukończenie), a nie tylko samo uruchamianie testów.</p>
+      <ul>
+        <li><b>Cele testów:</b> ocena produktów pracy, wykrywanie defektów/awarii, pokrycie, redukcja ryzyka, zgodność z wymaganiami/prawem, informowanie o jakości, budowanie zaufania.</li>
+        <li><b>Testowanie vs. debugowanie:</b> testowanie ujawnia awarie/defekty; debugowanie <i>lokalizuje i usuwa</i> przyczynę, po czym wykonuje się testy potwierdzające i ewentualnie regresję.</li>
+        <li><b>7 zasad:</b> testy ujawniają defekty (nie dowodzą ich braku), gruntowne testowanie jest niemożliwe, wczesne testowanie, kumulacja defektów, zużywanie się testów, zależność od kontekstu, złudzenie braku defektów.</li>
+        <li><b>Testalia:</b> plan/harmonogram, rejestr ryzyk, warunki/przypadki/procedury, dane i środowisko testowe, dzienniki i raporty, raport sumaryczny.</li>
+        <li><b>Śledzenie powiązań:</b> łączenie wymagań/ryzyk z testami, wynikami i defektami → ocena pokrycia i wpływu zmian.</li>
+      </ul>`,
+    flashcards:[
+      {q:"Wymień 3–4 typowe cele testów.", a:"Ocena produktów pracy; wykrywanie defektów/awarii; zapewnienie pokrycia; redukcja ryzyka; potwierdzenie wymagań i zgodności; dostarczenie informacji do decyzji; budowanie zaufania."},
+      {q:"Czym różni się testowanie od debugowania?", a:"Testowanie wykrywa awarie/defekty; debugowanie diagnozuje i usuwa defekt, po czym wykonuje się testy potwierdzające (i regresję)."},
+      {q:"Podaj 3 z 7 zasad testowania.", a:"Np.: testy ujawniają defekty, a nie dowodzą ich braku; gruntowne testowanie jest niemożliwe; wczesne testowanie oszczędza czas/koszt; defekty się kumulują; testy się zużywają; testowanie zależy od kontekstu; złudzenie braku defektów."},
+      {q:"Po co śledzić powiązania?", a:"Aby mierzyć pokrycie, oceniać ryzyko rezydualne, analizować wpływ zmian i przygotować audytowalne raporty."},
+    ],
+    quiz:[
+      {q:"Które stwierdzenie najlepiej opisuje weryfikację i walidację?", opt:["Walidacja sprawdza zgodność ze specyfikacją; weryfikacja – z potrzebami","Weryfikacja sprawdza zgodność ze specyfikacją, walidacja – czy spełnia potrzeby","To to samo","Żadne"], a:1, exp:"Weryfikacja = spełnienie specyfikacji, walidacja = spełnienie potrzeb interesariuszy."},
+      {q:"Która z zasad NIE należy do 7 zasad testowania?", opt:["Testy zależą od kontekstu","Gruntowne testowanie jest możliwe","Testy się zużywają","Defekty często się kumulują"], a:1, exp:"Gruntowne testowanie jest niemożliwe – to właściwa zasada."},
+      {q:"Co następuje bezpośrednio po debugowaniu?", opt:["Testowanie potwierdzające","Testowanie wydajności","Inspekcja","Analiza ryzyka"], a:0, exp:"Po usunięciu defektu sprawdzamy poprawkę testem potwierdzającym."},
+      {q:"Który produkt pracy NIE jest typowym testalium?", opt:["Plan testów","Dane testowe","Repozytorium kodu produkcyjnego","Raport sumaryczny"], a:2, exp:"Repozytorium kodu to nie testalium – choć może być elementem kontekstu."},
+      {q:"Po co utrzymywać śledzenie powiązań wymagań→testy?", opt:["Dla estetyki","Aby ocenić pokrycie i wpływ zmian","Aby przyspieszyć kompilację","To obowiązkowe tylko w Scrum"], a:1}
+    ]
+  },
+  {
+    id:"r2",
+    title:"2. Testowanie w cyklu wytwarzania",
+    read:`<h2>2. Testowanie w cyklu wytwarzania</h2>
+      <p>Model SDLC wpływa na <b>czas/cel testów, techniki i automatyzację</b>. W zwinnych podejściach iteracyjnie dostarczamy przyrosty i szeroko stosujemy automatyczną regresję.</p>
+      <ul>
+        <li><b>Poziomy testów:</b> modułowe → integracja modułów → systemowe → integracja systemów → akceptacyjne.</li>
+        <li><b>Typy testów:</b> funkcjonalne, niefunkcjonalne, czarnoskrzynkowe, białoskrzynkowe. Potwierdzające vs. regresji.</li>
+        <li><b>„Najpierw test”:</b> TDD/ATDD/BDD. <b>Shift‑left</b> = wcześniejsze przeglądy, analizy i testy.</li>
+        <li><b>DevOps:</b> CI/CD, szybka informacja zwrotna, stabilne środowiska i szeroka automatyzacja – przy wciąż potrzebnym teście manualnym z perspektywy użytkownika.</li>
+      </ul>`,
+    flashcards:[
+      {q:"Wymień 5 poziomów testów z sylabusa.", a:"Modułowe, integracja modułów, systemowe, integracja systemów, akceptacyjne."},
+      {q:"Czym różni się test potwierdzający od regresji?", a:"Potwierdzający sprawdza, czy usunięty defekt zniknął; regresja – czy zmiany nie zepsuły obszarów niezmienianych (może być szeroka)."},
+      {q:"Na czym polega shift‑left?", a:"Przesunięcie aktywności testowych wcześniej w SDLC: przeglądy, analiza statyczna, pisanie testów przed kodem, CI."},
+      {q:"Wpływ DevOps na testowanie w 2 punktach.", a:"Szybka informacja zwrotna + automatyzacja (CI/CD), stabilniejsze środowiska; nadal potrzebne testy manualne użytkownika."}
+    ],
+    quiz:[
+      {q:"Który poziom następuje bezpośrednio po testowaniu systemowym?", opt:["Modułowe","Integracja modułów","Integracja systemów","Akceptacyjne"], a:2},
+      {q:"Które twierdzenie o DevOps jest prawdziwe?", opt:["Eliminuje testy manualne","Wymaga CI/CD i zwiększa automatyzację","Dotyczy tylko operacji","Nie łączy się z shift‑left"], a:1},
+      {q:"Który zestaw to <i>typy</i> testów, a nie poziomy?", opt:["Funkcjonalne, niefunkcjonalne, białoskrzynkowe","Modułowe, integracja, systemowe","Modułowe, akceptacyjne, UAT","Integracja systemów, integracja modułów"], a:0},
+      {q:"Najlepsza definicja shift‑left?", opt:["Przenosimy testy z UAT do produkcji","Wcześniejsze uruchamianie przeglądów i testów","Testujemy tylko manualnie","Zwiększamy liczbę testów E2E"], a:1},
+      {q:"Testy potwierdzające …", opt:["to to samo co regresja","sprawdzają konkretną poprawkę","zawsze obejmują pełny system","są wyłącznie automatyczne"], a:1}
+    ]
+  },
+  {
+    id:"r3",
+    title:"3. Testowanie statyczne",
+    read:`<h2>3. Testowanie statyczne</h2>
+      <p>Ocena kodu/specyfikacji <b>bez uruchamiania</b> (przeglądy, analiza statyczna). Pozwala wcześnie wykrywać niejednoznaczności, luki i błędy, obniżając koszty.</p>
+      <ul>
+        <li><b>Typy przeglądów:</b> nieformalny, przejrzenie (autor prowadzi), przegląd techniczny (moderator), inspekcja (najbardziej formalna, metryki).</li>
+        <li><b>Role:</b> kierownik, autor, moderator, protokolant, przeglądający, lider przeglądu.</li>
+        <li><b>Czynniki sukcesu:</b> jasne cele/kryteria, właściwy dobór typu, małe partie, czas na przygotowanie, kultura informacji zwrotnej.</li>
+      </ul>`,
+    flashcards:[
+      {q:"Podaj 2 korzyści z testowania statycznego.", a:"Wczesne wykrycie defektów (tańsze poprawki), możliwość oceny niewykonywalnych artefaktów, poprawa komunikacji, metryki jakości."},
+      {q:"Najbardziej formalny typ przeglądu?", a:"Inspekcja – pełny proces, zbiera metryki."},
+      {q:"Rola moderatora?", a:"Zapewnia sprawny, bezpieczny przebieg spotkania, zarządza czasem i mediacją."}
+    ],
+    quiz:[
+      {q:"Które stwierdzenie najlepiej odróżnia testowanie statyczne od dynamicznego?", opt:["Statyczne uruchamia kod","Statyczne nie uruchamia kodu i może badać wymagania","Dynamiczne służy tylko do przeglądów","Statyczne wykrywa tylko błędy kompilacji"], a:1},
+      {q:"Który typ przeglądu zbiera metryki i ma najsurowszy proces?", opt:["Nieformalny","Przejrzenie","Przegląd techniczny","Inspekcja"], a:3},
+      {q:"Kto NIE jest rolą w przeglądach wg sylabusa?", opt:["Moderator","Product Owner","Protokolant","Przeglądający"], a:1}
+    ]
+  },
+  {
+    id:"r4",
+    title:"4. Analiza i projektowanie testów",
+    read:`<h2>4. Analiza i projektowanie testów</h2>
+      <ul>
+        <li><b>Czarnoskrzynkowe:</b> klasy równoważności (ECP), wartości brzegowe (BVA 2‑ i 3‑punktowe), tablice decyzyjne, przejścia stanów (pokrycie stanów/przejść/wszystkich przejść).</li>
+        <li><b>Białoskrzynkowe:</b> pokrycie instrukcji oraz gałęzi.</li>
+        <li><b>Oparte na doświadczeniu:</b> zgadywanie błędów, eksploracyjne, listy kontrolne.</li>
+        <li><b>Współpraca:</b> historyjki użytkownika (INVEST), kryteria akceptacji (Given/When/Then lub reguły), ATDD.</li>
+      </ul>`,
+    flashcards:[
+      {q:"ECP – co jest elementem pokrycia?", a:"Klasa równoważności (poprawna/niepoprawna)."},
+      {q:"BVA 3‑punktowa – jakie wartości wokół progu?", a:"Wartość brzegowa oraz obie wartości sąsiednie (np. 9,10,11 dla progu 10)."},
+      {q:"State transition – minimalne kryterium dla krytycznych systemów?", a:"Pokrycie wszystkich przejść (poprawnych i próby niepoprawnych)."},
+      {q:"Pokrycie gałęzi a instrukcji – relacja?", a:"100% gałęzi subsumuje 100% instrukcji."}
+    ],
+    quiz:[
+      {q:"W ECP elementem pokrycia jest…", opt:["Wartość brzegowa","Klasa równoważności","Ścieżka w kodzie","Przejście stanu"], a:1},
+      {q:"Próg 10 (≤10 dozwolone). Który zestaw najlepiej pokrywa BVA 3‑punktowe?", opt:["8,9,10","9,10,11","10,11,12","0,10,20"], a:1},
+      {q:"Co zapewni 100% pokrycia stanów?", opt:["Odpalimy wszystkie poprawne i niepoprawne przejścia","Odwiedzimy każdy stan co najmniej raz","Odwiedzimy każdy stan dokładnie raz","Sprawdzimy wszystkie wejścia/wyjścia"], a:1},
+      {q:"Które stwierdzenie o pokryciu jest prawdziwe?", opt:["100% instrukcji ⇒ 100% gałęzi","100% gałęzi ⇒ 100% instrukcji","Żadne nie zachodzi","Zawsze potrzeba 100% ścieżek"], a:1}
+    ]
+  },
+  {
+    id:"r5",
+    title:"5. Zarządzanie czynnościami testowymi",
+    read:`<h2>5. Zarządzanie testami</h2>
+      <ul>
+        <li><b>Plan testów:</b> kontekst/zakres, role, komunikacja, rejestr ryzyk, podejście (poziomy/typy/techniki/kryteria wejścia‑wyjścia/metryki), budżet i harmonogram.</li>
+        <li><b>Kryteria wejścia/wyjścia:</b> gotowość zasobów i artefaktów vs. warunki zakończenia (np. poziom pokrycia, liczba otwartych defektów, wykonanie zakresu).</li>
+        <li><b>Estymacje:</b> proporcje (historyczne), ekstrapolacja, szerokopasmowa delficka/poker, trójpunktowe.</li>
+        <li><b>Priorytetyzacja:</b> wg ryzyka, pokrycia (dodatkowe), wymagań; uwzględnij zależności i dostępność zasobów.</li>
+        <li><b>Piramida testów & kwadranty:</b> różna szczegółowość, automatyzacja nisko‑poziomowa vs. testy wysokopoziomowe; Q1–Q4 (cele biznes/tech × wsparcie/krytyka).</li>
+        <li><b>Ryzyko:</b> prawdopodobieństwo × wpływ; produktowe vs. projektowe; testowanie oparte na ryzyku.</li>
+      </ul>`,
+    flashcards:[
+      {q:"Wymień 3 elementy planu testów.", a:"Kontekst i zakres; role/odpowiedzialności; podejście i kryteria; rejestr ryzyk; budżet i harmonogram; komunikacja."},
+      {q:"Czym jest Definition of Done / Ready?", a:"DoD – kryteria wyjścia dla elementu; DoR – kryteria wejścia, by rozpocząć pracę nad historyjką."},
+      {q:"Podaj 2 techniki estymacji.", a:"Np. proporcje, ekstrapolacja, delficka/poker, trójpunktowa (E=(a+4m+b)/6)."},
+      {q:"Ryzyka produktowe vs. projektowe – przykład.", a:"Produktowe: błędy jakości (np. bezpieczeństwo). Projektowe: opóźnienia, braki zasobów."}
+    ],
+    quiz:[
+      {q:"Który element nie należy do typowej treści planu testów?", opt:["Rejestr ryzyk","Budżet","Szczegóły implementacji baz danych","Kryteria wejścia/wyjścia"], a:2},
+      {q:"W technice trójpunktowej przy a=6, m=9, b=18 – E wynosi?", opt:["9","10","11","12"], a:1, exp:"E=(6+4*9+18)/6=10."},
+      {q:"Która strategia priorytetyzacji wykonuje najpierw testy o największym wkładzie w pokrycie?", opt:["Wg wymagań","Wg ryzyka","Wg dodatkowego pokrycia","Losowa"], a:2},
+      {q:"Które zdanie o ryzyku jest prawdziwe?", opt:["Poziom ryzyka to iloczyn prawdopodobieństwa i wpływu","Ryzyka dotyczą tylko projektu, nie produktu","Ocena ryzyka nie wpływa na testy","Ryzyka ustala wyłącznie kierownik projektu"], a:0}
+    ]
+  },
+  {
+    id:"r6",
+    title:"6. Narzędzia testowe",
+    read:`<h2>6. Narzędzia testowe</h2>
+      <p>Klasy narzędzi (przykłady): zarządzanie testami i defektami, CI/CD, wirtualizacja usług, narzędzia do testów wydajności i bezpieczeństwa, narzędzia analizy statycznej, raportowanie.</p>
+      <ul>
+        <li><b>Korzyści:</b> szybkość, powtarzalność, ślad audytu, regresja 24/7, spójne środowiska.</li>
+        <li><b>Ryzyka/wydatki:</b> koszty wdrożenia i utrzymania, krzywa uczenia, kruchość testów UI, złe dopasowanie do procesu.</li>
+      </ul>`,
+    flashcards:[
+      {q:"Podaj 2 korzyści automatyzacji.", a:"Szybsza regresja i powtarzalność; spójne środowiska; ślad audytu."},
+      {q:"Podaj jedno ryzyko automatyzacji.", a:"Koszty utrzymania, kruchość testów UI, nietrafiony dobór narzędzi."}
+    ],
+    quiz:[
+      {q:"Które stwierdzenie o automatyzacji jest najbliższe prawdy?", opt:["Zawsze się opłaca","Zastępuje całkowicie testy manualne","Wymaga inwestycji i nie eliminuje testów manualnych","Dotyczy tylko testów UI"], a:2}
+    ]
+  }
+];
+
+/** -------------------------------------------------------
+ *  PROSTA „PLATFORMA”
+ * ------------------------------------------------------*/
+const $$ = (sel, root=document) => root.querySelector(sel);
+const $all = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+const state = {
+  current: 0,
+  flash: {side:"q", i:0},
+  quizAnswers: {},
+  results: JSON.parse(localStorage.getItem("istqb_results")||"{}")
+};
+
+function save(){ localStorage.setItem("istqb_results", JSON.stringify(state.results)); renderProgress(); }
+
+function shuffle(arr){ return arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]); }
+
+function renderTOC(){
+  const toc = syllabus.map((ch, idx)=>`<h3>${idx<6?"Rozdział":""}</h3>
+    <button data-idx="${idx}" class="${state.current===idx?"active":""}">${ch.title}</button>`).join("");
+  $$("#toc").innerHTML = toc + `<h3>Egzamin</h3><button data-exam="1">Egzamin końcowy</button>`;
+  $all("#toc button").forEach(b=>{
+    if(b.dataset.idx!==undefined){ b.onclick=()=>{state.current=+b.dataset.idx; renderChapter();}; }
+    if(b.dataset.exam){ b.onclick=()=>renderFinalExam(); }
+  });
+}
+
+function renderChapter(){
+  const ch = syllabus[state.current];
+  $$("#reading").innerHTML = `<div class="tag">${ch.title}</div>${ch.read}`;
+  $$("#after").innerHTML = `<div class="muted">Wybierz: <b>Fiszki</b> lub <b>Mini‑test</b>. Po zaliczeniu możesz przejść do kolejnego rozdziału.</div>`;
+  renderTOC();
+}
+
+function renderProgress(){
+  const res = state.results; let passed = 0, total = 0;
+  syllabus.forEach(ch=>{ if(!ch.quiz) return; const key = ch.id+":quiz"; if(res[key]) passed += res[key].score; if(res[key]) total += res[key].total; });
+  const hint = `Zebrane punkty: <b>${passed}</b> / ${total||"—"}`;
+  $$("#progressHint").innerHTML = hint;
+}
+
+function startFlashcards(){
+  const ch = syllabus[state.current];
+  const list = shuffle(ch.flashcards || []);
+  state.flash = {side:"q", i:0, list};
+  const host = $$("#after");
+  host.innerHTML = `
+    <div class="flash">
+      <div class="tag">Fiszka ${state.flash.i+1}/${list.length}</div>
+      <div class="flip" id="flip">${list[0]?.q||"Brak fiszek"}</div>
+      <div class="row">
+        <button class="btn" id="know">Znam</button>
+        <button class="btn secondary" id="dont">Nie wiem</button>
+        <button class="btn flat" id="nextF">Następna</button>
+      </div>
+      <div class="hint">Kliknij kartę, aby obrócić.</div>
+    </div>`;
+  const flip = $$("#flip");
+  flip.onclick = ()=>{
+    state.flash.side = state.flash.side==="q"?"a":"q";
+    flip.classList.toggle("flipped");
+    flip.innerHTML = state.flash.side==="q"?list[state.flash.i].q:list[state.flash.i].a;
+  };
+  $$("#nextF").onclick = ()=>{ state.flash.i = (state.flash.i+1)%list.length; state.flash.side="q"; flip.classList.remove("flipped"); flip.innerHTML=list[state.flash.i].q; $$(".tag").innerHTML=`Fiszka ${state.flash.i+1}/${list.length}`; };
+  $$("#know").onclick = ()=>alert("Super! Przejdź do mini‑testu gdy będziesz gotowy.");
+  $$("#dont").onclick = ()=>alert("Zapisz trudne fiszki – możesz je dodać/rozszerzyć w danych.");
+}
+
+function startQuiz(mode="chapter"){
+  const ch = syllabus[state.current];
+  const questions = shuffle([...(ch.quiz||[])]);
+  renderQuiz(questions, ch.id+":quiz", ch.title, mode);
+}
+
+function flattenAllQuestions(){
+  const all = [];
+  syllabus.forEach(ch=> (ch.quiz||[]).forEach(q=> all.push({...q, chapter:ch.title})) );
+  return all;
+}
+
+function renderQuiz(questions, key, label, mode){
+  const host = $$("#after");
+  host.innerHTML = `<div class="quiz">
+    <div class="tag">${mode==="exam"?"Egzamin":`Mini‑test: ${label}`}</div>
+    ${questions.map((q,i)=>`
+      <div class="q">
+        <div><b>${i+1}. ${q.q}</b></div>
+        ${q.opt.map((o,oi)=>`<label class="opt"><input type="radio" name="q${i}" value="${oi}"> ${o}</label>`).join("")}
+        ${q.exp?`<div class="explain" data-exp style="display:none">${q.exp}</div>`:""}
+      </div>`).join("")}
+    <div class="controls">
+      <button class="btn" id="check">Sprawdź</button>
+      <button class="btn flat" id="resetQuiz">Wyczyść odpowiedzi</button>
+    </div>
+    <div id="quizResult"></div>
+  </div>`;
+
+  $$("#check").onclick = ()=>{
+    let score=0; questions.forEach((q,i)=>{
+      const sel = $$(`input[name=q${i}]:checked`);
+      const chosen = sel? +sel.value : -1;
+      const labels = $all(`.q:nth-child(${i+2}) .opt`, host); // +1 for tag div
+      labels.forEach((lb,oi)=>{
+        lb.classList.remove("correct","wrong");
+        if(oi===q.a){ lb.classList.add("correct"); }
+        if(chosen===oi && chosen!==q.a){ lb.classList.add("wrong"); }
+      });
+      if(chosen===q.a) score++;
+      const exp = $all(`.q:nth-child(${i+2}) [data-exp]`, host)[0]; if(exp) exp.style.display="block";
+    });
+    const percent = Math.round(100*score/questions.length);
+    $$("#quizResult").innerHTML = `<div class="result"><b>Wynik:</b> ${score}/${questions.length} (${percent}%). ${mode==="exam"?`Próg zdania: 65%. ${percent>=65?"✅ ZALICZONO":"❌ Nie zaliczono"}`:""}</div>`;
+    state.results[key] = {score, total:questions.length, ts:Date.now()}; save();
+  };
+
+  $$("#resetQuiz").onclick = ()=>{ $all("input[type=radio]", host).forEach(i=>i.checked=false); $$("#quizResult").innerHTML=""; $all(".opt", host).forEach(o=>o.classList.remove("correct","wrong")); };
+}
+
+function renderFinalExam(){
+  state.current = 0; renderTOC();
+  const all = shuffle(flattenAllQuestions());
+  $$("#reading").innerHTML = `<div class="tag">Egzamin końcowy</div>
+    <h2>Egzamin końcowy (demo)</h2><p>Zawiera wszystkie pytania z mini‑testów. W realnym użyciu dodaj kolejne pytania lub zestaw losowany z większej puli. Próg zaliczenia: <b>65%</b>.</p>`;
+  renderQuiz(all, "final:exam", "Egzamin", "exam");
+}
+
+// Wire UI
+$$("#showFlash").onclick = startFlashcards;
+$$("#showQuiz").onclick = ()=>startQuiz();
+$$("#nextChapter").onclick = ()=>{ state.current = Math.min(state.current+1, syllabus.length-1); renderChapter(); };
+$$("#fullExamBtn").onclick = renderFinalExam;
+$$("#resetBtn").onclick = ()=>{ if(confirm("Wyczyścić zapisane wyniki?")){ localStorage.removeItem("istqb_results"); state.results={}; renderProgress(); }}
+
+// Init
+renderTOC();
+renderChapter();
+renderProgress();
+</script>
+</body>
+</html>
