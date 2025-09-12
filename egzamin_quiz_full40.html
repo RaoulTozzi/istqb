@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Egzamin ISTQB — 40 pytań (offline)</title>
+<style>
+  :root{--bg:#faf7f2;--card:#ffffff;--ink:#222;--muted:#6b7280;--accent:#2563eb;--ok:#16a34a;--err:#dc2626}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif}
+  header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid rgba(0,0,0,.06)}
+  .bar{max-width:960px;margin:auto;padding:12px 16px;display:flex;gap:12px;align-items:center}
+  .brand{font-weight:800}
+  .spacer{flex:1}
+  .btn{cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:#fff;padding:10px 14px;font-weight:600}
+  .btn.secondary{background:#111827;color:#fff}
+  .btn.flat{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+  .wrap{max-width:960px;margin:14px auto;padding:0 16px}
+  .card{background:var(--card);border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:16px}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  .hint{color:var(--muted);font-size:13px}
+  .q{margin:12px 0;padding:14px;border-radius:14px;border:1px solid rgba(0,0,0,.06)}
+  .opt{display:block;margin:6px 0;padding:10px;border-radius:10px;cursor:pointer;border:1px solid rgba(0,0,0,.08)}
+  .opt.correct{background:rgba(22,163,74,.10);border-color:var(--ok)}
+  .opt.wrong{background:rgba(220,38,38,.10);border-color:var(--err)}
+  .explain{font-size:13px;color:var(--muted)}
+  .result{padding:12px;border-radius:12px;background:#fff;margin:12px 0;border-left:6px solid var(--accent)}
+  footer{padding:24px;text-align:center;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand">Egzamin ISTQB — 40 pytań</div>
+    <div class="spacer"></div>
+    <button class="btn flat" id="exportJson">Eksportuj JSON</button>
+    <button class="btn flat" id="importJson">Importuj JSON</button>
+    <input type="file" id="fileInput" accept="application/json" style="display:none" />
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="card" id="start">
+    <div style="font-weight:700;margin-bottom:6px">Ustawienia</div>
+    <div class="row" style="margin:8px 0">
+      <label>Tryb: 
+        <select id="mode">
+          <option value="practice">Praktyka (wyjaśnienia po odpowiedzi)</option>
+          <option value="exam">Egzamin (wyjaśnienia po sprawdzeniu)</option>
+          <option value="review">Przegląd (wyjaśnienia od razu)</option>
+        </select>
+      </label>
+      <label>Limit pytań: <input id="limit" type="number" min="1" max="40" value="40" style="width:80px"></label>
+      <label>Timer (min): <input id="timer" type="number" min="0" value="60" style="width:80px"></label>
+    </div>
+    <div class="row" style="margin:8px 0">
+      <label><input type="checkbox" id="shuffleQ" checked> Losuj pytania</label>
+      <label><input type="checkbox" id="shuffleA" checked> Losuj odpowiedzi</label>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button class="btn" id="loadBuiltIn">Załaduj wbudowany zestaw (40)</button>
+      <button class="btn secondary" id="startBtn">▶️ Start sesji</button>
+    </div>
+    <div class="hint" style="margin-top:6px">Działa w 100% offline. Postęp i ustawienia są zapisywane lokalnie.</div>
+  </div>
+
+  <div class="card" id="quizHost" style="margin-top:12px;display:none"></div>
+  <div id="timeLeft" class="hint" style="margin:8px 4px;display:none"></div>
+</div>
+
+<footer>Nieoficjalny quiz dla nauki. Pytania pochodzą z publicznie dostępnych materiałów/opracowań, wyjaśnienia mają charakter edukacyjny.</footer>
+
+<script>
+// Util
+const $$ = (s, r=document)=>r.querySelector(s);
+const $all = (s, r=document)=>Array.from(r.querySelectorAll(s));
+const shuffle = arr => arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+
+// Built-in questions (40) — minimal form: {q, opts:[A,B,C,D], correct:"A"|"B"|... (or [..] for multi), exp}
+// Zestaw odpowiada Twoim 40 pytaniom. (Wyjaśnienia skrótowe.)
+const builtIn = [
+  {q:"Która z poniższych odpowiedzi opisuje poprawny cel testów?", opts:[
+    "Udowodnienie, że w systemie nie ma nieusuniętych defektów.",
+    "Udowodnienie, że po wdrożeniu nie będzie awarii.",
+    "Obniżenie ryzyka związanego z przedmiotem testów i wzrost zaufania do jakości.",
+    "Sprawdzenie, czy nie pozostały nieprzetestowane kombinacje wejść."], correct:"C", exp:"Testy dostarczają informacji, redukują ryzyko i budują zaufanie; nie dowodzą braku defektów."},
+  {q:"Które stwierdzenie opisuje czynności testowe przyczyniające się do sukcesu projektu?", opts:[
+    "Włączenie testerów w różne działania SDLC pomaga wykrywać defekty.",
+    "Testerzy nie przeszkadzają programistom podczas kodowania.",
+    "Współpraca z użytkownikami poprawia raporty tylko na integracji/systemie.",
+    "Certyfikat gwarantuje lepsze przypadki testowe."], correct:"A", exp:"Wczesne i szerokie włączenie testów w SDLC zwiększa jakość i szybkość informacji zwrotnej."},
+  {q:"Zauważasz brak zmian w testach regresji i brak nowych defektów regresji. Jaka zasada?", opts:[
+    "Testy ulegają zużyciu.","Przekonanie o braku defektów jest błędem.","Defekty mogą się kumulować.","Testowanie gruntowne jest niemożliwe."], correct:"A", exp:"Nieaktualizowane testy regresji tracą skuteczność (zużywają się)."},
+  {q:"Która czynność jest elementem analizy testów dla płatności?", opts:[
+    "Oszacowanie czasu integracji: 8 osobo‑dni.",
+    "Decyzja, by przetestować podział płatności między wielu użytkowników.",
+    "Zastosowanie BVA do danych testowych minimalnej kwoty.",
+    "Analiza rozbieżności i zgłoszenie defektu po teście karty."], correct:"B", exp:"Analiza testów identyfikuje co testować (warunki), projektowanie określa dane (np. BVA)."},
+  {q:"Które czynniki istotnie wpływają na podejście do testów?", opts:[
+    "SDLC i liczba defektów z poprzednich projektów.",
+    "SDLC, zidentyfikowane ryzyka produktowe, wymogi formalnych testów białoskrzynkowych.",
+    "Liczba defektów wcześniej, wymogi białoskrzynkowe, konfiguracja środowiska.",
+    "Ryzyka produktowe i konfiguracja środowiska."], correct:"B", exp:"Kontekst SDLC, ryzyka produktowe oraz wymogi (np. regulacyjne) kształtują podejście."},
+  {q:"Dwa zadania głównie testerskie?", opts:[
+    "Konfigurowanie środowiska testowego.","Prowadzenie backlogu produktu.","Projektowanie rozwiązań dla nowych wymagań.","Tworzenie planu testów.","Analizowanie podstawy testów."], correct:["A","E"], exp:"Głównie testerskie: analizowanie podstawy testów oraz (w wielu organizacjach) konfiguracja środowiska testowego."},
+  {q:"Najbardziej istotne umiejętności testera?", opts:[
+    "Tworzenie wizji produktu i planowanie zespołu.",
+    "Wiedza merytoryczna, praca zespołowa, krytyczne myślenie.",
+    "Wiedza merytoryczna, wizja produktu, krytyczne myślenie.",
+    "Praca zespołowa i planowanie pracy zespołu."], correct:"B", exp:"Esencja: domena, współpraca i krytyczne myślenie."},
+  {q:"Podejście cały zespół a przedstawiciele biznesu?", opts:[
+    "Biznes decyduje o automatyzacji.","Testerzy pomagają biznesowi w określaniu strategii testów.","Biznes nie jest objęty podejściem whole‑team.","Testerzy pomagają biznesowi tworzyć testy akceptacyjne."], correct:"D", exp:"W whole‑team testerzy współtworzą z biznesem testy akceptacyjne."},
+  {q:"Zasada przypisania czynności testowych do SDLC obowiązuje w…", opts:[
+    "Tylko modelach sekwencyjnych.","Tylko iteracyjnych.","Tylko iteracyjnych i przyrostowych.","Sekwencyjnych, przyrostowych i iteracyjnych."], correct:"D", exp:"Dotyczy wszystkich modeli SDLC."},
+  {q:"ATDD — najlepszy opis", opts:[
+    "Kryteria akceptacji zwykle w formacie Given/When/Then.",
+    "Testy ATDD tworzy się na etapie modułowym i są ukierunkowane na kod.",
+    "Testy tworzone z kryteriów akceptacji określają sposób tworzenia oprogramowania.",
+    "Testy z pożądanego zachowania, łatwe do zrozumienia dla zespołu."], correct:"C", exp:"ATDD: zaczynamy od kryteriów akceptacji, które prowadzą implementację."},
+  {q:"Które NIE jest przykładem shift‑left?", opts:[
+    "Przegląd wymagań przed akceptacją przez interesariuszy.",
+    "Test modułowy przed kodem.",
+    "Test wydajności modułu podczas testów modułowych.",
+    "Skrypt testowy przed ustanowieniem zarządzania konfiguracją."], correct:"D", exp:"Pisanie skryptów bez podstaw procesowych nie jest przesunięciem działań w lewo w sensie jakości."},
+  {q:"Argument za retrospektywami po każdym cyklu release", opts:[
+    "Popularne – klienci będą zadowoleni.",
+    "Oszczędności, bo brak natychmiastowej informacji zwrotnej.",
+    "Analiza słabości → lista działań do programu ciągłego doskonalenia.",
+    "Realizują 5 wartości (np. odwaga, szacunek)."], correct:"C", exp:"Retrospektywy napędzają ciągłe doskonalenie na podstawie danych."},
+  {q:"Dopasuj typy awarii do poziomów testów", opts:[
+    "1D, 2B, 3A, 4C","1D, 2B, 3C, 4A","1B, 2A, 3D, 4C","1C, 2B, 3A, 4D"], correct:"A", exp:"Akceptacja ↔ potrzeby biznesowe; integracja modułów ↔ komunikacja; modułowe ↔ logika modułu; systemowe ↔ reguły biznesowe."},
+  {q:"Które testy są regresją w przebiegach PT1..PT9?", opts:[
+    "Tylko 4, 7, 8 i 9.","Tylko 5 i 7.","Tylko 4, 6, 8 i 9.","Tylko 5 i 6."], correct:"A", exp:"Po potwierdzeniu poprawek, kolejne przebiegi powtarzają wcześniej zaliczone – to regresja (4,7,8,9)."},
+  {q:"Korzyści testowania statycznego — które NIE?", opts:[
+    "Niższe koszty zarządzania defektami dzięki wykrywaniu późno.",
+    "Tańsze usuwanie defektów niż przy dynamicznym.",
+    "Wykrywanie defektów niewykrywalnych wyłącznie dynamicznie.",
+    "Wykrywanie luk i niespójności w wymaganiach."], correct:"A", exp:"Statyczne jest wcześnie i taniej – nie późno."},
+  {q:"Korzyść z wczesnych i częstych informacji zwrotnych?", opts:[
+    "Usprawnienie procesu w przyszłych projektach.","Wymuszenie priorytetów wymagań przez ryzyka.","Jedyny sposób mierzenia jakości zmian.","Unikanie nieporozumień wymagań."], correct:"D", exp:"Wczesne feedbacki redukują błędne interpretacje wymagań."},
+  {q:"Atrybuty przeglądów — jaki typ najpewniej?", opts:[
+    "Nieformalny","Przejrzenie","Przegląd techniczny","Inspekcja"], correct:"B", exp:"Autor prowadzi spotkanie, jest protokolant i przygotowanie — to przejrzenie."},
+  {q:"Co NIE wspiera sukcesu przeglądu?", opts:[
+    "Odpowiedni czas na przegląd.","Dzielenie dużych produktów na mniejsze.","Unikanie oznak znudzenia/irytacji/wrogości.","Obiektywne traktowanie wykrytych awarii."], correct:"C", exp:"Takie zachowania są właśnie niepożądane; pozostałe wspierają sukces."},
+  {q:"Cechy technik opartych na doświadczeniu", opts:[
+    "Tworzone na podstawie szczegółów projektowych.",
+    "Pokrycie mierzone elementami testowanymi w interfejsach kodu.",
+    "Silnie bazują na wiedzy testera o systemie i domenie.",
+    "Identyfikują odchylenia od wymagań przypadkami testowymi."], correct:"C", exp:"To istota technik heurystycznych/eksploracyjnych."},
+  {q:"Formularz mieszkań — ECP: minimalna liczba przypadków dla 100% klas?", opts:["3","4","5","6"], correct:"B", exp:"3 kondygnacje + 3 typy ogródka z ograniczeniem wymagają min. 4 przypadków dla klas równoważności."},
+  {q:"Oceny 0–100, BVA 2‑punktowa — jakie pokrycie zbioru PT1–PT6?", opts:["50%","60%","33,3%","100%"], correct:"B", exp:"Zestaw pokrywa 6 z 10 wartości brzegowych (początki/końce przedziałów)."},
+  {q:"Wypożyczalnia rowerów — która reguła niemożliwa?", opts:["R4","R2","R6","R8"], correct:"D", exp:"Brak w programie lojalnościowym, nieterminowy zwrot i prezent za 15. wypożyczenie jednocześnie — niespójne."},
+  {q:"Minimum przypadków dla pokrycia poprawnych przejść (diagram stanów)", opts:["4","2","7","3"], correct:"D", exp:"Typowo 3 przypadki wystarczą do odwiedzenia wszystkich poprawnych przejść w pokazanym schemacie."},
+  {q:"100% pokrycia instrukcji oznacza…", opts:[
+    "Każda instrukcja zawierająca defekt została wykonana.",
+    "Dowolny większy zestaw też osiągnie 100% instrukcji.",
+    "Każda ścieżka musiała być wykonana.",
+    "Każda instrukcja została wykonana co najmniej raz."], correct:"D", exp:"Nie gwarantuje 100% gałęzi ani ścieżek."},
+  {q:"Które stwierdzenie o białej skrzynce NIE jest prawdziwe?", opts:[
+    "Uwzględnia całą implementację.",
+    "Metryki pokrycia wskazują dodatkowe testy.",
+    "Można stosować w testowaniu statycznym.",
+    "Pozwala rozpoznać luki w implementacji wymagań."], correct:"C", exp:"Białoskrzynkowe techniki to testy dynamiczne; statyczne to przeglądy/analiza."},
+  {q:"Koncepcja zgadywania błędów — najlepszy opis", opts:[
+    "Wykorzystanie wiedzy o typowych defektach i błędach programistów.",
+    "Własne doświadczenie programistyczne.",
+    "Wyobrażenie użytkownika i jego pomyłek.",
+    "Szybka próba wytwarzania oprogramowania, by odtworzyć błędy."], correct:"A", exp:"Heurystyka oparta o wiedzę o typowych defektach."},
+  {q:"Brak pełnych wymagań, potrzeba wstępnych wyników — jaka technika?", opts:[
+    "Lista kontrolna","Zgadywanie błędów","Eksploracyjne","Testowanie gałęzi"], correct:"C", exp:"Exploratory Testing dobrze działa przy niepełnych specyfikacjach i krótkim czasie."},
+  {q:"Jak udokumentować kryteria akceptacji?", opts:[
+    "Retrospektywa potrzeb interesariuszy.",
+    "Opis warunku w Given/When/Then.",
+    "Słowne przekazanie informacji.",
+    "Ryzyka w planie testów dla danej historyjki."], correct:"B", exp:"Gherkin/Given‑When‑Then to dobra forma doprecyzowania akceptacji."},
+  {q:"Historyjka redaktora — które ATDD najlepiej?", opts:[
+    "Czy redaktor może zapisać dokument po redakcji.",
+    "Czy właściciel treści może zalogować się i zaktualizować treść.",
+    "Czy redaktor może ustawić termin publikacji.",
+    "Czy redaktor może zlecić innemu redaktorowi aktualizację treści."], correct:"A", exp:"Bezpośrednio pokrywa jedno z kryteriów akceptacji dla roli redaktora."},
+  {q:"Wkład testerów w planowanie iteracji/wydań", opts:[
+    "Ustalają priorytety historyjek.",
+    "Koncentrują się tylko na funkcjach.",
+    "Identyfikują i oceniają ryzyka dla historyjek.",
+    "Gwarantują wysoką jakość, projektując testy na starcie."], correct:"C", exp:"Testerzy dostarczają wkład w identyfikację i ocenę ryzyk backlogu."},
+  {q:"Dwa kryteria wyjścia dla testowania systemu", opts:[
+    "Gotowość środowiska","Możliwość zalogowania testera","Osiągnięcie szacowanej gęstości defektów","Przekształcenie wymagań do G/W/T","Zautomatyzowanie testów regresji"], correct:["C","E"], exp:"Kryteria wyjścia to np. metryki jakości (gęstość defektów) i zakres (regresja zautomatyzowana)."},
+  {q:"Estymacja trójpunktowa: a=2, m=11, b=14 — wynik?", opts:["9","14","11","10"], correct:"D", exp:"E=(2+4*11+14)/6 = 10."},
+  {q:"Kolejność wykonania (priorytety i zależności) — który trzeci?", opts:["PT 003","PT 005","PT 002","PT 001"], correct:"A", exp:"Najpierw PT001 (odblokowuje), potem PT002 (priorytet 2), trzeci — PT003 (priorytet 1, zależny od PT002)."},
+  {q:"Kwadranty zwinne — przypisanie", opts:[
+    "1C, 2A, 3B, 4D","1D, 2A, 3C, 4B","1C, 2B, 3D, 4A","1D, 2B, 3C, 4A"], correct:"A", exp:"Użyteczność→Q3, modułowe→Q1, funkcjonalne→Q2, niezawodność→Q4."},
+  {q:"Ryzyko: długi czas odpowiedzi raportu, reakcje: testy wydajności + alfa/beta — to…", opts:[
+    "Akceptacja ryzyka","Plan awaryjny","Łagodzenie ryzyka","Przeniesienie ryzyka"], correct:"C", exp:"Działania redukują prawdopodobieństwo/impact — mitigation."},
+  {q:"Artefakt pokazujący wykonaną i pozostałą pracę w iteracji", opts:[
+    "Kryteria akceptacji","Raport o defekcie","Raport sumaryczny","Wykres spalania"], correct:"D", exp:"Burn‑down przedstawia realizację pracy w czasie."},
+  {q:"Nowa wersja skryptu testu — jaki proces rejestruje to w repo?", opts:[
+    "Śledzenie powiązań","Testowanie pielęgnacyjne","Zarządzanie konfiguracją","Inżynieria wymagań"], correct:"C", exp:"Versioning/config management rejestruje zmiany artefaktów testowych."},
+  {q:"Raport o defekcie – czego brakuje?", opts:[
+    "Oczekiwany i rzeczywisty rezultat.",
+    "Odwołania i status defektu.",
+    "Środowisko testowe i element testowy.",
+    "Priorytet i krytyczność."], correct:"C", exp:"Brak informacji o środowisku i konkretnym elemencie testowym utrudnia odtworzenie."},
+  {q:"Narzędzie do przygotowania danych testowych – w której czynności?", opts:[
+    "Monitorowanie i nadzór","Analiza i projektowanie","Implementacja i wykonywanie","Ukończenie testów"], correct:"C", exp:"Dane przygotowujemy i wykorzystujemy podczas implementacji i wykonywania testów."},
+  {q:"Ryzyko automatyzacji — poprawna odpowiedź", opts:[
+    "Automatyzacja może wprowadzić nieznane regresje na produkcji.",
+    "Nakłady na utrzymanie testaliów mogą być niewystarczające.",
+    "Narzędzia i testalia mogą nie mieć wystarczającego zaufania.",
+    "Automatyzacja skraca czas na testy manualne."], correct:"C", exp:"Ryzyko braku zaufania do narzędzi/testaliów jest realne; pozostałe sformułowane niewłaściwie."}
+];
+
+// State
+let bank = [];
+let order = [];
+let startTs = 0;
+let timerId = null;
+
+function startSession(){
+  const mode = $$("#mode").value;
+  const limit = Math.max(1, Math.min(40, +$$("#limit").value||40));
+  const tmin = Math.max(0, +$$("#timer").value||0);
+  const sq = $$("#shuffleQ").checked;
+  const sa = $$("#shuffleA").checked;
+  const src = bank.length? bank : builtIn;
+  order = src.map((_,i)=>i);
+  if(sq) order = shuffle(order);
+  order = order.slice(0, limit);
+  renderQuiz(src, order, mode, sa);
+  $$("#start").style.display = "none";
+  $$("#quizHost").style.display = "block";
+  if(tmin>0){ startTimer(tmin*60); } else { $$("#timeLeft").style.display = "none"; }
+}
+
+function startTimer(totalSec){
+  startTs = Date.now();
+  const el = $$("#timeLeft");
+  el.style.display = "block";
+  function tick(){
+    const elapsed = Math.floor((Date.now()-startTs)/1000);
+    const left = Math.max(0, totalSec - elapsed);
+    const mm = String(Math.floor(left/60)).padStart(2,"0");
+    const ss = String(left%60).padStart(2,"0");
+    el.textContent = `Czas: ${mm}:${ss}`;
+    if(left<=0){ clearInterval(timerId); grade(); }
+  }
+  tick();
+  timerId = setInterval(tick, 250);
+}
+
+function renderQuiz(src, ord, mode, shuffleAnswers){
+  const host = $$("#quizHost");
+  const qs = ord.map(i=>src[i]).map(item=>{
+    const letters = ["A","B","C","D","E","F"]; // obsługa do 6 opcji
+    let opts = item.opts.slice();
+    let mapIdx = opts.map((_,i)=>i);
+    if(shuffleAnswers){
+      const zipped = opts.map((o,i)=>({o,i}));
+      const shuffled = shuffle(zipped);
+      opts = shuffled.map(x=>x.o);
+      mapIdx = shuffled.map(x=>x.i);
+    }
+    const correctLetters = Array.isArray(item.correct)? item.correct : [item.correct];
+    const correctIdx = correctLetters.map(l=>letters.indexOf(l));
+    const mappedCorrectIdx = correctIdx.map(ci=> mapIdx.indexOf(ci));
+    return {q:item.q, opts, correctSet: new Set(mappedCorrectIdx), multi: correctLetters.length>1, exp:item.exp};
+  });
+
+  host.innerHTML = `
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <div><b>Sesja</b> — pytania: ${qs.length} | tryb: ${mode.toUpperCase()}</div>
+      <div class="row">
+        <button class="btn" id="check">Sprawdź</button>
+        <button class="btn flat" id="restart">Nowa sesja</button>
+      </div>
+    </div>
+    ${qs.map((q,i)=>`
+      <div class="q">
+        <div style="margin-bottom:6px"><b>${i+1}. ${q.q}</b>${q.multi?" <span class=hint>(wielokrotny wybór)</span>":""}</div>
+        ${q.opts.map((o,oi)=>{
+          const input = q.multi? `<input type="checkbox" name="q${i}" value="${oi}">` : `<input type="radio" name="q${i}" value="${oi}">`;
+          return `<label class="opt">${input} ${o}</label>`;
+        }).join("")}
+        ${q.exp?`<div class="explain" data-exp style="${mode==="review"?"":"display:none"}">${q.exp}</div>`:""}
+      </div>
+    `).join("")}
+    <div id="quizResult"></div>
+  `;
+
+  $$("#check").onclick = ()=>grade(qs, mode);
+  $$("#restart").onclick = ()=>{ location.reload(); };
+
+  if(mode==="practice"){
+    $all(".q").forEach((qEl, qi)=>{
+      qEl.addEventListener("change", ()=>{
+        reveal(qEl, qs[qi]);
+      });
+    });
+  }
+}
+
+function reveal(qEl, q){
+  const labels = $all(".opt", qEl);
+  const chosenIdx = [];
+  $all("input", qEl).forEach(inp=>{ if(inp.checked) chosenIdx.push(+inp.value); });
+  labels.forEach((lb,oi)=>{
+    lb.classList.remove("correct","wrong");
+    if(q.correctSet.has(oi)) lb.classList.add("correct");
+    if(chosenIdx.includes(oi) && !q.correctSet.has(oi)) lb.classList.add("wrong");
+  });
+  const exp = $$("[data-exp]", qEl); if(exp) exp.style.display = "block";
+}
+
+function grade(qs, mode){
+  const host = $$("#quizHost");
+  let score = 0; const total = qs.length;
+  $all(".q", host).forEach((qEl, qi)=>{
+    const q = qs[qi];
+    const chosen = [];
+    $all("input", qEl).forEach(inp=>{ if(inp.checked) chosen.push(+inp.value); });
+    const setChosen = new Set(chosen);
+    let ok = true;
+    // Wymagaj dokładnego dopasowania zbioru poprawnych
+    if(setChosen.size !== q.correctSet.size) ok=false;
+    else { for(const c of setChosen){ if(!q.correctSet.has(c)) { ok=false; break; } } }
+    if(ok) score++;
+    reveal(qEl, q);
+  });
+  const percent = Math.round(100*score/total);
+  $$("#quizResult").innerHTML = `<div class="result"><b>Wynik:</b> ${score}/${total} (${percent}%). ${mode==="exam"?`Próg zdania: 65%. ${percent>=65?"✅ ZALICZONO":"❌ Nie zaliczono"}`:""}</div>`;
+}
+
+// Persistence of settings
+function saveSettings(){
+  const s = {
+    mode: $$("#mode").value,
+    limit: $$("#limit").value,
+    timer: $$("#timer").value,
+    shuffleQ: $$("#shuffleQ").checked,
+    shuffleA: $$("#shuffleA").checked
+  };
+  localStorage.setItem("istqb40_prefs", JSON.stringify(s));
+}
+function loadSettings(){
+  const raw = localStorage.getItem("istqb40_prefs");
+  if(!raw) return;
+  try{
+    const s = JSON.parse(raw);
+    if(s.mode) $$("#mode").value = s.mode;
+    if(s.limit) $$("#limit").value = s.limit;
+    if(s.timer) $$("#timer").value = s.timer;
+    if(typeof s.shuffleQ==="boolean") $$("#shuffleQ").checked = s.shuffleQ;
+    if(typeof s.shuffleA==="boolean") $$("#shuffleA").checked = s.shuffleA;
+  }catch{}
+}
+
+// JSON import/export
+function exportJson(){
+  const blob = new Blob([JSON.stringify(builtIn, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "istqb_40.json"; a.click();
+  URL.revokeObjectURL(url);
+}
+function importJsonFromFile(file){
+  const fr = new FileReader();
+  fr.onload = ()=>{
+    try{
+      const data = JSON.parse(fr.result);
+      if(Array.isArray(data) && data.length){ bank = data; alert("Załadowano bank pytań z JSON."); }
+      else alert("Nieprawidłowy format JSON.");
+    }catch{ alert("Błąd parsowania JSON."); }
+  };
+  fr.readAsText(file);
+}
+
+// Wire
+$$("#startBtn").onclick = ()=>{ saveSettings(); startSession(); };
+$$("#loadBuiltIn").onclick = ()=>{ bank = builtIn.slice(); alert("Załadowano wbudowany zestaw (40). Możesz od razu wystartować."); };
+$$("#exportJson").onclick = exportJson;
+$$("#importJson").onclick = ()=> $$("#fileInput").click();
+$$("#fileInput").addEventListener("change", ev=>{ const f = ev.target.files?.[0]; if(f) importJsonFromFile(f); });
+
+loadSettings();
+</script>
+</body>
+</html>
+
+

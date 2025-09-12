@@ -56,6 +56,7 @@
       <div class="brand">ISTQB Syllabus Trainer</div>
       <div class="hint">Nauka rozdziałami → fiszki → mini‑testy → egzamin końcowy</div>
       <div class="spacer"></div>
+      <a class="btn flat" href="egzamin_quiz_full40.html" title="40 pytań — pełny egzamin" style="text-decoration:none;display:inline-block;text-align:center">Egzamin 40Q</a>
       <button class="btn flat" id="resetBtn" title="Wyczyść postęp">Reset</button>
       <button class="btn" id="fullExamBtn">Egzamin końcowy</button>
     </div>
@@ -83,7 +84,7 @@
     </main>
   </div>
 
-  <footer>Nieoficjalny trener do nauki zgodnie z sylabusem ISTQB FL 4.0.1. Pytania są autorskie (tematycznie zgodne), nie są to pytania egzaminacyjne.
+  <footer>Nieoficjalny trener do nauki zgodnie z sylabusem ISTQB FL 4.0.1. Zestaw pytań bazuje na przykładowym egzaminie CTFL (Sample Exam A) i został przypisany tematycznie do rozdziałów.
   </footer>
 
 <script>
@@ -233,6 +234,109 @@ const syllabus = [
 ];
 
 /** -------------------------------------------------------
+ *  PYTANIA EGZAMINACYJNE – CTFL Sample Exam A (40) z przypisaniem do rozdziałów
+ *  Pola:
+ *    id: numer pytania
+ *    chapter: 'r1'..'r6' – przypisanie tematyczne do rozdziału
+ *    q: treść pytania
+ *    opt: tablica opcji
+ *    a: indeks poprawnej odpowiedzi lub tablica indeksów (wielokrotny wybór)
+ *    exp: krótkie wyjaśnienie (opcjonalne)
+ * ------------------------------------------------------*/
+const examA = [
+  // r1 – Podstawy testowania
+  {id:1, chapter:"r1", q:"Która z poniższych odpowiedzi opisuje poprawny cel testów?", opt:["Udowodnienie, że w systemie nie ma nieusuniętych defektów.","Udowodnienie, że po wdrożeniu nie będzie awarii.","Obniżenie ryzyka i wzrost zaufania do jakości.","Sprawdzenie, czy nie pozostały nieprzetestowane kombinacje wejść."], a:2, exp:"Testowanie redukuje ryzyko i dostarcza informacji – nie dowodzi braku defektów."},
+  {id:2, chapter:"r1", q:"Które stwierdzenie przyczynia się do sukcesu projektu?", opt:["Włączenie testerów w SDLC pomaga wykrywać defekty.","Nie przeszkadzamy programistom podczas kodowania.","Współpraca z użytkownikami podnosi raporty tylko na integracji/systemie.","Certyfikat gwarantuje lepsze testy."], a:0, exp:"Wczesne i szerokie włączenie testów zwiększa jakość i szybkość feedbacku."},
+  {id:3, chapter:"r1", q:"Brak zmian w testach regresji od kilku iteracji… Jaka zasada?", opt:["Testy ulegają zużyciu.","Złudzenie braku defektów.","Defekty się kumulują.","Gruntowne testowanie jest niemożliwe."], a:0, exp:"Nieaktualizowane testy tracą skuteczność."},
+  {id:7, chapter:"r1", q:"Najbardziej istotne umiejętności testera?", opt:["Wizja produktu i planowanie zespołu.","Wiedza domenowa, praca zespołowa, krytyczne myślenie.","Wiedza domenowa, wizja, krytyczne myślenie.","Praca zespołowa i planowanie pracy zespołu."], a:1},
+
+  // r2 – Testowanie w cyklu wytwarzania (modele, Agile, ATDD, regresja, poziomy)
+  {id:8, chapter:"r2", q:"Podejście 'cały zespół' a przedstawiciele biznesu", opt:["Biznes decyduje o automatyzacji.","Testerzy pomagają biznesowi w strategii testów.","Biznes nie jest objęty podejściem whole‑team.","Testerzy pomagają biznesowi tworzyć testy akceptacyjne."], a:3},
+  {id:9, chapter:"r2", q:"Przypisanie czynności testowych do SDLC obowiązuje…", opt:["Tylko w sekwencyjnych.","Tylko w iteracyjnych.","Tylko w iteracyjnych i przyrostowych.","We wszystkich: sekwencyjnych, przyrostowych i iteracyjnych."], a:3},
+  {id:10, chapter:"r2", q:"ATDD – najlepszy opis", opt:["Kryteria akceptacji zwykle Given/When/Then.","Testy ATDD tworzy się na etapie modułowym i są ukierunkowane na kod.","Testy z kryteriów akceptacji prowadzą implementację.","Testy z pożądanego zachowania, łatwe do zrozumienia."], a:2},
+  {id:11, chapter:"r2", q:"Które NIE jest przykładem shift‑left?", opt:["Przegląd wymagań przed akceptacją.","Pisanie testu modułowego przed kodem.","Test wydajności modułu na etapie testów modułowych.","Pisanie skryptu testowego przed ustanowieniem zarządzania konfiguracją."], a:3},
+  {id:13, chapter:"r2", q:"Dopasuj typy awarii do poziomów testów", opt:["1D, 2B, 3A, 4C","1D, 2B, 3C, 4A","1B, 2A, 3D, 4C","1C, 2B, 3A, 4D"], a:0},
+  {id:14, chapter:"r2", q:"Które testy są regresją w przebiegach?", opt:["4, 7, 8 i 9","5 i 7","4, 6, 8 i 9","5 i 6"], a:0},
+  {id:16, chapter:"r2", q:"Korzyść z wczesnych i częstych informacji zwrotnych?", opt:["Usprawnienie procesu na przyszłość.","Wymuszenie priorytetów przez ryzyka.","Jedyny sposób mierzenia jakości zmian.","Unikanie nieporozumień wymagań."], a:3},
+  {id:29, chapter:"r2", q:"ATDD dla historyjki redaktora – najlepszy przykład", opt:["Sprawdzenie zapisu dokumentu po redakcji przez redaktora.","Właściciel treści loguje się i aktualizuje treść.","Redaktor ustawia termin publikacji.","Redaktor zleca innemu redaktorowi aktualizację."], a:0},
+  {id:30, chapter:"r2", q:"Wkład testerów w planowanie iteracji/wydań", opt:["Ustalają priorytety historyjek.","Skupiają się tylko na funkcjach.","Identyfikują i oceniają ryzyka dla historyjek.","Gwarantują jakość, projektując testy na starcie."], a:2},
+  {id:34, chapter:"r2", q:"Kwadranty zwinne – przypisanie", opt:["1C, 2A, 3B, 4D","1D, 2A, 3C, 4B","1C, 2B, 3D, 4A","1D, 2B, 3C, 4A"], a:0},
+  {id:36, chapter:"r2", q:"Artefakt pokazujący wykonaną i pozostałą pracę w iteracji", opt:["Kryteria akceptacji","Raport o defekcie","Raport sumaryczny","Wykres spalania"], a:3},
+
+  // r3 – Testowanie statyczne (przeglądy)
+  {id:15, chapter:"r3", q:"Korzyści testowania statycznego — które NIE?", opt:["Niższe koszty zarządzania defektami dzięki wykrywaniu późno.","Tańsze usuwanie defektów niż przy dynamicznym.","Wykrywanie defektów niewykrywalnych wyłącznie dynamicznie.","Wykrywanie luk i niespójności w wymaganiach."], a:0},
+  {id:17, chapter:"r3", q:"Atrybuty przeglądów – który typ najpewniej?", opt:["Nieformalny","Przejrzenie","Przegląd techniczny","Inspekcja"], a:1},
+  {id:18, chapter:"r3", q:"Co NIE wspiera sukcesu przeglądu?", opt:["Odpowiedni czas na przegląd.","Dzielenie dużych produktów na mniejsze.","Unikanie oznak znudzenia/irytacji/wrogości.","Obiektywne traktowanie wykrytych awarii."], a:2},
+
+  // r4 – Analiza i projektowanie testów (techniki)
+  {id:4, chapter:"r4", q:"Która czynność to analiza testów (płatności)?", opt:["Oszacowanie czasu 8 osobo‑dni.","Decyzja, by przetestować podział płatności.","Zastosowanie BVA do minimalnej kwoty.","Analiza rozbieżności i zgłoszenie defektu po teście karty."], a:1},
+  {id:19, chapter:"r4", q:"Cechy technik opartych na doświadczeniu", opt:["Tworzone na podstawie szczegółów projektowych.","Pokrycie mierzone elementami testowanymi w interfejsach kodu.","Silnie bazują na wiedzy testera o systemie i domenie.","Identyfikują odchylenia od wymagań przypadkami."], a:2},
+  {id:20, chapter:"r4", q:"Formularz mieszkań — ECP: minimalna liczba przypadków dla 100% klas?", opt:["3","4","5","6"], a:1},
+  {id:21, chapter:"r4", q:"Oceny 0–100, BVA 2‑punktowa — jakie pokrycie zbioru PT1–PT6?", opt:["50%","60%","33,3%","100%"], a:1},
+  {id:22, chapter:"r4", q:"Wypożyczalnia rowerów — która reguła niemożliwa?", opt:["R4","R2","R6","R8"], a:3},
+  {id:23, chapter:"r4", q:"Minimum przypadków dla pokrycia poprawnych przejść (diagram stanów)", opt:["4","2","7","3"], a:3},
+  {id:24, chapter:"r4", q:"100% pokrycia instrukcji oznacza…", opt:["Każda instrukcja zawierająca defekt została wykonana.","Dowolny większy zestaw też osiągnie 100% instrukcji.","Każda ścieżka musiała być wykonana.","Każda instrukcja została wykonana co najmniej raz."], a:3},
+  {id:25, chapter:"r4", q:"Które stwierdzenie o białej skrzynce NIE jest prawdziwe?", opt:["Uwzględnia całą implementację.","Metryki pokrycia wskazują dodatkowe testy.","Można stosować w testowaniu statycznym.","Pozwala rozpoznać luki w implementacji wymagań."], a:2},
+  {id:26, chapter:"r4", q:"Koncepcja zgadywania błędów — najlepszy opis", opt:["Wiedza o typowych defektach i błędach programistów.","Własne doświadczenie programistyczne.","Wyobrażenie użytkownika i jego pomyłek.","Szybka próba wytwarzania oprogramowania, by odtworzyć błędy."], a:0},
+  {id:27, chapter:"r4", q:"Brak pełnych wymagań, potrzeba wstępnych wyników — jaka technika?", opt:["Lista kontrolna","Zgadywanie błędów","Eksploracyjne","Testowanie gałęzi"], a:2},
+  {id:28, chapter:"r4", q:"Jak udokumentować kryteria akceptacji?", opt:["Retrospektywa potrzeb interesariuszy.","Warunek w Given/When/Then.","Słowne przekazanie informacji.","Ryzyka w planie testów dla danej historyjki."], a:1},
+
+  // r5 – Zarządzanie testami (kryteria, estymacje, priorytety, ryzyko, CM, defekty)
+  {id:5, chapter:"r5", q:"Czynniki istotnie wpływające na podejście do testów?", opt:["SDLC i liczba defektów z poprzednich projektów.","SDLC, ryzyka produktowe, wymogi formalnych testów białoskrzynkowych.","Liczba defektów wcześniej, wymogi białoskrzynkowe, konfiguracja środowiska.","Ryzyka produktowe i konfiguracja środowiska."], a:1},
+  {id:6, chapter:"r5", q:"Wskaż DWA zadania głównie testerskie", opt:["Konfigurowanie środowiska testowego.","Prowadzenie backlogu produktu.","Projektowanie rozwiązań dla nowych wymagań.","Tworzenie planu testów.","Analizowanie podstawy testów."], a:[0,4]},
+  {id:12, chapter:"r5", q:"Argument za retrospektywami po każdym cyklu release", opt:["Popularne – klienci zadowoleni.","Oszczędności, bo brak natychmiastowej informacji zwrotnej.","Analiza słabości → lista działań do ciągłego doskonalenia.","Realizują 5 wartości (np. odwaga, szacunek)."], a:2},
+  {id:31, chapter:"r5", q:"Które DWIE stanowią kryteria wyjścia dla testowania systemu?", opt:["Gotowość środowiska","Możliwość zalogowania przez testera","Osiągnięcie szacowanej gęstości defektów","Przekształcenie wymagań do G/W/T","Zautomatyzowanie testów regresji"], a:[2,4]},
+  {id:32, chapter:"r5", q:"Estymacja trójpunktowa: a=2, m=11, b=14 — wynik?", opt:["9","14","11","10"], a:3},
+  {id:33, chapter:"r5", q:"Zależności i priorytety — który przypadek jako trzeci?", opt:["PT 003","PT 005","PT 002","PT 001"], a:0},
+  {id:35, chapter:"r5", q:"Ryzyko: długi czas odpowiedzi raportu; reakcje: testy wydajności + alfa/beta — to…", opt:["Akceptacja","Plan awaryjny","Łagodzenie","Przeniesienie"], a:2},
+  {id:37, chapter:"r5", q:"Nowa wersja skryptu testu — jaki proces to rejestruje?", opt:["Śledzenie powiązań","Testowanie pielęgnacyjne","Zarządzanie konfiguracją","Inżynieria wymagań"], a:2},
+  {id:38, chapter:"r5", q:"Raport o defekcie – czego brakuje?", opt:["Oczekiwany i rzeczywisty rezultat.","Odwołania i status defektu.","Środowisko testowe i element testowy.","Priorytet i krytyczność."], a:2},
+  {id:39, chapter:"r5", q:"Narzędzie do przygotowania danych testowych – w której czynności?", opt:["Monitorowanie i nadzór","Analiza i projektowanie","Implementacja i wykonywanie","Ukończenie testów"], a:2},
+
+  // r6 – Narzędzia testowe
+  {id:40, chapter:"r6", q:"Ryzyko związane z automatyzacją testów?", opt:["Automatyzacja wprowadzi nieznane regresje na produkcji.","Nakłady na utrzymanie testaliów mogą być niewystarczające.","Narzędzia i testalia mogą nie cieszyć się zaufaniem.","Automatyzacja skraca czas na testy manualne."], a:2}
+];
+
+// Pytania dodatkowe A1–A26 (przypisane tematycznie do rozdziałów)
+examA.push(
+  // r1 — Podstawy testowania
+  {id:"A1", chapter:"r1", q:"Twoim zadaniem jest przeanalizowanie i usunięcie przyczyn awarii w nowym systemie. Którą czynność wykonujesz?", opt:["Debugowanie","Testowanie oprogramowania","Pozyskiwanie wymagań","Zarządzanie defektami"], a:0, exp:"Debugowanie polega na analizie przyczyny awarii i wprowadzeniu poprawki, po czym wykonuje się test potwierdzający (i regresję)."},
+  {id:"A2", chapter:"r1", q:"Dział testowania bywa nazywany działem zapewnienia jakości. Czy to poprawne?", opt:["Tak – to ten sam proces","Tak – można używać zamiennie","Nie – testowanie to szerszy proces niż zapewnienie jakości","Nie – QA dotyczy procesów jakości, testowanie wykazuje zdatność i defekty"], a:3, exp:"QA skupia się na procesach jakości (zapewnienie), a testowanie ocenia produkt i ujawnia defekty – to nie są synonimy."},
+  {id:"A3", chapter:"r1", q:"Nieprawidłowo zakodowana logika górnej wartości brzegowej to…", opt:["Podstawowa przyczyna","Awaria","Pomyłka","Defekt"], a:3, exp:"Błędny kod to defekt; awaria to widoczny objaw; pomyłka to błąd ludzki prowadzący do defektu; przyczyna jest źródłem defektu."},
+  {id:"A5", chapter:"r1", q:"Który przykład NAJLEPIEJ pokazuje, jak śledzenie powiązań pomaga w testowaniu?", opt:["Analiza wpływu zmiany informuje o ukończeniu testów","Powiązania TC↔wyniki dają poziom ryzyka rezydualnego","Analiza wpływu zmiany pomaga dobrać testy regresji","Powiązania podstawa/element/TC ułatwiają dobór danych do pokrycia"], a:2, exp:"Traceability umożliwia wybór właściwych testów regresji po zmianach poprzez analizę powiązań."},
+  {id:"A6", chapter:"r1", q:"Korzyść z niezależności testowania?", opt:["Można przenieść odpowiedzialność za jakość na zespół testowy","Zespół zewnętrzny nie ulega presji terminów","Niezależni testerzy pracują bez komunikacji z dev i tylko raportują defekty","Niezależni testerzy mogą zakwestionować założenia i interpretacje programisty"], a:3, exp:"Niezależna perspektywa pozwala kwestionować założenia autora i wykrywać niejednoznaczności/defekty wcześniej."},
+
+  // r2 — Testowanie w cyklu wytwarzania
+  {id:"A7", chapter:"r2", q:"W modelu V które aktywności MOŻNA wykonać wcześnie? (DWIE)", opt:["Testowanie dynamiczne","Testowanie statyczne","Planowanie testów","Wykonywanie testów akceptacyjnych","Testowanie pielęgnowalności"], a:[1,2], exp:"W V‑modelu wcześnie realizuje się planowanie i testy statyczne; wykonanie testów dynamicznych następuje później."},
+  {id:"A8", chapter:"r2", q:"Które stwierdzenia opisują zalety DevOps?", opt:["Przyspieszenie wprowadzania produktów","Więcej powtarzalnych testów manualnych","Stała dostępność wykonywalnego oprogramowania","Mniej testów regresji po refaktoryzacji","Niskie koszty frameworków testów automatycznych dzięki automatyzacji całego procesu"], a:2, exp:"Główne korzyści: szybsze dostarczanie (i) oraz ciągła gotowość (iii); odpowiedź jednokrotna: i oraz iii → c."},
+  {id:"A9", chapter:"r2", q:"Wymaganie: czas przetworzenia <10 s w 95% przypadków. Jaki typ testów?", opt:["Funkcjonalne","Niefunkcjonalne (wydajność)","Funkcjonalne (UI)","Strukturalne"], a:1, exp:"Mierzymy czas i SLA – to testy niefunkcjonalne (wydajnościowe)."},
+  {id:"A10", chapter:"r2", q:"Test migracji danych przy wycofaniu systemu – w ramach jakiego typu testów?", opt:["Testowanie pielęgnacyjne","Testowanie regresji","Testowanie modułowe","Testowanie integracyjne"], a:0, exp:"Migracja przy wycofaniu/system replacement to typowe zadanie w testowaniu pielęgnacyjnym (maintenance)."},
+  {id:"A18", chapter:"r2", q:"Wspólne pisanie historyjek użytkownika – najlepszy opis", opt:["PO akceptuje historie stworzone przez dev+QA","Historie tworzą wspólnie biznes, programiści i testerzy","Historie tworzy biznes, a dev/test je weryfikują","Historie powinny spełniać INVEST"], a:1, exp:"W podejściu zinnym historyjki powstają kolaboracyjnie: biznes + dev + test (three amigos)."},
+
+  // r3 — Testowanie statyczne
+  {id:"A11", chapter:"r3", q:"Które produkty pracy można objąć przeglądem?", opt:["Wymagania biznesowe","Harmonogram","Budżet testów","Kod wykonywalny innych firm","Historyjki i ich kryteria akceptacji"], a:2, exp:"Przeglądy obejmują m.in. wymagania, harmonogram, budżet testów oraz historyjki z kryteriami (i, ii, iii, v) → opcja C."},
+  {id:"A12", chapter:"r3", q:"Które stwierdzenia o testowaniu statycznym są prawdziwe?", opt:["Łatwiej identyfikuje nieprawidłowe zewnętrzne zachowania","Łatwiej wykrywa odstępstwa od standardu kodowania","Umożliwia wykrycie awarii podczas uruchamiania","Celem jest jak najwcześniejsze wykrycie defektów","Łatwiej znaleźć i skorygować braki pokrycia krytycznych wymagań bezpieczeństwa"], a:3, exp:"Dla statycznego prawdą są ii i iv oraz v → odpowiedź D."},
+  {id:"A13", chapter:"r3", q:"Które stwierdzenie o przeglądach formalnych jest PRAWDZIWE?", opt:["Niektóre przeglądy nie wymagają więcej niż jednej roli","Proces przeglądu składa się z kilku czynności","Dokument nie jest przekazywany przed spotkaniem","Defekty z przeglądu się nie zgłasza"], a:1, exp:"Formalny proces przeglądu ma zdefiniowane kroki (planowanie, przygotowanie, spotkanie, rework, follow‑up)."},
+  {id:"A14", chapter:"r3", q:"Jakie zadanie może wykonywać kierownictwo podczas przeglądu formalnego?", opt:["Przyjęcie ogólnej odpowiedzialności za przegląd","Decydowanie, co ma być przedmiotem przeglądu","Moderowanie spotkania i mediacja","Protokołowanie"], a:1, exp:"To kierownictwo decyduje o zakresie/przedmiocie przeglądu; moderacja i protokołowanie są innymi rolami."},
+
+  // r4 — Analiza i projektowanie testów
+  {id:"A4", chapter:"r4", q:"Karta opisu testu (obiekt, dane, wykrywane defekty). W której czynności powstała?", opt:["Planowanie testów","Monitorowanie i nadzór","Analiza testów","Projektowanie testów"], a:3, exp:"Karta/procedura testu powstaje podczas projektowania testów – po analizie warunków."},
+  {id:"A15", chapter:"r4", q:"Sterowanie temperaturą: BVA 3‑punktowa dla T=12. Minimalny zbiór wejść?", opt:["11, 12, 13","10, 12, 14","10, 11, 12, 13, 14","10, 11, 13, 14"], a:0, exp:"BVA 3‑punktowa testuje wartość brzegową i sąsiadujące: 11, 12, 13."},
+  {id:"A16", chapter:"r4", q:"Które stwierdzenie o testowaniu gałęzi jest poprawne?", opt:["Przy gałęziach bezwarunkowych 100% gałęzi bez testów","Sprawdzenie wszystkich gałęzi bezwarunkowych daje 100% pokrycia","100% instrukcji ⇒ 100% gałęzi","100% gałęzi ⇒ sprawdzono wszystkie wyniki decyzji w każdej instrukcji decyzyjnej"], a:3, exp:"Pokrycie gałęzi 100% oznacza przejście wszystkich wyników decyzji w każdej instrukcji decyzyjnej."},
+  {id:"A17", chapter:"r4", q:"Ocena ekranów wg ogólnej listy dobrych praktyk UI – to…", opt:["Testowanie czarnoskrzynkowe","Testowanie eksploracyjne","Testowanie w oparciu o listę kontrolną","Zgadywanie błędów"], a:2, exp:"Lista kontrolna (checklist‑based) to technika oparta na doświadczeniu, z gotowym zbiorem heurystyk."},
+
+  // r5 — Zarządzanie testami
+  {id:"A19", chapter:"r5", q:"W której części planu testów: wymagane 100% pokrycia gałęzi dla krytycznych modułów?", opt:["Wymiana informacji","Rejestr ryzyk","Kontekst testowania","Podejście do testowania"], a:3, exp:"Wybór kryterium pokrycia i poziomów testów to element podejścia do testowania."},
+  {id:"A20", chapter:"r5", q:"Poker planistyczny: po 3. rundzie najwięcej głosów ma 13. Co dalej?", opt:["PO podejmuje decyzję","Przyjąć 13 jako ostateczne oszacowanie","Konsensus osiągnięty","Usunąć funkcjonalność z wydania"], a:1, exp:"Reguła zespołu: jeśli różnice są małe, przyjmij wartość z największą liczbą głosów – 13."},
+  {id:"A21", chapter:"r5", q:"Piramida testów – które stwierdzenie jest prawdziwe?", opt:["Więcej testów na niższych poziomach","Każdy test niskopoziomowy sprawdza większą część funkcjonalności","Opisuje rozkład typów testów w SDLC","Nie wpływa na budowę testów automatycznych"], a:0, exp:"Piramida promuje większy wolumen testów na niższych poziomach (tańsze, szybsze, stabilniejsze)."},
+  {id:"A22", chapter:"r5", q:"Wpływ ryzyka jest bardzo duży. Co z prawdopodobieństwem?", opt:["Też bardzo duże","Bardzo małe","Nie można nic powiedzieć – są niezależne","Nieistotne przy dużym wpływie"], a:2, exp:"Wpływ i prawdopodobieństwo są osobnymi wymiarami oceny ryzyka – wysokie jedno nie determinuje drugiego."},
+  {id:"A23", chapter:"r5", q:"Które to ryzyka projektowe?", opt:["i oraz iv","iv oraz v","i oraz iii","ii oraz v"], a:0, exp:"Ryzyka projektowe dotyczą zarządzania projektem (zasoby, harmonogram, oczekiwania) – tutaj i oraz iv."},
+  {id:"A24", chapter:"r5", q:"Jak analiza ryzyka produktowego wpływa na staranność i zakres?", opt:["Codzienny monitoring ryzyk do decyzji o release","Zidentyfikowano ryzyko braku obsługi OSS DB → integracja","Ilościowa ocena łącznego ryzyka rezydualnego przed testami","Wysokie ryzyko wydajności → szczegółowe testy wydajności wcześnie"], a:3, exp:"Wysokie ryzyko wydajności uzasadnia wcześniejsze i dokładniejsze testy wydajnościowe."},
+  {id:"A25", chapter:"r5", q:"Wskaż DWIE metryki poziomu jakości przedmiotu testów", opt:["Liczba defektów wykrytych w testach systemowych","Nakład projektowania/ liczba TC","Liczba wykonanych procedur testowych","Gęstość defektów (defekty/rozmiar)","Czas usunięcia defektu"], a:[0,3], exp:"Typowe metryki jakości produktu: liczba defektów (np. z systemu) oraz gęstość defektów."},
+  {id:"A26", chapter:"r5", q:"Która informacja w raporcie postępu jest NAJMNIEJ przydatna dla biznesu?", opt:["Przeszkody w testowaniu","Uzyskane pokrycie gałęzi","Postęp testów","Nowe ryzyka w cyklu testowym"], a:1, exp:"Pokrycie gałęzi to techniczna metryka niskopoziomowa; biznes bardziej interesuje postęp, ryzyka i przeszkody."}
+);
+
+/** -------------------------------------------------------
  *  PROSTA „PLATFORMA”
  * ------------------------------------------------------*/
 const $$ = (sel, root=document) => root.querySelector(sel);
@@ -302,14 +406,19 @@ function startFlashcards(){
 
 function startQuiz(mode="chapter"){
   const ch = syllabus[state.current];
-  const questions = shuffle([...(ch.quiz||[])]);
+  const questions = shuffle([...(questionsForChapter(ch.id))]);
   renderQuiz(questions, ch.id+":quiz", ch.title, mode);
 }
 
 function flattenAllQuestions(){
-  const all = [];
-  syllabus.forEach(ch=> (ch.quiz||[]).forEach(q=> all.push({...q, chapter:ch.title})) );
-  return all;
+  // Z egzaminu A – wszystkie pytania w kolejności przypisania
+  return examA.map(x=>({
+    q:x.q,
+    opt:x.opt,
+    a:x.a,
+    exp:x.exp,
+    chapter: x.chapter
+  }));
 }
 
 function renderQuiz(questions, key, label, mode){
@@ -319,7 +428,11 @@ function renderQuiz(questions, key, label, mode){
     ${questions.map((q,i)=>`
       <div class="q">
         <div><b>${i+1}. ${q.q}</b></div>
-        ${q.opt.map((o,oi)=>`<label class="opt"><input type="radio" name="q${i}" value="${oi}"> ${o}</label>`).join("")}
+        ${q.opt.map((o,oi)=>{
+          const multi = Array.isArray(q.a);
+          const input = multi? `<input type="checkbox" name="q${i}" value="${oi}">` : `<input type="radio" name="q${i}" value="${oi}">`;
+          return `<label class="opt">${input} ${o}</label>`;
+        }).join("")}
         ${q.exp?`<div class="explain" data-exp style="display:none">${q.exp}</div>`:""}
       </div>`).join("")}
     <div class="controls">
@@ -331,15 +444,20 @@ function renderQuiz(questions, key, label, mode){
 
   $$("#check").onclick = ()=>{
     let score=0; questions.forEach((q,i)=>{
-      const sel = $$(`input[name=q${i}]:checked`);
-      const chosen = sel? +sel.value : -1;
+      const inputs = $all(`input[name=q${i}]`);
+      const checked = inputs.filter(n=>n.checked).map(n=>+n.value);
       const labels = $all(`.q:nth-child(${i+2}) .opt`, host); // +1 for tag div
       labels.forEach((lb,oi)=>{
         lb.classList.remove("correct","wrong");
-        if(oi===q.a){ lb.classList.add("correct"); }
-        if(chosen===oi && chosen!==q.a){ lb.classList.add("wrong"); }
+        const correctSet = new Set(Array.isArray(q.a)? q.a : [q.a]);
+        if(correctSet.has(oi)) lb.classList.add("correct");
+        if(checked.includes(oi) && !correctSet.has(oi)) lb.classList.add("wrong");
       });
-      if(chosen===q.a) score++;
+      const correctSet = new Set(Array.isArray(q.a)? q.a : [q.a]);
+      const chosenSet = new Set(checked);
+      let ok = chosenSet.size===correctSet.size;
+      if(ok){ for(const c of chosenSet){ if(!correctSet.has(c)){ ok=false; break; } } }
+      if(ok) score++;
       const exp = $all(`.q:nth-child(${i+2}) [data-exp]`, host)[0]; if(exp) exp.style.display="block";
     });
     const percent = Math.round(100*score/questions.length);
@@ -348,6 +466,11 @@ function renderQuiz(questions, key, label, mode){
   };
 
   $$("#resetQuiz").onclick = ()=>{ $all("input[type=radio]", host).forEach(i=>i.checked=false); $$("#quizResult").innerHTML=""; $all(".opt", host).forEach(o=>o.classList.remove("correct","wrong")); };
+}
+
+// Zwróć pytania dla danego rozdziału na podstawie przypisania z examA
+function questionsForChapter(chId){
+  return examA.filter(x=>x.chapter===chId).map(x=>({q:x.q, opt:x.opt, a:x.a, exp:x.exp}));
 }
 
 function renderFinalExam(){
