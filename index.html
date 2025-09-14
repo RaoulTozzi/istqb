@@ -29,6 +29,12 @@
   .reading h2{margin:10px 0 6px}
   .reading p{margin:8px 0}
   .reading ul{margin:8px 0 8px 20px}
+  .chapterHeader{position:sticky;top:6px;z-index:2;background:linear-gradient(var(--panel), var(--panel));padding:10px 12px;border-radius:12px;border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;gap:8px}
+  .chapterHeader .crumb{font-weight:800}
+  .pageFooter{display:flex;justify-content:flex-end;margin-top:16px}
+  .inline{margin-top:16px;padding:14px;border-radius:16px;background:#fff;border:1px solid rgba(0,0,0,.06)}
+  .inline .flip{width:100%;min-height:120px;background:var(--card);border-radius:14px;display:flex;align-items:center;justify-content:center;padding:16px;text-align:center;cursor:pointer}
+  .inline-quiz .opt{display:block;margin:6px 0;padding:8px;border-radius:10px;border:1px solid rgba(0,0,0,.08)}
   .controls{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
   .flash{display:grid;place-items:center;gap:12px;padding:10px}
   .flash .flip{width:min(700px,100%);min-height:170px;background:var(--card);border-radius:18px;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.08)}
@@ -137,15 +143,75 @@ const syllabus = [
   {
     id:"r1",
     title:"1. Podstawy testowania",
-    read:`<h2>1. Podstawy testowania</h2>
-      <p>Testowanie to <b>zbiór czynności</b> służących do wykrywania defektów i oceny jakości produktów pracy. Obejmuje cały proces (planowanie→analiza→projektowanie→implementacja→wykonywanie→ukończenie), a nie tylko samo uruchamianie testów.</p>
-      <ul>
-        <li><b>Cele testów:</b> ocena produktów pracy, wykrywanie defektów/awarii, pokrycie, redukcja ryzyka, zgodność z wymaganiami/prawem, informowanie o jakości, budowanie zaufania.</li>
-        <li><b>Testowanie vs. debugowanie:</b> testowanie ujawnia awarie/defekty; debugowanie <i>lokalizuje i usuwa</i> przyczynę, po czym wykonuje się testy potwierdzające i ewentualnie regresję.</li>
-        <li><b>7 zasad:</b> testy ujawniają defekty (nie dowodzą ich braku), gruntowne testowanie jest niemożliwe, wczesne testowanie, kumulacja defektów, zużywanie się testów, zależność od kontekstu, złudzenie braku defektów.</li>
-        <li><b>Testalia:</b> plan/harmonogram, rejestr ryzyk, warunki/przypadki/procedury, dane i środowisko testowe, dzienniki i raporty, raport sumaryczny.</li>
-        <li><b>Śledzenie powiązań:</b> łączenie wymagań/ryzyk z testami, wynikami i defektami → ocena pokrycia i wpływu zmian.</li>
-      </ul>`,
+    pages:[
+      {
+        id:"1.1",
+        title:"1.1 Co to jest testowanie?",
+        html:`<p>Systemy oprogramowania są nieodłączną częścią naszego codziennego życia. Jednocześnie większość z nas miała zapewne do czynienia z oprogramowaniem, które nie zadziałało tak, jak powinno. Nieprawidłowe funkcjonowanie oprogramowania może powodować wiele problemów, w tym straty finansowe, stratę czasu, utratę reputacji firmy, a w skrajnych przypadkach nawet utratę zdrowia lub życia. Odpowiedzią na ten problem jest właśnie testowanie oprogramowania, które pozwala ocenić jego jakość i zmniejszyć ryzyko wystąpienia awarii podczas eksploatacji.</p>
+        <p>Testowanie oprogramowania to zbiór czynności mających na celu wykrycie defektów i dokonanie oceny jakości produktów pracy związanych z oprogramowaniem. W trakcie testowania produkty pracy te są nazywane przedmiotami testów. Powszechnie panuje błędne przekonanie, że testowanie polega wyłącznie na wykonywaniu testów, czyli uruchamianiu oprogramowania i sprawdzaniu uzyskanych rezultatów. W rzeczywistości jednak testowanie oprogramowania obejmuje również inne czynności i musi być dopasowane do cyklu wytwarzania oprogramowania.</p>
+        <p>Weryfikacja sprawdza zgodność ze specyfikacją, a walidacja — czy system odpowiada na potrzeby użytkowników i innych interesariuszy. Testowanie może mieć charakter dynamiczny (uruchamianie oprogramowania) lub statyczny (przeglądy i analiza statyczna). Testowanie wymaga również planowania, zarządzania, szacowania, monitorowania i nadzoru. Testerzy korzystają z narzędzi, ale testowanie to w dużej mierze praca umysłowa.</p>
+        <h3>1.1.1 Cele testów</h3>
+        <ul>
+          <li>Dokonywanie oceny produktów pracy (wymagania, historyjki, projekty, kod).</li>
+          <li>Powodowanie awarii i znajdowanie defektów.</li>
+          <li>Zapewnienie wymaganego pokrycia przedmiotu testów.</li>
+          <li>Obniżanie poziomu ryzyka związanego z niedostateczną jakością oprogramowania.</li>
+          <li>Sprawdzanie spełnienia wymagań oraz zgodności umownej, prawnej i regulacyjnej.</li>
+          <li>Dostarczanie interesariuszom informacji do podejmowania decyzji i budowanie zaufania.</li>
+          <li>Sprawdzanie kompletności i zgodności z oczekiwaniami interesariuszy.</li>
+        </ul>
+        <h3>1.1.2 Testowanie a debugowanie</h3>
+        <p>Testowanie i debugowanie to dwie różne czynności. Testowanie pozwala wywołać awarie (skutek defektów) lub znaleźć defekty bezpośrednio w artefaktach. Po awarii następuje debugowanie: odtworzenie awarii, diagnoza (znalezienie defektu) i usunięcie defektu. Potem wykonuje się testowanie potwierdzające i – w razie potrzeby – testy regresji. Przy testowaniu statycznym debugowanie polega na usunięciu wskazanego defektu.</p>`
+      },
+      {
+        id:"1.2",
+        title:"1.2 Dlaczego testowanie jest niezbędne?",
+        html:`<p>Testowanie — jako forma kontroli jakości — pomaga osiągnąć uzgodnione cele testów w wyznaczonym zakresie i czasie, z zachowaniem wymaganego poziomu jakości oraz budżetu. Udział w zapewnianiu jakości biorą wszyscy interesariusze.</p>
+        <h4>1.2.1 Znaczenie testowania dla powodzenia projektu</h4>
+        <p>Testowanie opłacalnie wykrywa defekty, umożliwia ocenę jakości na różnych fazach cyklu i wspiera decyzje o przejściu do kolejnych etapów. Daje użytkownikom pośredni wpływ na produkt i bywa wymagane przez umowy, prawo lub normy.</p>
+        <h4>1.2.2 Testowanie a zapewnienie jakości</h4>
+        <p>Testowanie to kontrola jakości, ukierunkowana na produkt i działania korygujące. Zapewnienie jakości to prewencja, ukierunkowana na procesy. Wyniki testów służą zarówno do poprawy produktu (kontrola), jak i doskonalenia procesu (zapewnienie).</p>
+        <h4>1.2.3 Pomyłki, defekty, awarie i podstawowe przyczyny</h4>
+        <p>Pomyłki ludzi prowadzą do defektów w artefaktach, których wykonanie może powodować awarie — czasem tylko w określonych warunkach. Awarie mogą mieć też przyczyny środowiskowe. Analiza przyczyny podstawowej pozwala zapobiegać podobnym problemom w przyszłości.</p>`
+      },
+      {
+        id:"1.3",
+        title:"1.3 Zasady testowania",
+        html:`<ol>
+          <li>Testowanie ujawnia defekty, ale nie dowodzi ich braku.</li>
+          <li>Testowanie gruntowne jest niemożliwe.</li>
+          <li>Wczesne testowanie oszczędza czas i pieniądze.</li>
+          <li>Defekty mogą się kumulować (zasada Pareto).</li>
+          <li>Testy ulegają zużyciu — trzeba je odświeżać.</li>
+          <li>Testowanie zależy od kontekstu.</li>
+          <li>Przekonanie o braku defektów jest błędem — potrzebna jest też walidacja.</li>
+        </ol>`
+      },
+      {
+        id:"1.4",
+        title:"1.4 Czynności testowe, testalia i role",
+        html:`<h4>1.4.1 Czynności i zadania testowe</h4>
+        <p>Planowanie → Monitorowanie i nadzór → Analiza → Projektowanie → Implementacja → Wykonywanie → Ukończenie. Często iteracyjnie i równolegle, dostosowane do kontekstu.</p>
+        <h4>1.4.2 Proces testowy w kontekście</h4>
+        <p>Na proces wpływają interesariusze, zespół, domena, czynniki techniczne, ograniczenia projektowe, organizacja, cykl wytwarzania i narzędzia.</p>
+        <h4>1.4.3 Testalia</h4>
+        <p>Produkty pracy powstające w trakcie procesu, m.in. plan i harmonogram, rejestr ryzyk, warunki/przypadki/procedury, dane i środowisko testowe, dzienniki i raporty, raport sumaryczny.</p>
+        <h4>1.4.4 Śledzenie powiązań</h4>
+        <p>Umożliwia ocenę pokrycia, analizę wpływu zmian i audytowalność.</p>
+        <h4>1.4.5 Role</h4>
+        <p>Rola zarządzania testami oraz rola testowania; zakres zależy od kontekstu i może być łączony.</p>`
+      },
+      {
+        id:"1.5",
+        title:"1.5 Umiejętności i dobre praktyki",
+        html:`<h4>1.5.1 Ogólne umiejętności</h4>
+        <p>Wiedza testowa i domenowa, staranność, komunikacja, praca zespołowa, analityczne i krytyczne myślenie, kreatywność, wiedza techniczna.</p>
+        <h4>1.5.2 Podejście „cały zespół”</h4>
+        <p>Wspólna odpowiedzialność za jakość, współpraca z biznesem i dev, kolaboracyjne kryteria akceptacji i strategia testów.</p>
+        <h4>1.5.3 Niezależność testowania</h4>
+        <p>Różne poziomy niezależności zwiększają skuteczność wykrywania defektów, ale wymagają dobrej współpracy, by uniknąć izolacji.</p>`
+      }
+    ],
     flashcards:[
       {q:"Wymień 3–4 typowe cele testów.", a:"Ocena produktów pracy; wykrywanie defektów/awarii; zapewnienie pokrycia; redukcja ryzyka; potwierdzenie wymagań i zgodności; dostarczenie informacji do decyzji; budowanie zaufania."},
       {q:"Czym różni się testowanie od debugowania?", a:"Testowanie wykrywa awarie/defekty; debugowanie diagnozuje i usuwa defekt, po czym wykonuje się testy potwierdzające (i regresję)."},
@@ -384,6 +450,7 @@ const $all = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
 const state = {
   current: 0,
+  page: 0,
   flash: {side:"q", i:0},
   quizAnswers: {},
   results: JSON.parse(localStorage.getItem("istqb_results")||"{}")
@@ -398,18 +465,95 @@ function renderTOC(){
     <button data-idx="${idx}" class="${state.current===idx?"active":""}">${ch.title}</button>`).join("");
   $$("#toc").innerHTML = toc + `<h3>Egzamin</h3><button data-exam="1">Egzamin końcowy</button>`;
   $all("#toc button").forEach(b=>{
-    if(b.dataset.idx!==undefined){ b.onclick=()=>{state.current=+b.dataset.idx; renderChapter();}; }
+    if(b.dataset.idx!==undefined){ b.onclick=()=>{state.current=+b.dataset.idx; state.page=0; renderChapter();}; }
     if(b.dataset.exam){ b.onclick=()=>renderFinalExam(); }
   });
 }
 
 function renderChapter(){
   const ch = syllabus[state.current];
-  const rng = chapterToPdf[ch.id];
-  if(rng){ renderPdfPages(rng.from, rng.to); }
-  else { $$("#reading").innerHTML = `<div class="tag">${ch.title}</div>${ch.read}`; }
+  if(ch.pages && ch.pages.length){
+    renderPagedChapter(ch);
+  } else {
+    const rng = chapterToPdf[ch.id];
+    if(rng){ renderPdfPages(rng.from, rng.to); }
+    else { $$("#reading").innerHTML = `<div class="tag">${ch.title}</div>${ch.read}`; }
+  }
   $$("#after").innerHTML = `<div class="muted">Wybierz: <b>Fiszki</b> lub <b>Mini‑test</b>. Po zaliczeniu możesz przejść do kolejnego rozdziału.</div>`;
   renderTOC();
+}
+
+function renderPagedChapter(ch){
+  const total = ch.pages.length;
+  const idx = Math.max(0, Math.min(state.page, total-1));
+  const page = ch.pages[idx];
+  const host = $$("#reading");
+  const isLast = idx===total-1;
+  host.innerHTML = `
+    <div class="chapterHeader">
+      <div class="crumb">${ch.title}</div>
+      <span class="muted">—</span>
+      <div>${page.title}</div>
+      <div class="spacer"></div>
+      <div class="hint">Strona ${idx+1}/${total}</div>
+    </div>
+    <div>${page.html}</div>
+    ${isLast? renderInlineEnd(ch) : renderInlinePager()}
+  `;
+
+  const nextBtn = $$("#nextPage"); if(nextBtn){ nextBtn.onclick = ()=>{ state.page = Math.min(state.page+1, total-1); renderPagedChapter(ch); }; }
+  const nextChapBtn = $$("#endNextChapter"); if(nextChapBtn){ nextChapBtn.onclick = ()=>{ state.current = Math.min(state.current+1, syllabus.length-1); state.page=0; renderChapter(); }; }
+
+  // Wire inline flash
+  const flip = $$("#inlineFlip");
+  if(flip){
+    let flipped=false; const fc = (ch.flashcards||[])[0];
+    flip.innerHTML = fc? fc.q : "Brak fiszek";
+    flip.onclick = ()=>{ flipped=!flipped; flip.classList.toggle("flipped", flipped); flip.innerHTML = flipped? (fc?.a||"—") : (fc?.q||"—"); };
+  }
+
+  // Wire inline quiz (single question)
+  const check = $$("#inlineCheck");
+  if(check){
+    check.onclick = ()=>{
+      const q = questionsForChapter(ch.id)[0];
+      if(!q) return;
+      const labels = $all(".inline-quiz .opt", host);
+      const inputs = $all(".inline-quiz input");
+      const checked = inputs.filter(n=>n.checked).map(n=>+n.value);
+      const correctSet = new Set(Array.isArray(q.a)? q.a : [q.a]);
+      labels.forEach((lb,oi)=>{
+        lb.classList.remove("correct","wrong");
+        if(correctSet.has(oi)) lb.classList.add("correct");
+        if(checked.includes(oi) && !correctSet.has(oi)) lb.classList.add("wrong");
+      });
+    };
+  }
+}
+
+function renderInlinePager(){
+  return `<div class="pageFooter"><button class="btn" id="nextPage">Następna strona →</button></div>`;
+}
+
+function renderInlineEnd(ch){
+  const q = questionsForChapter(ch.id)[0];
+  const multi = q && Array.isArray(q.a);
+  return `
+    <div class="inline">
+      <div class="tag">Fiszka</div>
+      <div class="flip" id="inlineFlip"></div>
+    </div>
+    ${q? `<div class="inline inline-quiz">
+      <div class="tag">Pytanie</div>
+      <div style="font-weight:700;margin-bottom:6px">${q.q}</div>
+      ${q.opt.map((o,oi)=>{
+        const input = multi? `<input type=\"checkbox\" name=\"iq\" value=\"${oi}\">` : `<input type=\"radio\" name=\"iq\" value=\"${oi}\">`;
+        return `<label class=\"opt\">${input} ${o}</label>`;
+      }).join("")}
+      <div class="controls"><button class="btn" id="inlineCheck">Sprawdź</button></div>
+    </div>` : ``}
+    <div class="pageFooter"><button class="btn" id="endNextChapter">Następny rozdział →</button></div>
+  `;
 }
 
 function renderProgress(){
@@ -527,7 +671,7 @@ function renderFinalExam(){
 // Wire UI
 $$("#showFlash").onclick = startFlashcards;
 $$("#showQuiz").onclick = ()=>startQuiz();
-$$("#nextChapter").onclick = ()=>{ state.current = Math.min(state.current+1, syllabus.length-1); renderChapter(); };
+$$("#nextChapter").onclick = ()=>{ state.current = Math.min(state.current+1, syllabus.length-1); state.page=0; renderChapter(); };
 $$("#fullExamBtn").onclick = renderFinalExam;
 $$("#resetBtn").onclick = ()=>{ if(confirm("Wyczyścić zapisane wyniki?")){ localStorage.removeItem("istqb_results"); state.results={}; renderProgress(); }}
 
