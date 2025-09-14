@@ -31,7 +31,8 @@
 <body>
 <header>
   <div class="bar">
-    <div class="brand">Egzamin ISTQB — 40 pytań</div>
+    <div class="brand">Egzamin ISTQB</div>
+    <a class="btn flat" href="index.html" style="text-decoration:none">← Wróć do Sylabusa</a>
     <div class="spacer"></div>
     <button class="btn flat" id="exportJson">Eksportuj JSON</button>
     <button class="btn flat" id="importJson">Importuj JSON</button>
@@ -50,7 +51,7 @@
           <option value="review">Przegląd (wyjaśnienia od razu)</option>
         </select>
       </label>
-      <label>Limit pytań: <input id="limit" type="number" min="1" max="40" value="40" style="width:80px"></label>
+      <label>Limit pytań: <input id="limit" type="number" min="1" max="76" value="76" style="width:80px"></label>
       <label>Timer (min): <input id="timer" type="number" min="0" value="60" style="width:80px"></label>
     </div>
     <div class="row" style="margin:8px 0">
@@ -68,16 +69,14 @@
   <div id="timeLeft" class="hint" style="margin:8px 4px;display:none"></div>
 </div>
 
-<footer>Nieoficjalny quiz dla nauki. Pytania pochodzą z publicznie dostępnych materiałów/opracowań, wyjaśnienia mają charakter edukacyjny.</footer>
-
 <script>
 // Util
 const $$ = (s, r=document)=>r.querySelector(s);
 const $all = (s, r=document)=>Array.from(r.querySelectorAll(s));
 const shuffle = arr => arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
 
-// Built-in questions (40) — minimal form: {q, opts:[A,B,C,D], correct:"A"|"B"|... (or [..] for multi), exp}
-// Zestaw odpowiada Twoim 40 pytaniom. (Wyjaśnienia skrótowe.)
+// Built-in questions — minimal form: {q, opts:[A,B,C,D], correct:"A"|"B"|... (or [..] for multi), exp}
+// Uwaga: możesz rozszerzyć bank do 76+ pytań; limit w UI ustaw na 76.
 const builtIn = [
   {q:"Która z poniższych odpowiedzi opisuje poprawny cel testów?", opts:[
     "Udowodnienie, że w systemie nie ma nieusuniętych defektów.",
@@ -206,7 +205,29 @@ const builtIn = [
     "Automatyzacja może wprowadzić nieznane regresje na produkcji.",
     "Nakłady na utrzymanie testaliów mogą być niewystarczające.",
     "Narzędzia i testalia mogą nie mieć wystarczającego zaufania.",
-    "Automatyzacja skraca czas na testy manualne."], correct:"C", exp:"Ryzyko braku zaufania do narzędzi/testaliów jest realne; pozostałe sformułowane niewłaściwie."}
+    "Automatyzacja skraca czas na testy manualne."], correct:"C", exp:"Ryzyko braku zaufania do narzędzi/testaliów jest realne; pozostałe sformułowane niewłaściwie."},
+  // Dodatkowe (A1–A26) brakujące w banku wbudowanym
+  {q:"Twoim zadaniem jest przeanalizowanie i usunięcie przyczyn awarii w nowym systemie. Którą czynność wykonujesz?",
+    opts:["Debugowanie","Testowanie oprogramowania","Pozyskiwanie wymagań","Zarządzanie defektami"], correct:"A",
+    exp:"Debugowanie = diagnoza przyczyny awarii i wprowadzenie poprawki (potem test potwierdzający i regresja)."},
+  {q:"Dział testowania bywa nazywany działem zapewnienia jakości. Czy to poprawne?",
+    opts:["Tak – to ten sam proces","Tak – można używać zamiennie","Nie – testowanie to szerszy proces niż zapewnienie jakości","Nie – QA dotyczy procesów jakości, testowanie wykazuje zdatność i defekty"], correct:"D",
+    exp:"QA koncentruje się na procesach jakości; testowanie ocenia produkt i ujawnia defekty."},
+  {q:"Nieprawidłowo zakodowana logika sprawdzania górnej wartości brzegowej to…",
+    opts:["Podstawowa przyczyna","Awaria","Pomyłka","Defekt"], correct:"D",
+    exp:"Błędny kod = defekt; awaria to objaw; pomyłka to błąd ludzki prowadzący do defektu."},
+  {q:"W ramach której czynności testowej powstały poniższe testalia?",
+    html:`<table style='border-collapse:collapse;width:100%;font-size:14px;margin:6px 0'>
+      <tr><td style='border:1px solid #ccc;padding:4px'>Karta opisu testu nr 04.018</td><td style='border:1px solid #ccc;padding:4px'>Czas trwania sesji: 1 godzina</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>Badany obiekt:</td><td style='border:1px solid #ccc;padding:4px'>Strona rejestracji</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>Badanie za pomocą:</td><td style='border:1px solid #ccc;padding:4px'>Różnych zestawów niepoprawnych danych wejściowych</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>Wykrywane defekty:</td><td style='border:1px solid #ccc;padding:4px'>Defekty akceptacji rejestracji dla nieprawidłowych danych</td></tr>
+    </table>`,
+    opts:["Planowanie testów","Monitorowanie testów i nadzór","Analiza testów","Projektowanie testów"], correct:"D",
+    exp:"Karta/procedura testu i szczegóły uruchomienia powstają na etapie projektowania testów."},
+  {q:"Model V — które aktywności MOŻNA wykonać wcześnie? (DWIE)",
+    opts:["Testowanie dynamiczne","Testowanie statyczne","Planowanie testów","Wykonywanie testów akceptacyjnych","Testowanie pielęgnowalności"], correct:["B","C"],
+    exp:"W V‑modelu wcześnie realizuje się planowanie i testy statyczne; wykonanie testów dynamicznych następuje później."}
 ];
 
 // State
@@ -217,7 +238,7 @@ let timerId = null;
 
 function startSession(){
   const mode = $$("#mode").value;
-  const limit = Math.max(1, Math.min(40, +$$("#limit").value||40));
+  const limit = Math.max(1, Math.min(76, +$$("#limit").value||76));
   const tmin = Math.max(0, +$$("#timer").value||0);
   const sq = $$("#shuffleQ").checked;
   const sa = $$("#shuffleA").checked;
@@ -262,7 +283,7 @@ function renderQuiz(src, ord, mode, shuffleAnswers){
     const correctLetters = Array.isArray(item.correct)? item.correct : [item.correct];
     const correctIdx = correctLetters.map(l=>letters.indexOf(l));
     const mappedCorrectIdx = correctIdx.map(ci=> mapIdx.indexOf(ci));
-    return {q:item.q, opts, correctSet: new Set(mappedCorrectIdx), multi: correctLetters.length>1, exp:item.exp};
+    return {q:item.q, html:item.html, opts, correctSet: new Set(mappedCorrectIdx), multi: correctLetters.length>1, exp:item.exp};
   });
 
   host.innerHTML = `
@@ -276,6 +297,7 @@ function renderQuiz(src, ord, mode, shuffleAnswers){
     ${qs.map((q,i)=>`
       <div class="q">
         <div style="margin-bottom:6px"><b>${i+1}. ${q.q}</b>${q.multi?" <span class=hint>(wielokrotny wybór)</span>":""}</div>
+        ${q.html||""}
         ${q.opts.map((o,oi)=>{
           const input = q.multi? `<input type="checkbox" name="q${i}" value="${oi}">` : `<input type="radio" name="q${i}" value="${oi}">`;
           return `<label class="opt">${input} ${o}</label>`;

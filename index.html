@@ -583,12 +583,12 @@ const syllabus = [
       <p>Definiują warunki akceptacji; traktujemy je jako warunki testowe. Format: <b>scenariusze</b> (Given/When/Then) lub <b>reguły</b> (lista/tabela). Pomagają planować i szacować.</p>
       <h4>4.5.3 ATDD</h4>
       <p>Testy akceptacyjne powstają <b>przed</b> implementacją (warsztaty/specyfikacja przykładami). Najpierw przypadki pozytywne, potem negatywne oraz niefunkcjonalne. Przypadki powinny być zrozumiałe dla interesariuszy; mogą stać się <b>wykonywalnymi wymaganiami</b> dzięki automatyzacji.</p>`,
-        flashcards:[
-          {q:"ECP – co jest elementem pokrycia?", a:"Klasa równoważności (poprawna/niepoprawna)."},
-          {q:"BVA 3‑punktowa – jakie wartości wokół progu?", a:"Wartość brzegowa oraz obie wartości sąsiednie (np. 9,10,11 dla progu 10)."},
-          {q:"State transition – minimalne kryterium dla krytycznych systemów?", a:"Pokrycie wszystkich przejść (poprawnych i próby niepoprawnych)."},
-          {q:"Pokrycie gałęzi a instrukcji – relacja?", a:"100% gałęzi subsumuje 100% instrukcji."}
-        ],
+    flashcards:[
+      {q:"ECP – co jest elementem pokrycia?", a:"Klasa równoważności (poprawna/niepoprawna)."},
+      {q:"BVA 3‑punktowa – jakie wartości wokół progu?", a:"Wartość brzegowa oraz obie wartości sąsiednie (np. 9,10,11 dla progu 10)."},
+      {q:"State transition – minimalne kryterium dla krytycznych systemów?", a:"Pokrycie wszystkich przejść (poprawnych i próby niepoprawnych)."},
+      {q:"Pokrycie gałęzi a instrukcji – relacja?", a:"100% gałęzi subsumuje 100% instrukcji."}
+    ],
     quiz:[
       {q:"W ECP elementem pokrycia jest…", opt:["Wartość brzegowa","Klasa równoważności","Ścieżka w kodzie","Przejście stanu"], a:1},
       {q:"Próg 10 (≤10 dozwolone). Który zestaw najlepiej pokrywa BVA 3‑punktowe?", opt:["8,9,10","9,10,11","10,11,12","0,10,20"], a:1},
@@ -834,7 +834,14 @@ const examA = [
   {id:10, chapter:"r2", q:"ATDD – najlepszy opis", opt:["Kryteria akceptacji zwykle Given/When/Then.","Testy ATDD tworzy się na etapie modułowym i są ukierunkowane na kod.","Testy z kryteriów akceptacji prowadzą implementację.","Testy z pożądanego zachowania, łatwe do zrozumienia."], a:2},
   {id:11, chapter:"r2", q:"Które NIE jest przykładem shift‑left?", opt:["Przegląd wymagań przed akceptacją.","Pisanie testu modułowego przed kodem.","Test wydajności modułu na etapie testów modułowych.","Pisanie skryptu testowego przed ustanowieniem zarządzania konfiguracją."], a:3},
   {id:13, chapter:"r2", q:"Dopasuj typy awarii do poziomów testów", opt:["1D, 2B, 3A, 4C","1D, 2B, 3C, 4A","1B, 2A, 3D, 4C","1C, 2B, 3A, 4D"], a:0},
-  {id:14, chapter:"r2", q:"Które testy są regresją w przebiegach?", opt:["4, 7, 8 i 9","5 i 7","4, 6, 8 i 9","5 i 6"], a:0},
+  {id:14, chapter:"r2", q:"Które z poniższych testów są wykonywane jako testy regresji?", html:`<div class='muted' style='margin:6px 0'>Testujesz historyjkę użytkownika z KA1 ↔ PT1, KA2 ↔ PT2, KA3 ↔ PT3. Wykonano trzy przebiegi.</div>
+    <table style='border-collapse:collapse;width:100%;font-size:14px'>
+      <tr><th style='border:1px solid #ccc;padding:4px'></th><th style='border:1px solid #ccc;padding:4px'>Przebieg 1</th><th style='border:1px solid #ccc;padding:4px'>Przebieg 2</th><th style='border:1px solid #ccc;padding:4px'>Przebieg 3</th></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>PT1</td><td style='border:1px solid #ccc;padding:4px'>(1) Niezaliczony</td><td style='border:1px solid #ccc;padding:4px'>(4) Zaliczony</td><td style='border:1px solid #ccc;padding:4px'>(7) Zaliczony</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>PT2</td><td style='border:1px solid #ccc;padding:4px'>(2) Zaliczony</td><td style='border:1px solid #ccc;padding:4px'>(5) Niezaliczony</td><td style='border:1px solid #ccc;padding:4px'>(8) Zaliczony</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>PT3</td><td style='border:1px solid #ccc;padding:4px'>(3) Niezaliczony</td><td style='border:1px solid #ccc;padding:4px'>(6) Niezaliczony</td><td style='border:1px solid #ccc;padding:4px'>(9) Zaliczony</td></tr>
+    </table>
+    <div class='muted' style='margin-top:6px'>Testy powtarzane dopiero po informacji, że wszystkie defekty z poprzednich przebiegów usunięto i dostępna jest nowa wersja.</div>`, opt:["Tylko 4, 7, 8 i 9.","Tylko 5 i 7.","Tylko 4, 6, 8 i 9.","Tylko 5 i 6."], a:0},
   {id:16, chapter:"r2", q:"Korzyść z wczesnych i częstych informacji zwrotnych?", opt:["Usprawnienie procesu na przyszłość.","Wymuszenie priorytetów przez ryzyka.","Jedyny sposób mierzenia jakości zmian.","Unikanie nieporozumień wymagań."], a:3},
   {id:29, chapter:"r2", q:"ATDD dla historyjki redaktora – najlepszy przykład", opt:["Sprawdzenie zapisu dokumentu po redakcji przez redaktora.","Właściciel treści loguje się i aktualizuje treść.","Redaktor ustawia termin publikacji.","Redaktor zleca innemu redaktorowi aktualizację."], a:0},
   {id:30, chapter:"r2", q:"Wkład testerów w planowanie iteracji/wydań", opt:["Ustalają priorytety historyjek.","Skupiają się tylko na funkcjach.","Identyfikują i oceniają ryzyka dla historyjek.","Gwarantują jakość, projektując testy na starcie."], a:2},
@@ -850,9 +857,40 @@ const examA = [
   {id:4, chapter:"r4", q:"Która czynność to analiza testów (płatności)?", opt:["Oszacowanie czasu 8 osobo‑dni.","Decyzja, by przetestować podział płatności.","Zastosowanie BVA do minimalnej kwoty.","Analiza rozbieżności i zgłoszenie defektu po teście karty."], a:1},
   {id:19, chapter:"r4", q:"Cechy technik opartych na doświadczeniu", opt:["Tworzone na podstawie szczegółów projektowych.","Pokrycie mierzone elementami testowanymi w interfejsach kodu.","Silnie bazują na wiedzy testera o systemie i domenie.","Identyfikują odchylenia od wymagań przypadkami."], a:2},
   {id:20, chapter:"r4", q:"Formularz mieszkań — ECP: minimalna liczba przypadków dla 100% klas?", opt:["3","4","5","6"], a:1},
-  {id:21, chapter:"r4", q:"Oceny 0–100, BVA 2‑punktowa — jakie pokrycie zbioru PT1–PT6?", opt:["50%","60%","33,3%","100%"], a:1},
-  {id:22, chapter:"r4", q:"Wypożyczalnia rowerów — która reguła niemożliwa?", opt:["R4","R2","R6","R8"], a:3},
-  {id:23, chapter:"r4", q:"Minimum przypadków dla pokrycia poprawnych przejść (diagram stanów)", opt:["4","2","7","3"], a:3},
+  {id:21, chapter:"r4", q:"Jakie pokrycie wartości brzegowych (dwupunktowo) osiąga zestaw PT1–PT6?", html:`<div class='muted'>Ocena końcowa ustalana wg progów: 0–50 niedost., 51–60 dopuszczająca, 61–70 dostateczna, 71–80 dobra, 81–90 bardzo dobra, 91–100 celująca.</div>
+    <table style='border-collapse:collapse;width:100%;font-size:14px;margin-top:6px'>
+      <tr><th style='border:1px solid #ccc;padding:4px'>PT</th><th style='border:1px solid #ccc;padding:4px'>Wynik</th><th style='border:1px solid #ccc;padding:4px'>Ocena</th></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>PT1</td><td style='border:1px solid #ccc;padding:4px'>91</td><td style='border:1px solid #ccc;padding:4px'>celująca</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>PT2</td><td style='border:1px solid #ccc;padding:4px'>50</td><td style='border:1px solid #ccc;padding:4px'>niedostateczna</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>PT3</td><td style='border:1px solid #ccc;padding:4px'>81</td><td style='border:1px solid #ccc;padding:4px'>bardzo dobra</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>PT4</td><td style='border:1px solid #ccc;padding:4px'>60</td><td style='border:1px solid #ccc;padding:4px'>dopuszczająca</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>PT5</td><td style='border:1px solid #ccc;padding:4px'>70</td><td style='border:1px solid #ccc;padding:4px'>dostateczna</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>PT6</td><td style='border:1px solid #ccc;padding:4px'>80</td><td style='border:1px solid #ccc;padding:4px'>dobra</td></tr>
+    </table>`, opt:["50%","60%","33,3%","100%"], a:1},
+  {id:22, chapter:"r4", q:"Wypożyczalnia rowerów — która reguła jest niemożliwa?", html:`<div class='muted'>Uczestnik programu lojalnościowego: rabat 20%. Brak zwrotu w terminie: brak rabatu. 15‑te wypożyczenie: koszulka.</div>
+    <table style='border-collapse:collapse;width:100%;font-size:14px;margin-top:6px'>
+      <tr><th style='border:1px solid #ccc;padding:4px'>Warunki</th><th style='border:1px solid #ccc;padding:4px'>R1</th><th style='border:1px solid #ccc;padding:4px'>R2</th><th style='border:1px solid #ccc;padding:4px'>R3</th><th style='border:1px solid #ccc;padding:4px'>R4</th><th style='border:1px solid #ccc;padding:4px'>R5</th><th style='border:1px solid #ccc;padding:4px'>R6</th><th style='border:1px solid #ccc;padding:4px'>R7</th><th style='border:1px solid #ccc;padding:4px'>R8</th></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>Udział w programie</td><td style='border:1px solid #ccc;padding:4px'>P</td><td style='border:1px solid #ccc;padding:4px'>P</td><td style='border:1px solid #ccc;padding:4px'>P</td><td style='border:1px solid #ccc;padding:4px'>P</td><td style='border:1px solid #ccc;padding:4px'>F</td><td style='border:1px solid #ccc;padding:4px'>F</td><td style='border:1px solid #ccc;padding:4px'>F</td><td style='border:1px solid #ccc;padding:4px'>F</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>Zwrot w terminie</td><td style='border:1px solid #ccc;padding:4px'>P</td><td style='border:1px solid #ccc;padding:4px'>F</td><td style='border:1px solid #ccc;padding:4px'>P</td><td style='border:1px solid #ccc;padding:4px'>F</td><td style='border:1px solid #ccc;padding:4px'>P</td><td style='border:1px solid #ccc;padding:4px'>F</td><td style='border:1px solid #ccc;padding:4px'>F</td><td style='border:1px solid #ccc;padding:4px'>P</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>15. wypożyczenie</td><td style='border:1px solid #ccc;padding:4px'>F</td><td style='border:1px solid #ccc;padding:4px'>F</td><td style='border:1px solid #ccc;padding:4px'>P</td><td style='border:1px solid #ccc;padding:4px'>P</td><td style='border:1px solid #ccc;padding:4px'>F</td><td style='border:1px solid #ccc;padding:4px'>F</td><td style='border:1px solid #ccc;padding:4px'>P</td><td style='border:1px solid #ccc;padding:4px'>P</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'><b>Akcje</b>: rabat 20%</td><td style='border:1px solid #ccc;padding:4px'></td><td style='border:1px solid #ccc;padding:4px'>X</td><td style='border:1px solid #ccc;padding:4px'></td><td style='border:1px solid #ccc;padding:4px'>X</td><td style='border:1px solid #ccc;padding:4px'></td><td style='border:1px solid #ccc;padding:4px'></td><td style='border:1px solid #ccc;padding:4px'></td><td style='border:1px solid #ccc;padding:4px'></td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'><b>Akcje</b>: koszulka</td><td style='border:1px solid #ccc;padding:4px'></td><td style='border:1px solid #ccc;padding:4px'>X</td><td style='border:1px solid #ccc;padding:4px'></td><td style='border:1px solid #ccc;padding:4px'>X</td><td style='border:1px solid #ccc;padding:4px'></td><td style='border:1px solid #ccc;padding:4px'></td><td style='border:1px solid #ccc;padding:4px'></td><td style='border:1px solid #ccc;padding:4px'>X</td></tr>
+    </table>`, opt:["R4","R2","R6","R8"], a:3},
+  {id:23, chapter:"r4", q:"Jaka jest minimalna liczba przypadków do pokrycia poprawnych przejść?", html:`<div class='muted' style='margin-bottom:6px'>System zaczyna w <b>INICJOWANIE</b>, kończy w <b>WYŁ</b>.</div>
+    <svg viewBox='0 0 600 180' width='100%' height='180' style='background:#fff;border:1px solid #eee;border-radius:8px'>
+      <defs><style>.n{font:12px sans-serif}</style></defs>
+      <rect x='20' y='20' width='110' height='36' fill='#eef' stroke='#99c'/><text x='75' y='42' text-anchor='middle' class='n'>INICJOWANIE</text>
+      <rect x='200' y='20' width='110' height='36' fill='#eef' stroke='#99c'/><text x='255' y='42' text-anchor='middle' class='n'>TRYB DEBUG</text>
+      <rect x='380' y='20' width='110' height='36' fill='#eef' stroke='#99c'/><text x='435' y='42' text-anchor='middle' class='n'>WYŁ</text>
+      <rect x='200' y='120' width='110' height='36' fill='#eef' stroke='#99c'/><text x='255' y='142' text-anchor='middle' class='n'>PRACA</text>
+      <rect x='380' y='120' width='130' height='36' fill='#eef' stroke='#99c'/><text x='445' y='142' text-anchor='middle' class='n'>WSTRZYMANIE</text>
+      <line x1='130' y1='38' x2='200' y2='38' stroke='#333'/><text x='165' y='30' class='n'>test</text>
+      <line x1='310' y1='38' x2='380' y2='38' stroke='#333'/><text x='345' y='30' class='n'>gotowe</text>
+      <line x1='75' y1='56' x2='255' y2='120' stroke='#333'/><text x='140' y='100' class='n'>uruchomienie</text>
+      <line x1='310' y1='138' x2='380' y2='138' stroke='#333'/><text x='345' y='130' class='n'>pauza</text>
+      <line x1='380' y1='138' x2='310' y2='138' stroke='#333'/><text x='345' y='160' class='n'>wznowienie</text>
+      <line x1='255' y1='120' x2='255' y2='56' stroke='#333'/><text x='265' y='90' class='n'>błąd</text>
+    </svg>`, opt:["4","2","7","3"], a:3},
   {id:24, chapter:"r4", q:"100% pokrycia instrukcji oznacza…", opt:["Każda instrukcja zawierająca defekt została wykonana.","Dowolny większy zestaw też osiągnie 100% instrukcji.","Każda ścieżka musiała być wykonana.","Każda instrukcja została wykonana co najmniej raz."], a:3},
   {id:25, chapter:"r4", q:"Które stwierdzenie o białej skrzynce NIE jest prawdziwe?", opt:["Uwzględnia całą implementację.","Metryki pokrycia wskazują dodatkowe testy.","Można stosować w testowaniu statycznym.","Pozwala rozpoznać luki w implementacji wymagań."], a:2},
   {id:26, chapter:"r4", q:"Koncepcja zgadywania błędów — najlepszy opis", opt:["Wiedza o typowych defektach i błędach programistów.","Własne doświadczenie programistyczne.","Wyobrażenie użytkownika i jego pomyłek.","Szybka próba wytwarzania oprogramowania, by odtworzyć błędy."], a:0},
@@ -865,7 +903,14 @@ const examA = [
   {id:12, chapter:"r5", q:"Argument za retrospektywami po każdym cyklu release", opt:["Popularne – klienci zadowoleni.","Oszczędności, bo brak natychmiastowej informacji zwrotnej.","Analiza słabości → lista działań do ciągłego doskonalenia.","Realizują 5 wartości (np. odwaga, szacunek)."], a:2},
   {id:31, chapter:"r5", q:"Które DWIE stanowią kryteria wyjścia dla testowania systemu?", opt:["Gotowość środowiska","Możliwość zalogowania przez testera","Osiągnięcie szacowanej gęstości defektów","Przekształcenie wymagań do G/W/T","Zautomatyzowanie testów regresji"], a:[2,4]},
   {id:32, chapter:"r5", q:"Estymacja trójpunktowa: a=2, m=11, b=14 — wynik?", opt:["9","14","11","10"], a:3},
-  {id:33, chapter:"r5", q:"Zależności i priorytety — który przypadek jako trzeci?", opt:["PT 003","PT 005","PT 002","PT 001"], a:0},
+  {id:33, chapter:"r5", q:"Który z poniższych przypadków powinien zostać wykonany jako trzeci?", html:`<table style='border-collapse:collapse;width:100%;font-size:14px'>
+      <tr><th style='border:1px solid #ccc;padding:4px'>Numer</th><th style='border:1px solid #ccc;padding:4px'>Warunek</th><th style='border:1px solid #ccc;padding:4px'>Priorytet</th><th style='border:1px solid #ccc;padding:4px'>Zależność</th></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>PT 001</td><td style='border:1px solid #ccc;padding:4px'>Wybór rodzaju kuchni</td><td style='border:1px solid #ccc;padding:4px'>3</td><td style='border:1px solid #ccc;padding:4px'>—</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>PT 002</td><td style='border:1px solid #ccc;padding:4px'>Wybór restauracji</td><td style='border:1px solid #ccc;padding:4px'>2</td><td style='border:1px solid #ccc;padding:4px'>PT 001</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>PT 003</td><td style='border:1px solid #ccc;padding:4px'>Uzyskanie wskazówek dojazdu</td><td style='border:1px solid #ccc;padding:4px'>1</td><td style='border:1px solid #ccc;padding:4px'>PT 002</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>PT 004</td><td style='border:1px solid #ccc;padding:4px'>Zatelefonowanie do restauracji</td><td style='border:1px solid #ccc;padding:4px'>2</td><td style='border:1px solid #ccc;padding:4px'>PT 002</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>PT 005</td><td style='border:1px solid #ccc;padding:4px'>Dokonanie rezerwacji</td><td style='border:1px solid #ccc;padding:4px'>3</td><td style='border:1px solid #ccc;padding:4px'>PT 002</td></tr>
+    </table>`, opt:["PT 003","PT 005","PT 002","PT 001"], a:0},
   {id:35, chapter:"r5", q:"Ryzyko: długi czas odpowiedzi raportu; reakcje: testy wydajności + alfa/beta — to…", opt:["Akceptacja","Plan awaryjny","Łagodzenie","Przeniesienie"], a:2},
   {id:37, chapter:"r5", q:"Nowa wersja skryptu testu — jaki proces to rejestruje?", opt:["Śledzenie powiązań","Testowanie pielęgnacyjne","Zarządzanie konfiguracją","Inżynieria wymagań"], a:2},
   {id:38, chapter:"r5", q:"Raport o defekcie – czego brakuje?", opt:["Oczekiwany i rzeczywisty rezultat.","Odwołania i status defektu.","Środowisko testowe i element testowy.","Priorytet i krytyczność."], a:2},
@@ -878,6 +923,9 @@ const examA = [
 // Pytania dodatkowe A1–A26 (przypisane tematycznie do rozdziałów)
 examA.push(
   // r1 — Podstawy testowania
+  {id:"41", chapter:"r1", q:"Twoim zadaniem jest przeanalizowanie i usunięcie przyczyn awarii w nowym systemie. Którą czynność wykonujesz?", opt:["Debugowanie","Testowanie oprogramowania","Pozyskiwanie wymagań","Zarządzanie defektami"], a:0, exp:"Debugowanie = analiza przyczyny awarii i poprawka; po niej test potwierdzający (i regresja)."},
+  {id:"42", chapter:"r1", q:"Dział testowania bywa nazywany działem zapewnienia jakości. Czy to poprawne?", opt:["Tak – to ten sam proces","Tak – można używać zamiennie","Nie – testowanie to szerszy proces niż zapewnienie jakości","Nie – QA dotyczy procesów jakości, testowanie wykazuje zdatność i defekty"], a:3, exp:"QA skupia się na procesach; testowanie ocenia produkt i ujawnia defekty."},
+  {id:"43", chapter:"r1", q:"Nieprawidłowo zakodowana logika górnej wartości brzegowej to…", opt:["Podstawowa przyczyna","Awaria","Pomyłka","Defekt"], a:3, exp:"Błędny kod = defekt; awaria to objaw; pomyłka to błąd ludzki; przyczyna jest źródłem defektu."},
   {id:"A1", chapter:"r1", q:"Twoim zadaniem jest przeanalizowanie i usunięcie przyczyn awarii w nowym systemie. Którą czynność wykonujesz?", opt:["Debugowanie","Testowanie oprogramowania","Pozyskiwanie wymagań","Zarządzanie defektami"], a:0, exp:"Debugowanie polega na analizie przyczyny awarii i wprowadzeniu poprawki, po czym wykonuje się test potwierdzający (i regresję)."},
   {id:"A2", chapter:"r1", q:"Dział testowania bywa nazywany działem zapewnienia jakości. Czy to poprawne?", opt:["Tak – to ten sam proces","Tak – można używać zamiennie","Nie – testowanie to szerszy proces niż zapewnienie jakości","Nie – QA dotyczy procesów jakości, testowanie wykazuje zdatność i defekty"], a:3, exp:"QA skupia się na procesach jakości (zapewnienie), a testowanie ocenia produkt i ujawnia defekty – to nie są synonimy."},
   {id:"A3", chapter:"r1", q:"Nieprawidłowo zakodowana logika górnej wartości brzegowej to…", opt:["Podstawowa przyczyna","Awaria","Pomyłka","Defekt"], a:3, exp:"Błędny kod to defekt; awaria to widoczny objaw; pomyłka to błąd ludzki prowadzący do defektu; przyczyna jest źródłem defektu."},
@@ -905,7 +953,12 @@ examA.push(
 
   // r5 — Zarządzanie testami
   {id:"A19", chapter:"r5", q:"W której części planu testów: wymagane 100% pokrycia gałęzi dla krytycznych modułów?", opt:["Wymiana informacji","Rejestr ryzyk","Kontekst testowania","Podejście do testowania"], a:3, exp:"Wybór kryterium pokrycia i poziomów testów to element podejścia do testowania."},
-  {id:"A20", chapter:"r5", q:"Poker planistyczny: po 3. rundzie najwięcej głosów ma 13. Co dalej?", opt:["PO podejmuje decyzję","Przyjąć 13 jako ostateczne oszacowanie","Konsensus osiągnięty","Usunąć funkcjonalność z wydania"], a:1, exp:"Reguła zespołu: jeśli różnice są małe, przyjmij wartość z największą liczbą głosów – 13."},
+  {id:"A20", chapter:"r5", q:"Poker planistyczny: po 3. rundzie najwięcej głosów ma 13. Co dalej?", html:`<table style='border-collapse:collapse;width:100%;font-size:14px'>
+      <tr><th style='border:1px solid #ccc;padding:4px'>Runda</th><th style='border:1px solid #ccc;padding:4px' colspan='7'>Oszacowania</th></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>Runda 1</td><td style='border:1px solid #ccc;padding:4px'>21</td><td style='border:1px solid #ccc;padding:4px'>2</td><td style='border:1px solid #ccc;padding:4px'>5</td><td style='border:1px solid #ccc;padding:4px'>34</td><td style='border:1px solid #ccc;padding:4px'>13</td><td style='border:1px solid #ccc;padding:4px'>8</td><td style='border:1px solid #ccc;padding:4px'>2</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>Runda 2</td><td style='border:1px solid #ccc;padding:4px'>13</td><td style='border:1px solid #ccc;padding:4px'>8</td><td style='border:1px solid #ccc;padding:4px'>8</td><td style='border:1px solid #ccc;padding:4px'>34</td><td style='border:1px solid #ccc;padding:4px'>13</td><td style='border:1px solid #ccc;padding:4px'>8</td><td style='border:1px solid #ccc;padding:4px'>5</td></tr>
+      <tr><td style='border:1px solid #ccc;padding:4px'>Runda 3</td><td style='border:1px solid #ccc;padding:4px'>13</td><td style='border:1px solid #ccc;padding:4px'>8</td><td style='border:1px solid #ccc;padding:4px'>13</td><td style='border:1px solid #ccc;padding:4px'>13</td><td style='border:1px solid #ccc;padding:4px'>13</td><td style='border:1px solid #ccc;padding:4px'>13</td><td style='border:1px solid #ccc;padding:4px'>8</td></tr>
+    </table>`, opt:["PO podejmuje decyzję","Przyjąć 13 jako ostateczne oszacowanie","Konsensus osiągnięty","Usunąć funkcjonalność z wydania"], a:1, exp:"Reguła zespołu: jeśli różnice są małe, przyjmij wartość z największą liczbą głosów – 13."},
   {id:"A21", chapter:"r5", q:"Piramida testów – które stwierdzenie jest prawdziwe?", opt:["Więcej testów na niższych poziomach","Każdy test niskopoziomowy sprawdza większą część funkcjonalności","Opisuje rozkład typów testów w SDLC","Nie wpływa na budowę testów automatycznych"], a:0, exp:"Piramida promuje większy wolumen testów na niższych poziomach (tańsze, szybsze, stabilniejsze)."},
   {id:"A22", chapter:"r5", q:"Wpływ ryzyka jest bardzo duży. Co z prawdopodobieństwem?", opt:["Też bardzo duże","Bardzo małe","Nie można nic powiedzieć – są niezależne","Nieistotne przy dużym wpływie"], a:2, exp:"Wpływ i prawdopodobieństwo są osobnymi wymiarami oceny ryzyka – wysokie jedno nie determinuje drugiego."},
   {id:"A23", chapter:"r5", q:"Które to ryzyka projektowe?", opt:["i oraz iv","iv oraz v","i oraz iii","ii oraz v"], a:0, exp:"Ryzyka projektowe dotyczą zarządzania projektem (zasoby, harmonogram, oczekiwania) – tutaj i oraz iv."},
@@ -1148,6 +1201,7 @@ function renderQuiz(questions, key, label, mode){
     ${questions.map((q,i)=>`
       <div class="q">
         <div><b>${i+1}. ${q.q}</b></div>
+        ${q.html||""}
         ${q.opt.map((o,oi)=>{
           const multi = Array.isArray(q.a);
           const input = multi? `<input type="checkbox" name="q${i}" value="${oi}">` : `<input type="radio" name="q${i}" value="${oi}">`;
