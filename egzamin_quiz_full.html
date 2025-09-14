@@ -59,7 +59,6 @@
       <label><input type="checkbox" id="shuffleA" checked> Losuj odpowiedzi</label>
     </div>
     <div class="row" style="margin-top:8px">
-      <button class="btn" id="loadBuiltIn">Załaduj wbudowany zestaw (40)</button>
       <button class="btn secondary" id="startBtn">▶️ Start sesji</button>
     </div>
     <div class="hint" style="margin-top:6px">Działa w 100% offline. Postęp i ustawienia są zapisywane lokalnie.</div>
@@ -397,7 +396,6 @@ function importJsonFromFile(file){
 
 // Wire
 $$("#startBtn").onclick = ()=>{ saveSettings(); startSession(); };
-$$("#loadBuiltIn").onclick = ()=>{ bank = builtIn.slice(); alert("Załadowano wbudowany zestaw (40). Możesz od razu wystartować."); };
 $$("#exportJson").onclick = exportJson;
 $$("#importJson").onclick = ()=> $$("#fileInput").click();
 $$("#fileInput").addEventListener("change", ev=>{ const f = ev.target.files?.[0]; if(f) importJsonFromFile(f); });
