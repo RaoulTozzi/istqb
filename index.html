@@ -29,9 +29,15 @@
   .reading h2{margin:10px 0 6px}
   .reading p{margin:8px 0}
   .reading ul{margin:8px 0 8px 20px}
-  .chapterHeader{position:sticky;top:6px;z-index:2;background:linear-gradient(var(--panel), var(--panel));padding:10px 12px;border-radius:12px;border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;gap:8px}
+  .chapterHeader{position:sticky;top:6px;z-index:2;background:linear-gradient(var(--panel), var(--panel));padding:10px 12px;border-radius:12px;border:1px solid rgba(0,0,0,.06);display:flex;flex-direction:column;gap:6px}
+  .chapterHeader.is-chapter{border-left:6px solid var(--accent)}
+  .chapterHeader.is-sub{border-left:6px solid var(--accent-2)}
+  .chapterHeader .row1{display:flex;align-items:center;gap:8px}
   .chapterHeader .crumb{font-weight:800}
-  .pageFooter{display:flex;justify-content:flex-end;margin-top:16px}
+  .chapterHeader .row2{display:flex;align-items:baseline;gap:10px}
+  .chapterHeader .badge{display:inline-block;padding:2px 10px;border-radius:999px;background:var(--card);color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+  .chapterHeader .chapterTitle{margin:0;font-size:20px}
+  .pageFooter{display:flex;justify-content:space-between;margin-top:16px}
   .inline{margin-top:16px;padding:14px;border-radius:16px;background:#fff;border:1px solid rgba(0,0,0,.06)}
   .inline .flip{width:100%;min-height:120px;background:var(--card);border-radius:14px;display:flex;align-items:center;justify-content:center;padding:16px;text-align:center;cursor:pointer}
   .inline-quiz .opt{display:block;margin:6px 0;padding:8px;border-radius:10px;border:1px solid rgba(0,0,0,.08)}
@@ -501,19 +507,25 @@ function renderPagedChapter(ch){
   const page = ch.pages[idx];
   const host = $$("#reading");
   const isLast = idx===total-1;
+  const isSub = /\d+\.\d/.test(page.id);
   host.innerHTML = `
-    <div class="chapterHeader">
-      <div class="crumb">${ch.title}</div>
-      <span class="muted">—</span>
-      <div>${page.title}</div>
-      <div class="spacer"></div>
-      <div class="hint">Strona ${idx+1}/${total}</div>
+    <div class="chapterHeader ${isSub?"is-sub":"is-chapter"}">
+      <div class="row1">
+        <div class="crumb">${ch.title}</div>
+        <div class="spacer"></div>
+        <div class="hint">Strona ${idx+1}/${total}</div>
+      </div>
+      <div class="row2">
+        <span class="badge">${isSub?"Podrozdział":"Rozdział"}</span>
+        <h3 class="chapterTitle">${page.title}</h3>
+      </div>
     </div>
     <div>${page.html}</div>
     ${isLast? renderInlineEnd(ch) : renderInlinePager()}
   `;
 
   const nextBtn = $$("#nextPage"); if(nextBtn){ nextBtn.onclick = ()=>{ state.page = Math.min(state.page+1, total-1); renderPagedChapter(ch); }; }
+  const prevBtn = $$("#prevPage"); if(prevBtn){ prevBtn.onclick = ()=>{ state.page = Math.max(state.page-1, 0); renderPagedChapter(ch); }; if(idx===0) prevBtn.disabled=true; }
   const nextChapBtn = $$("#endNextChapter"); if(nextChapBtn){ nextChapBtn.onclick = ()=>{ state.current = Math.min(state.current+1, syllabus.length-1); state.page=0; renderChapter(); }; }
 
   // Wire inline flash
@@ -544,7 +556,10 @@ function renderPagedChapter(ch){
 }
 
 function renderInlinePager(){
-  return `<div class="pageFooter"><button class="btn" id="nextPage">Następna strona →</button></div>`;
+  return `<div class="pageFooter">
+    <button class="btn flat" id="prevPage">← Poprzednia strona</button>
+    <button class="btn" id="nextPage">Następna strona →</button>
+  </div>`;
 }
 
 function renderInlineEnd(ch){
@@ -564,7 +579,10 @@ function renderInlineEnd(ch){
       }).join("")}
       <div class="controls"><button class="btn" id="inlineCheck">Sprawdź</button></div>
     </div>` : ``}
-    <div class="pageFooter"><button class="btn" id="endNextChapter">Następny rozdział →</button></div>
+    <div class="pageFooter">
+      <button class="btn flat" id="prevPage">← Poprzednia strona</button>
+      <button class="btn" id="endNextChapter">Następny rozdział →</button>
+    </div>
   `;
 }
 
