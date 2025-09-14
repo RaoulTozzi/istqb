@@ -115,7 +115,12 @@ const syllabus = [
           <li>Sprawdzanie spełnienia wymagań oraz zgodności umownej, prawnej i regulacyjnej.</li>
           <li>Dostarczanie interesariuszom informacji do podejmowania decyzji i budowanie zaufania.</li>
           <li>Sprawdzanie kompletności i zgodności z oczekiwaniami interesariuszy.</li>
-        </ul>`
+        </ul>`,
+        flashcards:[
+          {q:"Wymień 3–4 typowe cele testów.", a:"Ocena produktów pracy; wykrywanie defektów/awarii; zapewnienie pokrycia; redukcja ryzyka; potwierdzenie wymagań i zgodności; dostarczenie informacji do decyzji; budowanie zaufania."},
+          {q:"Czym różni się weryfikacja od walidacji?", a:"Weryfikacja sprawdza zgodność ze specyfikacją; walidacja sprawdza, czy system odpowiada na potrzeby użytkowników i interesariuszy."},
+          {q:"Jakie są rodzaje testowania?", a:"Dynamiczne (uruchamianie oprogramowania) i statyczne (przeglądy i analiza statyczna)."}
+        ],
       },
       {
         id:"1.1.2",
@@ -128,7 +133,12 @@ const syllabus = [
           <li>usunięcie defektu.</li>
         </ul>
         <p>Następnie wykonywane jest testowanie potwierdzające, które pozwala sprawdzić, czy wprowadzone poprawki doprowadziły do rozwiązania problemu. W optymalnych warunkach testowanie potwierdzające wykonuje osoba, która wcześniej przeprowadzała początkowy test. W dalszej kolejności można również wykonać testowanie regresji, aby upewnić się, że wprowadzone poprawki nie powodują awarii w innych obszarach przedmiotu testów.</p>
-        <p>W przypadku wykrycia defektu podczas testowania statycznego debugowanie obejmuje usunięcie takiego defektu. Nie ma przy tym potrzeby odtwarzania ani diagnozowania problemu, ponieważ testowanie statyczne pozwala wykrywać defekty w sposób bezpośredni i nie może powodować awarii.</p>`
+        <p>W przypadku wykrycia defektu podczas testowania statycznego debugowanie obejmuje usunięcie takiego defektu. Nie ma przy tym potrzeby odtwarzania ani diagnozowania problemu, ponieważ testowanie statyczne pozwala wykrywać defekty w sposób bezpośredni i nie może powodować awarii.</p>`,
+        flashcards:[
+          {q:"Czym różni się testowanie od debugowania?", a:"Testowanie wykrywa awarie/defekty; debugowanie diagnozuje i usuwa defekt, po czym wykonuje się testy potwierdzające (i regresję)."},
+          {q:"Jakie są etapy debugowania?", a:"Odtworzenie awarii, diagnoza (znalezienie defektu), usunięcie defektu."},
+          {q:"Co to jest testowanie potwierdzające?", a:"Test sprawdzający, czy wprowadzone poprawki rozwiązały problem - wykonuje najlepiej ta sama osoba, która wykryła awarię."}
+        ],
       },
       {
         id:"1.2",
@@ -157,7 +167,12 @@ const syllabus = [
           <li><b>Skutki nieusuniętych defektów</b>: propagacja na kolejne etapy SDLC i kosztowniejsze poprawki w późnej fazie.</li>
           <li><b>Inne przyczyny awarii</b>: czynniki środowiskowe (promieniowanie, zakłócenia elektromagnetyczne) mogą powodować nieprawidłowe działanie oprogramowania wbudowanego.</li>
         </ul>
-        <p><b>Podstawowa przyczyna</b> to zasadniczy czynnik prowadzący do problemu. Jej identyfikacja następuje w trakcie <b>analizy przyczyny podstawowej</b> (root cause analysis) wykonywanej po awarii lub wykryciu defektu. Usunięcie przyczyny redukuje prawdopodobieństwo podobnych awarii w przyszłości.</p>`
+        <p><b>Podstawowa przyczyna</b> to zasadniczy czynnik prowadzący do problemu. Jej identyfikacja następuje w trakcie <b>analizy przyczyny podstawowej</b> (root cause analysis) wykonywanej po awarii lub wykryciu defektu. Usunięcie przyczyny redukuje prawdopodobieństwo podobnych awarii w przyszłości.</p>`,
+        flashcards:[
+          {q:"Czym różni się testowanie od zapewnienia jakości?", a:"Testowanie to kontrola jakości produktu (korekcyjne); QA to podejście do procesów (prewencyjne)."},
+          {q:"Wymień 3 źródła pomyłek w oprogramowaniu.", a:"Presja czasu, złożoność systemu, zmęczenie, niewystarczające szkolenie, złożone interakcje."},
+          {q:"Co to jest podstawowa przyczyna?", a:"Zasadniczy czynnik prowadzący do problemu - jej usunięcie redukuje prawdopodobieństwo podobnych awarii."}
+        ],
       },
       {
         id:"1.3",
@@ -220,7 +235,12 @@ const syllabus = [
               <li>Oprócz weryfikacji („czy spełniamy specyfikację?") potrzebna jest <b>walidacja</b> („czy rozwiązujemy właściwy problem?") – testy akceptacyjne, eksploracyjne, scenariusze operacyjne.</li>
             </ul>
           </li>
-        </ol>`
+        </ol>`,
+        flashcards:[
+          {q:"Podaj 3 z 7 zasad testowania.", a:"Np.: testy ujawniają defekty, a nie dowodzą ich braku; gruntowne testowanie jest niemożliwe; wczesne testowanie oszczędza czas/koszt; defekty się kumulują; testy się zużywają; testowanie zależy od kontekstu; złudzenie braku defektów."},
+          {q:"Dlaczego testowanie gruntowne jest niemożliwe?", a:"Pełna enumeracja danych wejściowych, ścieżek i kombinacji jest realna tylko w trywialnych przypadkach - potrzebna priorytetyzacja."},
+          {q:"Co oznacza zasada 'testy ulegają zużyciu'?", a:"Wielokrotne uruchamianie tych samych testów zmniejsza szansę wykrycia nowych defektów - potrzebna pielęgnacja zestawu testów."}
+        ],
       },
       {
         id:"1.4",
@@ -313,7 +333,12 @@ const syllabus = [
         <p>Kontekst determinuje podział zadań. W podejściach zwinnych część obowiązków zarządczych
         realizuje zespół, a funkcje przekrojowe (np. standardy, metryki, narzędzia) mogą pełnić <i>test managers</i>
         pracujący ponad zespołami. Pożądana jest odpowiednia <b>niezależność</b> przy zachowaniu ścisłej
-        współpracy z wytwarzaniem.</p>`
+        współpracy z wytwarzaniem.</p>`,
+        flashcards:[
+          {q:"Wymień 5 czynności testowych.", a:"Planowanie, monitorowanie/nadzór, analiza, projektowanie, implementacja, wykonywanie, ukończenie testów."},
+          {q:"Co to są testalia?", a:"Produkty pracy powstające w procesie testowym: plany, przypadki testowe, dane, skrypty, raporty, środowiska."},
+          {q:"Po co śledzić powiązania?", a:"Aby mierzyć pokrycie, oceniać ryzyko rezydualne, analizować wpływ zmian i przygotować audytowalne raporty."}
+        ],
       },
       {
         id:"1.5",
@@ -354,21 +379,13 @@ const syllabus = [
         </ul>
         <p><b>Korzyści</b>: inny profil wykrywanych awarii/defektów, weryfikacja założeń, większa wiarygodność wyników.
         <b>Ryzyka</b>: izolacja i gorsza wymiana informacji, możliwe „wąskie gardło". Rozwiązanie: jasne ustalenia
-        odpowiedzialności, narzędzia współpracy, wspólne cele jakości.</p>`
+        odpowiedzialności, narzędzia współpracy, wspólne cele jakości.</p>`,
+        flashcards:[
+          {q:"Wymień 3 kluczowe umiejętności testera.", a:"Wiedza testerska, myślenie analityczne/krytyczne, umiejętności komunikacyjne, wiedza domenowa, kreatywność."},
+          {q:"Co to jest podejście 'cały zespół'?", a:"Jakość jako wspólna odpowiedzialność - kompetencje wykorzystywane tam gdzie potrzebne, role płynne."},
+          {q:"Wymień poziomy niezależności testowania.", a:"Brak niezależności, niezależność wewnątrz zespołu, zespół testowy w organizacji, jednostka zewnętrzna."}
+        ],
       }
-    ],
-    flashcards:[
-      {q:"Wymień 3–4 typowe cele testów.", a:"Ocena produktów pracy; wykrywanie defektów/awarii; zapewnienie pokrycia; redukcja ryzyka; potwierdzenie wymagań i zgodności; dostarczenie informacji do decyzji; budowanie zaufania."},
-      {q:"Czym różni się testowanie od debugowania?", a:"Testowanie wykrywa awarie/defekty; debugowanie diagnozuje i usuwa defekt, po czym wykonuje się testy potwierdzające (i regresję)."},
-      {q:"Podaj 3 z 7 zasad testowania.", a:"Np.: testy ujawniają defekty, a nie dowodzą ich braku; gruntowne testowanie jest niemożliwe; wczesne testowanie oszczędza czas/koszt; defekty się kumulują; testy się zużywają; testowanie zależy od kontekstu; złudzenie braku defektów."},
-      {q:"Po co śledzić powiązania?", a:"Aby mierzyć pokrycie, oceniać ryzyko rezydualne, analizować wpływ zmian i przygotować audytowalne raporty."},
-    ],
-    quiz:[
-      {q:"Które stwierdzenie najlepiej opisuje weryfikację i walidację?", opt:["Walidacja sprawdza zgodność ze specyfikacją; weryfikacja – z potrzebami","Weryfikacja sprawdza zgodność ze specyfikacją, walidacja – czy spełnia potrzeby","To to samo","Żadne"], a:1, exp:"Weryfikacja = spełnienie specyfikacji, walidacja = spełnienie potrzeb interesariuszy."},
-      {q:"Która z zasad NIE należy do 7 zasad testowania?", opt:["Testy zależą od kontekstu","Gruntowne testowanie jest możliwe","Testy się zużywają","Defekty często się kumulują"], a:1, exp:"Gruntowne testowanie jest niemożliwe – to właściwa zasada."},
-      {q:"Co następuje bezpośrednio po debugowaniu?", opt:["Testowanie potwierdzające","Testowanie wydajności","Inspekcja","Analiza ryzyka"], a:0, exp:"Po usunięciu defektu sprawdzamy poprawkę testem potwierdzającym."},
-      {q:"Który produkt pracy NIE jest typowym testalium?", opt:["Plan testów","Dane testowe","Repozytorium kodu produkcyjnego","Raport sumaryczny"], a:2, exp:"Repozytorium kodu to nie testalium – choć może być elementem kontekstu."},
-      {q:"Po co utrzymywać śledzenie powiązań wymagań→testy?", opt:["Dla estetyki","Aby ocenić pokrycie i wpływ zmian","Aby przyspieszyć kompilację","To obowiązkowe tylko w Scrum"], a:1}
     ]
   },
   {
@@ -981,6 +998,135 @@ const state = {
   results: JSON.parse(localStorage.getItem("istqb_results")||"{}")
 };
 
+// System linkowania pytań - automatyczne dopasowywanie pytań do stron
+const questionMatcher = {
+  // Słowa kluczowe dla różnych tematów
+  keywords: {
+    "podstawy_testowania": ["cel testów", "weryfikacja", "walidacja", "defekty", "awarie", "zasady testowania", "debugowanie", "testowanie statyczne", "testowanie dynamiczne"],
+    "sdlc": ["SDLC", "cykl wytwarzania", "modele", "iteracyjny", "przyrostowy", "agile", "ATDD", "TDD", "BDD", "DevOps", "shift left", "retrospektywa"],
+    "poziomy_testow": ["poziom testów", "modułowe", "integracja", "systemowe", "akceptacyjne", "testowanie funkcjonalne", "testowanie niefunkcjonalne"],
+    "techniki_staticzne": ["testowanie statyczne", "przegląd", "inspekcja", "przejrzenie", "analiza statyczna", "moderator", "protokolant"],
+    "techniki_projektowania": ["techniki projektowania", "czarnoskrzynkowe", "białoskrzynkowe", "ECP", "BVA", "state transition", "pokrycie", "gałęzie", "instrukcje"],
+    "zarzadzanie_testami": ["plan testów", "zarządzanie", "monitorowanie", "estymacja", "ryzyko", "niezależność", "śledzenie powiązań", "testalia"],
+    "narzedzia": ["narzędzia", "automatyzacja", "CI/CD", "framework", "utrzymanie", "testy regresji", "dane testowe"]
+  },
+  
+  // Mapowanie pytań do tematów na podstawie treści
+  mapQuestionToTopics(question) {
+    const topics = [];
+    const qText = (question.q || "").toLowerCase();
+    const expText = (question.exp || "").toLowerCase();
+    const fullText = qText + " " + expText;
+    
+    for (const [topic, keywords] of Object.entries(this.keywords)) {
+      if (keywords.some(keyword => fullText.includes(keyword.toLowerCase()))) {
+        topics.push(topic);
+      }
+    }
+    return topics;
+  },
+  
+  // Mapowanie stron do tematów na podstawie treści strony
+  mapPageToTopics(page) {
+    const topics = [];
+    const pageText = (page.html || "").toLowerCase();
+    const titleText = (page.title || "").toLowerCase();
+    const fullText = pageText + " " + titleText;
+    
+    for (const [topic, keywords] of Object.entries(this.keywords)) {
+      if (keywords.some(keyword => fullText.includes(keyword.toLowerCase()))) {
+        topics.push(topic);
+      }
+    }
+    return topics;
+  },
+  
+  // Znajdowanie pytań pasujących do strony
+  findQuestionsForPage(page, allQuestions) {
+    const pageTopics = this.mapPageToTopics(page);
+    const matchingQuestions = [];
+    
+    for (const question of allQuestions) {
+      const questionTopics = this.mapQuestionToTopics(question);
+      
+      // Sprawdź czy pytanie ma wspólne tematy ze stroną
+      const commonTopics = pageTopics.filter(topic => questionTopics.includes(topic));
+      if (commonTopics.length > 0) {
+        matchingQuestions.push({
+          question: question,
+          relevance: commonTopics.length,
+          topics: commonTopics
+        });
+      }
+    }
+    
+    // Sortuj według trafności (więcej wspólnych tematów = wyższa trafność)
+    return matchingQuestions.sort((a, b) => b.relevance - a.relevance);
+  }
+};
+
+// Ładowanie pytań z pliku egzamin_quiz_full.html
+let examQuestions = [];
+
+async function loadExamQuestions() {
+  try {
+    const response = await fetch('egzamin_quiz_full.html');
+    const html = await response.text();
+    
+    // Wyciągnij pytania z pliku HTML
+    const scriptMatch = html.match(/const builtIn = \[([\s\S]*?)\];/);
+    if (scriptMatch) {
+      const questionsText = scriptMatch[1];
+      // Parsuj pytania - to jest uproszczona wersja, może wymagać dostosowania
+      const questions = [];
+      const questionMatches = questionsText.match(/\{[^}]*q:"[^"]*"[^}]*\}/g);
+      
+      if (questionMatches) {
+        for (const match of questionMatches) {
+          try {
+            // Wyciągnij podstawowe informacje o pytaniu
+            const qMatch = match.match(/q:"([^"]*)"/);
+            const optsMatch = match.match(/opts:\[(.*?)\]/);
+            const correctMatch = match.match(/correct:"([^"]*)"/);
+            const expMatch = match.match(/exp:"([^"]*)"/);
+            
+            if (qMatch && optsMatch && correctMatch) {
+              const question = {
+                q: qMatch[1],
+                opt: optsMatch[1].split('","').map(opt => opt.replace(/^"/, '').replace(/"$/, '')),
+                a: correctMatch[1],
+                exp: expMatch ? expMatch[1] : ""
+              };
+              questions.push(question);
+            }
+          } catch (e) {
+            console.warn('Błąd parsowania pytania:', e);
+          }
+        }
+      }
+      
+      examQuestions = questions;
+      console.log(`Załadowano ${examQuestions.length} pytań egzaminacyjnych`);
+    }
+  } catch (error) {
+    console.error('Błąd ładowania pytań egzaminacyjnych:', error);
+    examQuestions = [];
+  }
+}
+
+// Funkcja do pobierania pytań dla konkretnej strony
+function getQuestionsForPage(page) {
+  if (examQuestions.length === 0) {
+    // Fallback do pytań z poziomu strony, jeśli nie ma pytań egzaminacyjnych
+    return page.quiz || [];
+  }
+  
+  const matchedQuestions = questionMatcher.findQuestionsForPage(page, examQuestions);
+  
+  // Zwróć maksymalnie 3 najlepsze pytania
+  return matchedQuestions.slice(0, 3).map(match => match.question);
+}
+
 function save(){ localStorage.setItem("istqb_results", JSON.stringify(state.results)); renderProgress(); }
 
 function shuffle(arr){ return arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]); }
@@ -1055,7 +1201,12 @@ function renderPagedChapter(ch){
   // Wire inline flash
   const flip = $$("#inlineFlip");
   if(flip){
-    let flipped=false; const fc = (ch.flashcards||[])[0];
+    let flipped=false; 
+    // Użyj fiszek z poziomu strony, jeśli istnieją
+    const pageFlashcards = page.flashcards || [];
+    const chapterFlashcards = ch.flashcards || [];
+    const flashcards = pageFlashcards.length > 0 ? pageFlashcards : chapterFlashcards;
+    const fc = flashcards[0];
     flip.innerHTML = fc? fc.q : "Brak fiszek";
     flip.onclick = ()=>{
       flipped=!flipped;
@@ -1068,7 +1219,8 @@ function renderPagedChapter(ch){
   const check = $$("#inlineCheck");
   if(check){
     check.onclick = ()=>{
-      const q = questionsForChapter(ch.id)[0];
+      const questions = getQuestionsForPage(page);
+      const q = questions[0];
       if(!q) return;
       const labels = $all(".inline-quiz .opt", host);
       const inputs = $all(".inline-quiz input");
@@ -1081,6 +1233,53 @@ function renderPagedChapter(ch){
       });
     };
   }
+  
+  // Wire next question button
+  const nextQuestionBtn = $$("#nextQuestion");
+  if(nextQuestionBtn){
+    let currentQuestionIndex = 0;
+    nextQuestionBtn.onclick = ()=>{
+      const questions = getQuestionsForPage(page);
+      if(questions.length <= 1) return;
+      
+      currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+      const q = questions[currentQuestionIndex];
+      const multi = q && Array.isArray(q.a);
+      
+      // Zaktualizuj treść pytania
+      const quizDiv = $$(".inline-quiz");
+      if(quizDiv){
+        quizDiv.innerHTML = `
+          <div class="tag">Pytanie ${currentQuestionIndex + 1} z ${questions.length}</div>
+          <div style="font-weight:700;margin-bottom:6px">${q.q}</div>
+          ${q.opt.map((o,oi)=>{
+            const input = multi? `<input type=\"checkbox\" name=\"iq\" value=\"${oi}\">` : `<input type=\"radio\" name=\"iq\" value=\"${oi}\">`;
+            return `<label class=\"opt\">${input} ${o}</label>`;
+          }).join("")}
+          <div class="controls">
+            <button class="btn" id="inlineCheck">Sprawdź</button>
+            ${questions.length > 1 ? `<button class="btn flat" id="nextQuestion">Następne pytanie</button>` : ''}
+          </div>
+        `;
+        
+        // Ponownie podłącz obsługę przycisków
+        const newCheck = $$("#inlineCheck");
+        if(newCheck){
+          newCheck.onclick = ()=>{
+            const labels = $all(".inline-quiz .opt", host);
+            const inputs = $all(".inline-quiz input");
+            const checked = inputs.filter(n=>n.checked).map(n=>+n.value);
+            const correctSet = new Set(Array.isArray(q.a)? q.a : [q.a]);
+            labels.forEach((lb,oi)=>{
+              lb.classList.remove("correct","wrong");
+              if(correctSet.has(oi)) lb.classList.add("correct");
+              if(checked.includes(oi) && !correctSet.has(oi)) lb.classList.add("wrong");
+            });
+          };
+        }
+      }
+    };
+  }
 }
 
 function renderInlinePager(){
@@ -1091,21 +1290,38 @@ function renderInlinePager(){
 }
 
 function renderInlineStudy(ch){
-  const q = questionsForChapter(ch.id)[0];
+  const total = ch.pages.length;
+  const idx = Math.max(0, Math.min(state.page, total-1));
+  const page = ch.pages[idx];
+  
+  // Użyj fiszek z poziomu strony, jeśli istnieją
+  const pageFlashcards = page.flashcards || [];
+  const chapterFlashcards = ch.flashcards || [];
+  const flashcards = pageFlashcards.length > 0 ? pageFlashcards : chapterFlashcards;
+  
+  // Pobierz pytania używając nowego systemu linkowania
+  const questions = getQuestionsForPage(page);
+  
+  // Wybierz pierwsze pytanie do wyświetlenia
+  const q = questions[0];
   const multi = q && Array.isArray(q.a);
+  
   return `
     <div class="inline">
       <div class="tag">Fiszka</div>
       <div class="flip" id="inlineFlip"></div>
     </div>
     ${q? `<div class="inline inline-quiz">
-      <div class="tag">Pytanie</div>
+      <div class="tag">Pytanie ${questions.length > 1 ? `(1 z ${questions.length})` : ''}</div>
       <div style="font-weight:700;margin-bottom:6px">${q.q}</div>
       ${q.opt.map((o,oi)=>{
         const input = multi? `<input type=\"checkbox\" name=\"iq\" value=\"${oi}\">` : `<input type=\"radio\" name=\"iq\" value=\"${oi}\">`;
         return `<label class=\"opt\">${input} ${o}</label>`;
       }).join("")}
-      <div class="controls"><button class="btn" id="inlineCheck">Sprawdź</button></div>
+      <div class="controls">
+        <button class="btn" id="inlineCheck">Sprawdź</button>
+        ${questions.length > 1 ? `<button class="btn flat" id="nextQuestion">Następne pytanie</button>` : ''}
+      </div>
     </div>` : ``}
   `;
 }
@@ -1265,6 +1481,7 @@ function renderFinalExam(){
 $$("#resetBtn").onclick = ()=>{ if(confirm("Wyczyścić zapisane wyniki?")){ localStorage.removeItem("istqb_results"); state.results={}; renderProgress(); }}
 
 // Init
+loadExamQuestions(); // Załaduj pytania egzaminacyjne
 renderTOC();
 renderChapter();
 renderProgress();
