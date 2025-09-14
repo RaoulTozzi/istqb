@@ -386,6 +386,13 @@ const syllabus = [
           {q:"Wymień poziomy niezależności testowania.", a:"Brak niezależności, niezależność wewnątrz zespołu, zespół testowy w organizacji, jednostka zewnętrzna."}
         ],
       }
+    ],
+    quiz:[
+      {q:"Który z poniższych jest celem testowania?", opt:["Udowodnienie braku defektów","Wykrycie defektów i ocena jakości","Zastąpienie debugowania","Eliminacja wszystkich awarii"], a:1, exp:"Testowanie ma na celu wykrycie defektów i ocenę jakości produktów pracy."},
+      {q:"Czym różni się weryfikacja od walidacji?", opt:["Weryfikacja to testowanie dynamiczne, walidacja to statyczne","Weryfikacja sprawdza zgodność ze specyfikacją, walidacja - czy system odpowiada potrzebom użytkowników","Weryfikacja to debugowanie, walidacja to testowanie","To są synonimy"], a:1, exp:"Weryfikacja sprawdza zgodność ze specyfikacją, walidacja - czy system odpowiada potrzebom użytkowników i interesariuszy."},
+      {q:"Które stwierdzenie o testowaniu jest prawdziwe?", opt:["Testowanie to tylko uruchamianie oprogramowania","Testowanie obejmuje planowanie, zarządzanie i monitorowanie","Testowanie zastępuje zapewnienie jakości","Testowanie nie wymaga myślenia"], a:1, exp:"Testowanie to zbiór czynności obejmujących planowanie, zarządzanie, szacowanie, monitorowanie i nadzór."},
+      {q:"Co to jest testowanie potwierdzające?", opt:["Testowanie regresji","Testowanie sprawdzające czy poprawka rozwiązała problem","Testowanie statyczne","Testowanie niefunkcjonalne"], a:1, exp:"Testowanie potwierdzające sprawdza, czy wprowadzone poprawki rozwiązały problem."},
+      {q:"Która z 7 zasad testowania mówi o niemożności gruntownego testowania?", opt:["Testy ujawniają defekty","Gruntowne testowanie jest niemożliwe","Wczesne testowanie oszczędza czas","Testowanie zależy od kontekstu"], a:1, exp:"Zasada 'gruntowne testowanie jest niemożliwe' wynika z faktu, że pełna enumeracja danych wejściowych i ścieżek jest nierealna."}
     ]
   },
   {
@@ -393,63 +400,253 @@ const syllabus = [
     title:"2. Testowanie w cyklu wytwarzania oprogramowania",
     read:`<h2>2. Testowanie w cyklu wytwarzania oprogramowania</h2>
       <p>Model SDLC wpływa na <b>czas/cel testów, techniki i automatyzację</b>. Poniżej pełny opis kluczowych zagadnień: modele i praktyki (TDD/ATDD/BDD, DevOps, <i>shift‑left</i>, retrospektywy), poziomy i typy testów, oraz testowanie pielęgnacyjne.</p>
-      <h3>2.1 Testowanie w kontekście cyklu wytwarzania oprogramowania</h3>
-      <p><b>SDLC</b> to ogólne odwzorowanie procesu tworzenia oprogramowania – zależności logicznych i czasowych między fazami oraz rodzajami czynności. Przykłady: sekwencyjne (waterfall, V), iteracyjne (spirala, prototypowanie) i przyrostowe (UP). W praktykach zwinnych używa się m.in. <b>TDD, ATDD/BDD, DDD, XP, FDD, Kanban, Lean, Scrum</b>.</p>
-      <h4>2.1.1 Wpływ modelu SDLC na testowanie</h4>
+      <h3>2.1 Testowanie w kontekście modelu cyklu wytwarzania oprogramowania</h3>
+      <p>Model cyklu wytwarzania oprogramowania (ang. <b>software development lifecycle — SDLC</b>) stanowi abstrakcyjne, ogólne odwzorowanie procesu wytwarzania oprogramowania. Model ten określa wzajemne relacje — zarówno logiczne, jak i chronologiczne — między poszczególnymi fazami wytwarzania oprogramowania oraz rodzajami czynności wykonywanych w ramach tego procesu.</p>
+      
+      <p><b>Przykładami modeli cyklu wytwarzania oprogramowania są między innymi:</b></p>
       <ul>
-        <li>Decyduje o <b>zakresie i czasie</b> testów (poziomy/typy), <b>szczegółowości testaliów</b>, doborze technik, <b>automatyzacji</b> i rolach.</li>
-        <li>Sekwencyjne: wcześnie przeglądy/analiza/projekt testów; testy dynamiczne później.</li>
-        <li>Iteracyjne/przyrostowe: w każdej iteracji testy statyczne i dynamiczne na wszystkich poziomach; potrzebna szybka informacja zwrotna i szeroka regresja.</li>
-        <li>Zwinne: akceptacja zmian; uproszczona dokumentacja; <b>szeroka automatyzacja</b> regresji; manualne testy oparte na doświadczeniu.</li>
+        <li><b>Sekwencyjne modele wytwarzania oprogramowania</b> (np. model kaskadowy - ang. waterfall - lub model V)</li>
+        <li><b>Iteracyjne modele wytwarzania oprogramowania</b> (np. model spiralny lub prototypowanie)</li>
+        <li><b>Przyrostowe modele wytwarzania oprogramowania</b> (np. model Unified Process)</li>
       </ul>
-      <h4>2.1.2 Dobre praktyki niezależne od modelu</h4>
+      
+      <p>Niektóre czynności wykonywane w ramach procesów wytwarzania oprogramowania można również opisać przy użyciu bardziej szczegółowych metod wytwarzania oprogramowania i praktyk zwinnych. <b>Przykładami są między innymi:</b></p>
       <ul>
-        <li>Do każdej czynności wytwórczej przypisz odpowiadającą jej czynność testową (kontrola jakości całości działań).</li>
-        <li>Dla każdego <b>poziomu testów</b> ustanów <b>odrębne cele</b> – unikaj nadmiaru i luk.</li>
-        <li>Analizę i projektowanie dla danego poziomu zaczynaj w odpowiadającej mu fazie (<i>early testing</i>).</li>
-        <li>Testerzy uczestniczą w przeglądach artefaktów od pierwszych wersji roboczych (<i>shift‑left</i>).</li>
+        <li><b>Wytwarzanie sterowane testami akceptacyjnymi</b> (ang. acceptance test-driven development — ATDD)</li>
+        <li><b>Wytwarzanie sterowane zachowaniem</b> (ang. behavior-driven development — BDD)</li>
+        <li><b>Projektowanie oparte na domenie</b> (ang. domain-driven design — DDD)</li>
+        <li><b>Programowanie ekstremalne</b> (ang. eXtreme Programming — XP)</li>
+        <li><b>Wytwarzanie oparte na cechach</b> (ang. feature-driven development — FDD)</li>
+        <li><b>Kanban, Lean IT, Scrum</b></li>
+        <li><b>Wytwarzanie sterowane testami</b> (ang. test-driven development — TDD)</li>
       </ul>
-      <h4>2.1.3 Podejścia „najpierw test" (TDD/ATDD/BDD)</h4>
-      <p><b>TDD</b>: test prowadzi implementację (najpierw piszemy testy, potem kod; refaktoryzacja po zieleni). <b>ATDD</b>: testy z kryteriów akceptacji tworzone podczas projektowania; powstają <i>przed</i> implementacją. <b>BDD</b>: zachowania zapisywane w języku naturalnym (np. Given/When/Then) i wykonywane jako testy. Wszystkie wspierają <i>early testing</i> i <i>shift‑left</i>, a testy często stają się zautomatyzowane.</p>
-      <h4>2.1.4 DevOps a testowanie</h4>
-      <p><b>DevOps</b> scala wytwarzanie, testowanie i operacje: autonomia zespołów, szybka pętla feedbacku, zintegrowane łańcuchy narzędzi, <b>CI/CD</b> i potoki dostarczania.</p>
+
+      <h4>2.1.1 Wpływ cyklu wytwarzania oprogramowania na testowanie</h4>
+      <p>Warunkiem powodzenia procesu testowania jest dopasowanie go do przyjętego cyklu wytwarzania oprogramowania. <b>Wybór modelu cyklu wytwarzania oprogramowania wpływa na:</b></p>
       <ul>
-        <li><b>Korzyści</b>: szybkie informacje o jakości i regresji; wzmocnione <i>shift‑left</i> poprzez CI i testy modułowe/analizę statyczną; stabilniejsze środowiska; większa widoczność jakości niefunkcjonalnej; szeroka automatyzacja regresji.</li>
-        <li><b>Wyzwania</b>: wdrożenie potoku, utrzymanie narzędzi CI/CD, nakłady na automatyzację i jej pielęgnację. Testy manualne (perspektywa użytkownika) nadal potrzebne.</li>
+        <li>zakres i czas wykonywania czynności testowych (np. poziomy testów i typy testów)</li>
+        <li>szczegółowość testaliów</li>
+        <li>wybór technik testowania i podejścia do testowania</li>
+        <li>zakres automatyzacji testów</li>
+        <li>role i obowiązki testera</li>
       </ul>
-      <h4>2.1.5 Przesunięcie w lewo (<i>shift‑left</i>)</h4>
+
+      <p><b>W przypadku sekwencyjnych modeli wytwarzania oprogramowania:</b></p>
       <ul>
-        <li>Wcześnie przeglądaj specyfikacje (usuwaj niejasności).</li>
-        <li>Pisz testy/kryteria przed kodem; uruchamiaj kod w jarzmie testowym podczas implementacji.</li>
-        <li>Stosuj CI/CD – automatyczne testy modułowe/analiza statyczna przy commicie.</li>
-        <li>Uruchamiaj testy niefunkcjonalne od najniższych poziomów, gdy możliwe.</li>
+        <li>w początkowych fazach procesu testerzy uczestniczą zazwyczaj w przeglądach wymagań, analizie testów oraz projektowaniu testów</li>
+        <li>kod wykonywalny powstaje z reguły w późniejszych fazach, co w większości przypadków uniemożliwia przeprowadzenie testowania dynamicznego na wczesnym etapie cyklu wytwarzania oprogramowania</li>
       </ul>
-      <p><i>Shift‑left</i> może zwiększyć koszty na starcie, ale zwykle redukuje całkowite koszty dzięki wcześniejszej detekcji defektów. Kluczowe: wsparcie interesariuszy.</p>
+
+      <p><b>W niektórych iteracyjnych modelach wytwarzania i przyrostowych modelach wytwarzania:</b></p>
+      <ul>
+        <li>zakłada się, że w wyniku każdej iteracji powstaje działający prototyp lub kolejna wersja przyrostowa produktu</li>
+        <li>oznacza to, że w każdej iteracji można wykonywać zarówno testowanie statyczne, jak i testowanie dynamiczne na wszystkich poziomach testów</li>
+        <li>jednocześnie częste dostarczanie wersji przyrostowych wymaga szybkiego przekazywania informacji zwrotnych i szeroko zakrojonego testowania regresji</li>
+      </ul>
+
+      <p><b>W przypadku zwinnego wytwarzania oprogramowania:</b></p>
+      <ul>
+        <li>dopuszcza się wprowadzanie zmian przez cały czas trwania projektu</li>
+        <li>z tego powodu w projektach zwinnych wskazane jest tworzenie uproszczonej dokumentacji produktów pracy i stosowanie na dużą skalę automatyzacji testów, co ułatwia testowanie regresji</li>
+        <li>ponadto większość testowania manualnego wykonuje się zwykle przy użyciu technik testowania opartych na doświadczeniu, które nie wymagają wcześniejszego podjęcia szeroko zakrojonych działań związanych z analizą i projektowaniem testów</li>
+      </ul>
+
+      <h4>2.1.2 Model cyklu wytwarzania oprogramowania a dobre praktyki testowania</h4>
+      <p>Poniżej wymieniono kilka dobrych praktyk testowania, które mają zastosowanie do każdego modelu cyklu wytwarzania oprogramowania:</p>
+      <ul>
+        <li><b>Do każdej czynności związanej z wytwarzaniem oprogramowania powinna być przypisana odpowiadająca jej czynność testowa</b>, tak aby wszystkie czynności związane z wytwarzaniem oprogramowania podlegały kontroli jakości</li>
+        <li><b>Poszczególnym poziomom testów powinny odpowiadać konkretne i różne cele testów</b>, co pozwoli zapewnić odpowiednio szeroki zakres testów, a przy tym uniknąć nadmiarowości</li>
+        <li><b>Aby zapewnić zgodność z zasadą wczesnego testowania</b>, analizę i projektowanie testów na potrzeby danego poziomu testów należy rozpocząć w odpowiadającej temu poziomowi fazie cyklu wytwarzania oprogramowania</li>
+        <li><b>Testerzy powinni uczestniczyć w przeglądach produktów pracy natychmiast po udostępnieniu ich wersji roboczych</b>, tak aby wcześniejsze testowanie i wykrywanie defektów pomagało w realizacji przesunięcia w lewo</li>
+      </ul>
+
+      <h4>2.1.3 Testowanie jako czynnik określający sposób wytwarzania oprogramowania</h4>
+      <p><b>Wytwarzanie sterowane testami (TDD), wytwarzanie sterowane testami akceptacyjnymi (ATDD) i wytwarzanie sterowane zachowaniem (BDD)</b> to podobne podejścia do wytwarzania oprogramowania, w ramach których testy traktuje się jako czynnik określający sposób prowadzenia prac programistycznych.</p>
+      
+      <p>Każde z tych podejść realizuje zasadę wczesnego testowania i przesunięcie w lewo, ponieważ testy są definiowane przed rozpoczęciem pisania kodu. Ponadto podejścia te umożliwiają stosowanie iteracyjnego modelu wytwarzania.</p>
+
+      <p><b>Wytwarzanie sterowane testami (TDD):</b></p>
+      <ul>
+        <li>Zamiast rozbudowanych mechanizmów projektowania oprogramowania do określania sposobu tworzenia kodu wykorzystywane są przypadki testowe</li>
+        <li>Najpierw pisane są testy, a dopiero potem powstaje kod umożliwiający ich pomyślne przejście. Następnie testy i kod podlegają refaktoryzacji</li>
+      </ul>
+
+      <p><b>Wytwarzanie sterowane testami akceptacyjnymi (ATDD):</b></p>
+      <ul>
+        <li>Testy są tworzone na podstawie kryteriów akceptacji w ramach procesu projektowania systemu</li>
+        <li>Testy są pisane przed wytworzeniem części aplikacji, która ma je pomyślnie przejść</li>
+      </ul>
+
+      <p><b>Wytwarzanie sterowane zachowaniem (BDD):</b></p>
+      <ul>
+        <li>Pożądane zachowanie aplikacji wyraża się w postaci przypadków testowych napisanych w prostej formie języka naturalnego, która jest zrozumiała dla interesariuszy — zwykle w formacie Given/When/Then (Mając/Kiedy/Wtedy)</li>
+        <li>Następnie przypadki testowe powinny być automatycznie przekładane na możliwe do wykonania testy</li>
+      </ul>
+
+      <p>W ramach wszystkich powyższych podejść testy mogą zostać zarejestrowane w postaci testów automatycznych, co pozwala zapewnić należytą jakość kodu w przypadku przyszłej adaptacji lub refaktoryzacji.</p>
+
+      <h4>2.1.4 Metodyka DevOps a testowanie</h4>
+      <p><b>DevOps to metodyka organizacyjna</b>, której celem jest uzyskanie efektu synergii poprzez ukierunkowanie działań związanych z wytwarzaniem oprogramowania (w tym z testowaniem) oraz działań związanych z jego eksploatacją na realizację szeregu wspólnych celów.</p>
+      
+      <p>Do wdrożenia tej metodyki niezbędna jest zmiana kultury organizacyjnej polegająca na wypełnieniu luki między strukturami odpowiedzialnymi za wytwarzanie (w tym testowanie) a strukturami odpowiedzialnymi za eksploatację przy jednoczesnym uznaniu, że zadania realizowane przez te struktury są równie istotne.</p>
+
+      <p>DevOps sprzyja większej autonomii zespołów, szybszemu przekazywaniu informacji zwrotnych, ściślejszej integracji łańcuchów narzędzi oraz stosowaniu praktyk technicznych takich jak <b>ciągła integracja (ang. continuous integration — CI) i ciągłe dostarczanie (ang. continuous delivery — CD)</b>. Dzięki temu zespoły mogą szybciej tworzyć, testować i przekazywać do eksploatacji wysokiej jakości kod z wykorzystaniem potoku dostarczania DevOps.</p>
+
+      <p><b>Z perspektywy testowania do korzyści ze stosowania metodyki DevOps można zaliczyć:</b></p>
+      <ul>
+        <li>szybkie otrzymywanie informacji zwrotnych na temat jakości kodu oraz ewentualnego niekorzystnego wpływu zmian na dotychczasowy kod</li>
+        <li>ciągłą integrację, która sprzyja przesunięciu w lewo w obszarze testowania poprzez zachęcenie programistów do dostarczania wysokiej jakości kodu sprawdzonego testami modułowymi i analizą statyczną</li>
+        <li>promowanie zautomatyzowanych procesów takich jak ciągła integracja i ciągłe dostarczanie, które ułatwiają tworzenie stabilnych środowisk testowych</li>
+        <li>zwiększenie widoczności niefunkcjonalnych charakterystyk jakościowych (np. wydajności lub niezawodności)</li>
+        <li>zmniejszenie zapotrzebowania na powtarzalne testowanie manualne dzięki automatyzacji, jaką zapewnia potok dostarczania</li>
+        <li>zmniejszenie ryzyka związanego z regresją z uwagi na skalę i zasięg automatycznych testów regresji</li>
+      </ul>
+
+      <p><b>Z zastosowaniem metodyki DevOps wiążą się też pewne ryzyka i wyzwania, wśród których można wymienić:</b></p>
+      <ul>
+        <li>konieczność zdefiniowania i ustanowienia potoku dostarczania DevOps</li>
+        <li>konieczność wprowadzenia i utrzymywania narzędzi do ciągłej integracji lub ciągłego dostarczania</li>
+        <li>konieczność przeznaczenia dodatkowych zasobów na automatyzację testów oraz trudności związane z wprowadzeniem i utrzymaniem mechanizmów automatyzacji</li>
+      </ul>
+
+      <p>Chociaż metodyka DevOps zakłada duży udział testów automatycznych, nadal konieczne jest również testowanie manualne — zwłaszcza z perspektywy użytkownika.</p>
+
+      <h4>2.1.5 Przesunięcie w lewo (ang. shift left approach)</h4>
+      <p>Zasada wczesnego testowania jest niekiedy nazywana <b>"przesunięciem w lewo"</b>, ponieważ w myśl tej zasady testowanie odbywa się na wcześniejszym etapie cyklu wytwarzania oprogramowania. Przesunięcie w lewo sugeruje, że testowanie powinno odbywać się wcześniej (np. bez czekania na implementację kodu bądź integrację modułów), ale nie oznacza to, że należy zaniedbywać wykonywanie testów na dalszych etapach cyklu życia wytwarzania oprogramowania.</p>
+
+      <p><b>Poniżej przedstawiono kilka dobrych praktyk, które obrazują, w jaki sposób można wdrożyć przesunięcie w lewo w testowaniu:</b></p>
+      <ul>
+        <li><b>dokonywanie przeglądu specyfikacji z punktu widzenia testerów</b> (przegląd specyfikacji pozwala często znaleźć potencjalne defekty, takie jak niejasności, braki czy niespójności)</li>
+        <li><b>pisanie przypadków testowych przed rozpoczęciem pisania kodu i uruchamianie kodu w jarzmie testowym podczas implementacji</b></li>
+        <li><b>korzystanie z mechanizmu ciągłej integracji (a jeszcze lepiej — ciągłego dostarczania)</b>, ponieważ mechanizm ten pozwala szybko uzyskiwać informacje zwrotne i wykonywać automatyczne testy modułowe w odniesieniu do kodu źródłowego przekazywanego do repozytorium kodu</li>
+        <li><b>przeprowadzanie analizy statycznej kodu źródłowego przed rozpoczęciem testowania dynamicznego lub w ramach zautomatyzowanego procesu</b></li>
+        <li><b>wykonywanie testowania niefunkcjonalnego już od poziomu testów modułowych wszędzie tam, gdzie jest to możliwe</b> (jest to forma przesunięcia w lewo, ponieważ testy niefunkcjonalne są często wykonywane na późniejszych etapach cyklu wytwarzania oprogramowania, gdy jest już dostępny kompletny system wraz z reprezentatywnym środowiskiem testowym)</li>
+      </ul>
+
+      <p>Przesunięcie w lewo może wymagać dodatkowych szkoleń, nakładów pracy i/lub kosztów na wcześniejszym etapie procesu, ale z założenia powinno to zostać zrekompensowane przez zmniejszenie nakładów pracy lub obniżenie kosztów na późniejszych etapach.</p>
+
+      <p>W przypadku przesunięcia w lewo ważne jest przekonanie interesariuszy o zasadności takiego podejścia i uzyskanie ich poparcia w tym zakresie.</p>
+
       <h4>2.1.6 Retrospektywy i doskonalenie procesów</h4>
-      <p>Po iteracjach/kamieniach milowych zespół analizuje co działa, co poprawić i jak wdrożyć usprawnienia. Korzyści: skuteczniejsze testy i lepsze testalia, wspólna nauka, wyższa jakość wymagań i współpracy dev‑test.</p>
+      <p><b>Retrospektywy są często organizowane</b> po zakończeniu projektu lub iteracji bądź osiągnięciu kamienia milowego związanego z przekazaniem do eksploatacji, ale w razie potrzeby mogą również odbywać się w innych momentach. Termin i przebieg retrospektywy zależy od przyjętego modelu cyklu wytwarzania oprogramowania.</p>
+
+      <p>Podczas tego rodzaju spotkań uczestnicy (nie tylko testerzy, ale również np. programiści, architekci, właściciel produktu czy analitycy biznesowi) omawiają następujące kwestie:</p>
+      <ul>
+        <li>Jakie elementy zrealizowano pomyślnie i co należy zachować?</li>
+        <li>Jakie działania zakończyły się niepowodzeniem i mogą zostać udoskonalone?</li>
+        <li>W jaki sposób należy w przyszłości uwzględnić powyższe udoskonalenia i wykorzystać pomyślnie zrealizowane elementy?</li>
+      </ul>
+
+      <p>Rezultaty należy udokumentować — zwykle robi się to w ramach sumarycznego raportu z testów. Retrospektywy mają kluczowe znaczenie dla pomyślnej realizacji zasady ciągłego doskonalenia, dlatego ważne jest zweryfikowanie, czy zalecane usprawnienia zostały wprowadzone w życie.</p>
+
+      <p><b>Typowe korzyści z punktu widzenia testowania to między innymi:</b></p>
+      <ul>
+        <li>zwiększenie skuteczności i efektywności testów (np. poprzez wprowadzenie w życie sugestii dotyczących doskonalenia procesów)</li>
+        <li>podniesienie jakości testaliów (np. w wyniku wspólnego przeglądu procesów testowych)</li>
+        <li>zacieśnienie więzi w zespole i wspólne uczenie się (np. dzięki możliwości zgłaszania problemów i proponowania usprawnień)</li>
+        <li>podniesienie jakości podstawy testów (np. dzięki możliwości identyfikowania i usuwania niedociągnięć związanych z jakością i zakresem wymagań)</li>
+        <li>usprawnienie współpracy między programistami a testerami (np. dzięki regularnemu weryfikowaniu i optymalizowaniu zasad współpracy)</li>
+      </ul>
       <h3>2.2 Poziomy testów i typy testów</h3>
-      <p><b>Poziomy</b> – grupy czynności zarządzane razem; mogą zachodzić na siebie. <b>Typy</b> – grupy czynności ukierunkowane na określone charakterystyki jakościowe i można je stosować na każdym poziomie.</p>
+      <p><b>Poziomy testów</b> to grupy czynności testowych, które organizuje się i którymi zarządza się wspólnie. Każdy poziom testów jest instancją procesu testowego wykonywaną w odniesieniu do oprogramowania w danej fazie wytwarzania — od pojedynczych modułów po kompletne systemy lub, jeśli ma to zastosowanie w danym przypadku, po systemy systemów.</p>
+      
+      <p>Poziomy testów są powiązane z innymi czynnościami wykonywanymi w ramach cyklu wytwarzania oprogramowania. W sekwencyjnych modelach cyklu wytwarzania oprogramowania poziomy testów często definiuje się w taki sposób, aby kryteria wyjścia jednego poziomu były elementem kryteriów wejścia kolejnego poziomu, natomiast w niektórych modelach iteracyjnych zasada ta może nie mieć zastosowania. Czynności związane z wytwarzaniem oprogramowania mogą obejmować wiele poziomów testów, a poziomy testów mogą zachodzić na siebie w czasie.</p>
+
+      <p><b>Typy testów</b> to grupy czynności testowych związanych z konkretnymi charakterystykami jakościowymi, przy czym większość z tych czynności można wykonywać na każdym poziomie testów.</p>
+
       <h4>2.2.1 Poziomy testów</h4>
+      <p>W niniejszym sylabusie opisano pięć poziomów testów.</p>
+
+      <p><b>• Testowanie modułowe</b> (zwane także testowaniem jednostkowym lub testowaniem komponentów) skupia się na oddzielnym testowaniu poszczególnych modułów. Często wymaga ono stosowania określonych elementów pomocniczych, takich jak jarzma testowe lub struktury do testów jednostkowych (ang. frameworks). Testowanie modułowe jest zwykle wykonywane przez programistów w środowiskach tworzenia oprogramowania.</p>
+
+      <p><b>• Testowanie integracji modułów</b> (zwane także testowaniem połączenia) skupia się na interfejsach i interakcjach między modułami. Sposób testowania integracji modułów zależy w dużej mierze od strategii integracji — może to być na przykład strategia zstępująca, strategia wstępująca bądź strategia typu „wielki wybuch" (ang. big bang).</p>
+
+      <p><b>• Testowanie systemowe</b> skupia się na ogólnym zachowaniu i możliwościach całego systemu lub produktu. Często obejmuje również kompleksowe testowanie funkcjonalne wszystkich zadań, jakie system ten może wykonywać, oraz testowanie niefunkcjonalne charakterystyk jakościowych. W przypadku niektórych niefunkcjonalnych charakterystyk jakościowych wskazane jest przeprowadzanie testów kompletnego systemu w reprezentatywnym środowisku testowym (np. testowanie użyteczności), ale można również zastosować symulacje podsystemów. Testowanie systemowe może być wykonywane przez niezależny zespół testowy i jest powiązane ze specyfikacjami systemu.</p>
+
+      <p><b>• Testowanie integracji systemów</b> skupia się na interfejsach łączących system podlegający testowaniu z innymi systemami oraz usługami zewnętrznymi. Do testowania integracji systemów niezbędne są odpowiednie środowiska testowe — w miarę możliwości zbliżone do środowiska produkcyjnego.</p>
+
+      <p><b>• Testowanie akceptacyjne</b> skupia się na przeprowadzeniu walidacji i wykazaniu, że system jest gotowy do wdrożenia (tzn. zaspokaja potrzeby biznesowe użytkownika). W idealnych warunkach testowanie akceptacyjne powinni przeprowadzać docelowi użytkownicy. Najważniejsze formy testowania akceptacyjnego to: testowanie akceptacyjne przez użytkownika, operacyjne testy akceptacyjne, testowanie akceptacyjne zgodności z umową i testowanie akceptacyjne zgodności z prawem, testowanie alfa oraz testowanie beta.</p>
+
+      <p><b>Podstawą rozróżnienia między poszczególnymi poziomami testów</b> (w celu uniknięcia nakładania się czynności testowych) są między innymi następujące atrybuty:</p>
       <ul>
-        <li><b>Modułowe</b> (jednostkowe/komponentów): pojedyncze moduły, jarzma i frameworki; zwykle u dev.</li>
-        <li><b>Integracja modułów</b>: interfejsy i interakcje; strategie: wstępująca/zstępująca/<i>big‑bang</i>.</li>
-        <li><b>Systemowe</b>: zachowanie i możliwości całego systemu (funkcjonalne i niefunkcjonalne) – najlepiej w reprezentatywnym środowisku; często niezależny zespół.</li>
-        <li><b>Integracja systemów</b>: połączenia z innymi systemami/usługami; potrzebne odpowiednie środowiska.</li>
-        <li><b>Akceptacyjne</b>: walidacja gotowości do wdrożenia; UAT, operacyjne, umowne/prawne, alfa/beta.</li>
+        <li>przedmiot testów</li>
+        <li>cele testów</li>
+        <li>podstawa testów</li>
+        <li>defekty i awarie</li>
+        <li>podejście i odpowiedzialności</li>
       </ul>
-      <p>Atrybuty odróżniające poziomy: przedmiot testów, cele, podstawa testów, typowe defekty/awarie oraz podejście/odpowiedzialności.</p>
+
       <h4>2.2.2 Typy testów</h4>
+      <p>Istnieje wiele typów testów, które można stosować w ramach projektów. W niniejszym sylabusie omówiono cztery z nich.</p>
+
+      <p><b>Testowanie funkcjonalne</b> polega na dokonaniu oceny funkcji, które powinien realizować dany moduł lub system. Funkcje opisują to, „co" powinien robić dany przedmiot testów. Głównym celem testowania funkcjonalnego jest sprawdzenie kompletności funkcjonalnej, poprawności funkcjonalnej oraz adekwatności funkcjonalnej.</p>
+
+      <p><b>Testowanie niefunkcjonalne</b> ma na celu dokonanie oceny atrybutów innych niż charakterystyki funkcjonalne modułu lub systemu. Testowanie niefunkcjonalne pozwala sprawdzić to, „jak dobrze" zachowuje się dany system. Głównym celem testowania niefunkcjonalnego jest sprawdzenie niefunkcjonalnych charakterystyk jakościowych.</p>
+
+      <p><b>Standard ISO/IEC 25010 podaje następującą klasyfikację niefunkcjonalnych charakterystyk jakościowych:</b></p>
       <ul>
-        <li><b>Funkcjonalne</b> – „co robi system" : kompletność/poprawność/adekwatność funkcji.</li>
-        <li><b>Niefunkcjonalne</b> – „jak dobrze": wydajność, kompatybilność, użyteczność, niezawodność, bezpieczeństwo, utrzymywalność, przenaszalność (ISO/IEC 25010). Często wymagają specyficznych środowisk.</li>
-        <li><b>Czarnoskrzynkowe</b> – na podstawie specyfikacji; weryfikują zgodność zachowania.</li>
-        <li><b>Białoskrzynkowe</b> – na podstawie struktury/implementacji; celem jest pokrycie struktury.</li>
+        <li>wydajność działania</li>
+        <li>kompatybilność</li>
+        <li>użyteczność (znana również jako zdolność do interakcji)</li>
+        <li>niezawodność</li>
+        <li>zabezpieczenia</li>
+        <li>utrzymywalność</li>
+        <li>przenaszalność (znana również jako elastyczność)</li>
+        <li>bezpieczeństwo</li>
       </ul>
-      <h4>2.2.3 Testy potwierdzające i regresji</h4>
-      <p><b>Potwierdzające</b> – sprawdzają, czy poprawka usunęła defekt (odtworzenie kroków lub nowe testy dla zmienionych obszarów). <b>Regresji</b> – upewniają, że zmiany nie zepsuły obszarów niezmienianych; poprzedzone analizą wpływu; świetni kandydaci do automatyzacji (uruchamiane wielokrotnie w CI/CD) na wielu poziomach.</p>
+
+      <p>W pewnych przypadkach wskazane jest rozpoczęcie testowania niefunkcjonalnego na wczesnym etapie cyklu wytwarzania (np. w ramach przeglądów oraz testowania modułowego lub systemowego). Podstawą wielu testów niefunkcjonalnych są testy funkcjonalne — w praktyce wykorzystywane są te same testy funkcjonalne, ale celem jest sprawdzenie, czy podczas wykonywania danej funkcji spełniane są wymogi niefunkcjonalne (np. czy funkcja jest wykonywana w określonym czasie lub czy można ją przenieść na nową platformę). Zbyt późne wykrycie defektów odnoszących się do charakterystyk niefunkcjonalnych może być bardzo dużym zagrożeniem dla powodzenia projektu. Do wykonania testowania niefunkcjonalnego może być niekiedy niezbędne bardzo konkretne środowisko testowe, takie jak laboratorium użyteczności w przypadku testowania użyteczności.</p>
+
+      <p><b>Testowanie czarnoskrzynkowe</b> (patrz podrozdział 4.2) opiera się na specyfikacjach, a testy wyprowadza się na podstawie dokumentacji niezwiązanej z wewnętrzną strukturą przedmiotu testów. Głównym celem testowania czarnoskrzynkowego jest sprawdzenie zachowania systemu pod kątem zgodności ze specyfikacją.</p>
+
+      <p><b>Testowanie białoskrzynkowe</b> (patrz podrozdział 4.3) ma charakter strukturalny, a testy wyprowadza się na podstawie implementacji lub struktury wewnętrznej danego systemu (np. kodu, architektury, przepływów pracy i przepływów danych). Głównym celem testowania białoskrzynkowego jest uzyskanie akceptowalnego poziomu pokrycia testowego bazowej struktury systemu.</p>
+
+      <p>Wszystkie cztery typy testów wymienione powyżej można stosować na wszystkich poziomach testów, chociaż działania podejmowane na każdym z tych poziomów będą inaczej ukierunkowane. Do wyprowadzania warunków testowych i przypadków testowych na potrzeby wszystkich wspomnianych typów testów można używać różnych technik testowania.</p>
+
+      <h4>2.2.3 Testowanie potwierdzające i testowanie regresji</h4>
+      <p>W modułach lub systemach są często wprowadzane zmiany mające na celu rozszerzenie funkcjonalności poprzez dodanie nowego elementu bądź przywrócenie prawidłowej funkcjonalności poprzez usunięcie defektu. Oznacza to, że proces testowania powinien również obejmować testowanie potwierdzające i testowanie regresji.</p>
+
+      <p><b>Testowanie potwierdzające</b> ma na celu sprawdzenie, czy pierwotny defekt został pomyślnie usunięty. Zależnie od poziomu ryzyka skorygowaną wersję oprogramowania można przetestować na kilka sposobów, w tym poprzez:</p>
+      <ul>
+        <li>wykonanie wszystkich przypadków testowych, które wcześniej nie zostały zaliczone z powodu defektu lub</li>
+        <li>dodanie nowych testów w celu pokrycia ewentualnych zmian, które były niezbędne do usunięcia defektu</li>
+      </ul>
+
+      <p>Jeśli jednak przy usuwaniu defektów brakuje czasu lub środków finansowych, testowanie potwierdzające można ograniczyć do wykonania kroków testowych potrzebnych do odtworzenia awarii spowodowanej defektem i sprawdzenia, czy tym razem ona nie występuje.</p>
+
+      <p><b>Testowanie regresji</b> pozwala sprawdzić, czy wprowadzona zmiana (w tym także poprawka, która była już przedmiotem testowania potwierdzającego) nie spowodowała negatywnych konsekwencji. Konsekwencje takie mogą dotyczyć modułu, w którym wprowadzono zmianę, innych modułów tego samego systemu, a nawet innych podłączonych systemów, w związku z czym testowanie regresji może wykraczać poza przedmiot testów i obejmować również środowisko, w którym się on znajduje. Dlatego zalecane jest wykonywanie w pierwszej kolejności analizy wpływu mającej na celu zoptymalizowanie zasięgu testowania regresji, co pozwoli wskazać elementy oprogramowania, na które będzie mogła wpłynąć wprowadzona zmiana.</p>
+
+      <p>Zestawy testów regresji są wykonywane wielokrotnie, a liczba związanych z nimi przypadków testowych rośnie z każdą iteracją lub każdą wersją, w związku z czym testowanie regresji świetnie nadaje się do automatyzacji. Dlatego też automatyzację tego rodzaju testów należy rozpocząć na początkowym etapie projektu. Automatyzacja testów regresji jest również dobrą praktyką w przypadku korzystania z mechanizmu ciągłej integracji — na przykład w ramach metodyki DevOps (patrz sekcja 2.1.4). Zależnie od sytuacji, automatyzacja ta może obejmować testy regresji na różnych poziomach testów.</p>
+
+      <p>Testowanie potwierdzające i/lub testowanie regresji należy wykonywać w odniesieniu do przedmiotu testów na wszystkich poziomach testów, na których zostały usunięte defekty i/lub wprowadzone zmiany.</p>
       <h3>2.3 Testowanie pielęgnacyjne</h3>
-      <p>Pielęgnacja obejmuje działania naprawcze, adaptacje do zmian środowiska oraz usprawnienia wydajności/utrzymywalności. Testowanie pielęgnacyjne może być planowane lub doraźne (<i>hot‑fix</i>) i wymaga analizy wpływu, testów zmiany i szerokiej regresji.</p>
-      <p><b>Wyzwalacze</b>: modyfikacje (nowe wersje, poprawki), uaktualnienia/migracje środowiska (w tym konwersje danych), wycofanie (archiwizacja i ewentualne procedury odtworzenia danych).</p>`,
+      <p>Wyróżnia się kilka kategorii testowania pielęgnacyjnego. <b>Pielęgnacja może obejmować między innymi:</b></p>
+      <ul>
+        <li>działania naprawcze</li>
+        <li>działania wynikające z konieczności dostosowania oprogramowania do zmian w środowisku</li>
+        <li>działania mające na celu zwiększenie wydajności lub utrzymywalności</li>
+      </ul>
+      
+      <p>(Szczegółowe informacje na ten temat zawiera standard <b>ISO/IEC 14764</b>).</p>
+
+      <p>Tym samym <b>testowanie pielęgnacyjne może wynikać z wdrożenia oprogramowania lub przekazania go do eksploatacji zarówno w sposób planowy, jak i niezaplanowany</b> — na przykład w związku z poprawkami doraźnymi (ang. hot fix).</p>
+
+      <p><b>Przed dokonaniem zmiany można przeprowadzić analizę wpływu</b>, aby ustalić, czy zmianę tę należy faktycznie wprowadzić (z uwagi na potencjalne konsekwencje w innych obszarach systemu). Ponadto jeśli dany system znajduje się w eksploatacji, testowanie zmian obejmuje zarówno sprawdzenie, czy zmiana została wprowadzona pomyślnie, jak i wykrycie ewentualnych regresji w niezmienionych częściach systemu (czyli zwykle w większości jego obszarów).</p>
+
+      <p><b>Na zakres testowania pielęgnacyjnego wpływają zwykle:</b></p>
+      <ul>
+        <li>poziom ryzyka związanego ze zmianą</li>
+        <li>wielkość dotychczasowego systemu</li>
+        <li>wielkość wprowadzonej zmiany</li>
+      </ul>
+
+      <p><b>Zdarzenia wywołujące pielęgnację i testowanie pielęgnacyjne można podzielić na następujące kategorie:</b></p>
+
+      <p><b>• Modyfikacje.</b> Ta kategoria obejmuje między innymi zaplanowane udoskonalenia (wprowadzane w postaci nowych wersji oprogramowania), zmiany korekcyjne i poprawki doraźne.</p>
+
+      <p><b>• Uaktualnienia lub migracje środowiska produkcyjnego.</b> Ta kategoria obejmuje między innymi przejście z jednej platformy na inną, co może wiązać się z koniecznością przeprowadzenia testów związanych z nowym środowiskiem i zmienionym oprogramowaniem bądź testów konwersji danych (w przypadku migracji danych z innej aplikacji do pielęgnowanego systemu).</p>
+
+      <p><b>• Wycofanie.</b> Ta kategoria dotyczy sytuacji, w której okres użytkowania aplikacji dobiega końca. W przypadku wycofywania systemu może być konieczne przetestowanie archiwizacji danych, jeśli zachodzi potrzeba ich przechowywania przez dłuższy czas. Ponadto jeśli w okresie archiwizacji będzie wymagany dostęp do niektórych danych, może być konieczne przetestowanie procedur przywracania i odtwarzania danych po archiwizacji.</p>`,
     flashcards:[
       {q:"Wymień 5 poziomów testów z sylabusa.", a:"Modułowe, integracja modułów, systemowe, integracja systemów, akceptacyjne."},
       {q:"Czym różni się test potwierdzający od regresji?", a:"Potwierdzający sprawdza, czy usunięty defekt zniknął; regresja – czy zmiany nie zepsuły obszarów niezmienianych (może być szeroka)."},
@@ -461,7 +658,12 @@ const syllabus = [
       {q:"Które twierdzenie o DevOps jest prawdziwe?", opt:["Eliminuje testy manualne","Wymaga CI/CD i zwiększa automatyzację","Dotyczy tylko operacji","Nie łączy się z shift‑left"], a:1},
       {q:"Który zestaw to <i>typy</i> testów, a nie poziomy?", opt:["Funkcjonalne, niefunkcjonalne, białoskrzynkowe","Modułowe, integracja, systemowe","Modułowe, akceptacyjne, UAT","Integracja systemów, integracja modułów"], a:0},
       {q:"Najlepsza definicja shift‑left?", opt:["Przenosimy testy z UAT do produkcji","Wcześniejsze uruchamianie przeglądów i testów","Testujemy tylko manualnie","Zwiększamy liczbę testów E2E"], a:1},
-      {q:"Testy potwierdzające …", opt:["to to samo co regresja","sprawdzają konkretną poprawkę","zawsze obejmują pełny system","są wyłącznie automatyczne"], a:1}
+      {q:"Testy potwierdzające …", opt:["to to samo co regresja","sprawdzają konkretną poprawkę","zawsze obejmują pełny system","są wyłącznie automatyczne"], a:1},
+      {q:"Które stwierdzenie o TDD jest prawdziwe?", opt:["TDD to testowanie po napisaniu kodu","TDD to pisanie testów przed kodem","TDD to tylko testy jednostkowe","TDD eliminuje potrzebę testowania manualnego"], a:1, exp:"TDD (Test-Driven Development) to pisanie testów przed napisaniem kodu implementującego funkcjonalność."},
+      {q:"Co to jest testowanie pielęgnacyjne?", opt:["Testowanie nowych funkcji","Testowanie istniejącego oprogramowania po zmianach","Testowanie tylko w produkcji","Testowanie tylko automatyczne"], a:1, exp:"Testowanie pielęgnacyjne to testowanie istniejącego oprogramowania po wprowadzeniu zmian."},
+      {q:"Który model SDLC jest sekwencyjny?", opt:["Model spiralny","Model kaskadowy (waterfall)","Scrum","Kanban"], a:1, exp:"Model kaskadowy (waterfall) to przykład sekwencyjnego modelu SDLC."},
+      {q:"Co oznacza ATDD?", opt:["Automated Test-Driven Development","Acceptance Test-Driven Development","Agile Test-Driven Development","Advanced Test-Driven Development"], a:1, exp:"ATDD to Acceptance Test-Driven Development - wytwarzanie sterowane testami akceptacyjnymi."},
+      {q:"Które testy są wykonywane na najniższym poziomie?", opt:["Testy systemowe","Testy integracji modułów","Testy modułowe","Testy akceptacyjne"], a:2, exp:"Testy modułowe są wykonywane na najniższym poziomie, testując pojedyncze komponenty."}
     ]
   },
   {
@@ -469,51 +671,170 @@ const syllabus = [
     title:"3. Testowanie statyczne",
     read:`<h2>3. Testowanie statyczne</h2>
       <h3>3.1 Podstawy testowania statycznego</h3>
-      <p>W przeciwieństwie do testowania dynamicznego <b>testowanie statyczne</b> nie wymaga uruchamiania
-      oprogramowania. Jakość kodu, specyfikacji procesów, architektury oraz innych produktów pracy ocenia
-      się poprzez ich <b>manualne zbadanie</b> (przeglądy) lub przy użyciu <b>narzędzi</b> (analiza statyczna). Celem jest
-      wczesne wykrywanie defektów oraz ocena takich charakterystyk jak: czytelność, kompletność,
-      poprawność, spójność i <b>testowalność</b>. Testowanie statyczne wspiera zarówno <b>weryfikację</b>
-      (zgodność ze specyfikacją), jak i <b>walidację</b> (czy artefakt odpowiada potrzebom interesariuszy).</p>
-      <p>W praktyce testerzy, przedstawiciele biznesu i programiści współpracują w sesjach <i>example mapping</i>,
-      wspólnym pisaniu historyjek i doprecyzowywaniu backlogu (Definition of Ready), stosując techniki
-      przeglądu, aby upewnić się, że historyjki i kryteria akceptacji są <b>kompletne, jednoznaczne i testowalne</b>.</p>
-      <p><b>Analiza statyczna</b> pozwala rozpoznać problemy zanim powstaną testy dynamiczne; zwykle jest mniej
-      pracochłonna (nie wymaga projektowania przebiegów) i dobrze integruje się z CI/CD. Oprócz wykrywania
-      konkretnych defektów kodu może też oceniać <b>utrzymywalność</b> i <b>zabezpieczenia</b>. Przykłady narzędzi:
-      lintery, analizatory jakości kodu, skanery SAST, a nawet sprawdzacze pisowni/czytelności dla dokumentów.</p>
+      <p>W przeciwieństwie do testowania dynamicznego <b>testowanie statyczne nie wymaga uruchamiania testowanego oprogramowania</b>. W testowaniu statycznym oceny kodu, specyfikacji procesów, specyfikacji architektury systemu i innych produktów pracy dokonuje się poprzez ich manualne zbadanie (np. w ramach przeglądu) lub poprzez zastosowanie odpowiedniego narzędzia (np. w ramach analizy statycznej).</p>
+
+      <p>Wśród celów testowania statycznego można wymienić <b>podnoszenie jakości, wykrywanie defektów oraz ocenianie charakterystyk takich jak czytelność, kompletność, poprawność, testowalność czy spójność</b>. Testowanie statyczne można stosować zarówno w przypadku weryfikacji, jak i w przypadku walidacji.</p>
+
+      <p><b>Testerzy, przedstawiciele jednostek biznesowych (właściciele produktu, analitycy biznesowi, itp.) i programiści współpracują ze sobą</b> podczas sesji mapowania przykładów (ang. example mapping), wspólnego pisania historyjek użytkownika i doprecyzowywania backlogu (ang. backlog refinement sessions), dbając o to, aby historyjki użytkownika i związane z nimi produkty pracy były zgodne z określonymi kryteriami — na przykład z definicją gotowości (ang. Definition of Ready, patrz sekcja 5.1.3).</p>
+
+      <p>Mogą oni przy tym korzystać z technik przeglądu, aby zyskać pewność, że tworzone historyjki użytkownika są kompletne i zrozumiałe oraz zawierają testowalne kryteria akceptacji. <b>Zadając właściwe pytania, testerzy mogą również badać, kwestionować i udoskonalać proponowane historyjki użytkownika.</b></p>
+
+      <p><b>Analiza statyczna pozwala rozpoznać problemy przed rozpoczęciem testowania dynamicznego</b>, a przy tym jest często mniej pracochłonna, ponieważ nie wymaga tworzenia przypadków testowych i odbywa się zwykle z wykorzystaniem narzędzi (patrz rozdział 6). Często jest też elementem mechanizmów ciągłej integracji (patrz sekcja 2.1.4).</p>
+
+      <p>Chociaż głównym zastosowaniem analizy statycznej jest wykrywanie konkretnych defektów kodu, metoda ta może również służyć do oceny utrzymywalności i poziomu zabezpieczenia systemu. <b>Przykładami narzędzi do analizy statycznej są również narzędzia do sprawdzania pisowni i czytelności.</b></p>
+
       <h4>3.1.1 Produkty pracy badane metodą testowania statycznego</h4>
-      <p>Techniki statyczne można zastosować do niemal każdego artefaktu: wymagania, modele i projekty,
-      karty opisu testów, plany testów, przypadki testowe, pozycje backlogu, umowy, kod źródłowy.
-      <b>Przeglądy</b> działają na każdym czytelnym materiale; <b>analiza statyczna</b> wymaga struktury (kod/model języka
-      formalnego). Nie nadają się artefakty nieinterpretowalne przez ludzi lub prawnie zabronione do analizy
-      narzędziowej (np. binaria vendorów).</p>
-      <h4>3.1.2 Korzyści testowania statycznego</h4>
+      <p>Przy użyciu technik testowania statycznego można zbadać niemal wszystkie produkty pracy, na przykład:</p>
       <ul>
-        <li><b>Wczesna detekcja</b> defektów (realizacja zasady <i>early testing</i>) i wykrywanie problemów, których nie
-        ujawnią testy dynamiczne (np. martwy kod, błędne wzorce, luki w wymaganiach).</li>
-        <li><b>Ocena jakości</b> produktów pracy oraz <b>zaufanie</b> do nich; wypracowanie wspólnego rozumienia między
-        interesariuszami i usprawnienie komunikacji.</li>
-        <li><b>Niższy koszt</b> całkowity – wcześniejsze poprawki są tańsze niż naprawy późne.</li>
-        <li><b>Automatyzowalność</b> – analiza statyczna w CI obniża liczbę defektów i przyspiesza pętlę feedbacku.</li>
+        <li>dokumenty zawierające specyfikacje wymagań</li>
+        <li>kod źródłowy</li>
+        <li>plany testów</li>
+        <li>przypadki testowe</li>
+        <li>pozycje backlogu (ang. product backlog items)</li>
+        <li>karty opisu testów</li>
+        <li>dokumentację projektu</li>
+        <li>umowy</li>
+        <li>modele</li>
       </ul>
+
+      <p>Należy jednak pamiętać, że o ile przedmiotem przeglądu może być dowolny produkt pracy, który da się przeczytać i zrozumieć, o tyle w przypadku analizy statycznej niezbędna jest struktura (np. modele, kod lub tekst z formalną składnią), względem której można sprawdzić badane produkty pracy.</p>
+
+      <p><b>Do produktów pracy, które nie nadają się do objęcia testowaniem statycznym, należą między innymi:</b></p>
+      <ul>
+        <li>produkty trudne do zinterpretowania przez człowieka</li>
+        <li>produkty, których nie należy analizować za pomocą narzędzi (np. kod wykonywalny innych firm, którego nie wolno badać ze względów prawnych)</li>
+      </ul>
+
+      <h4>3.1.2 Korzyści wynikające z testowania statycznego</h4>
+      <p><b>Testowanie statyczne pozwala wykryć defekty w najwcześniejszych fazach cyklu wytwarzania oprogramowania</b>, a tym samym realizuje zasadę wczesnego testowania (patrz podrozdział 1.3). Ponadto metoda ta umożliwia identyfikowanie defektów, których nie da się wykryć podczas testowania dynamicznego — takich jak nieosiągalny kod, niewłaściwie zaimplementowane wzorce projektowe czy defekty w niewykonywalnych produktach pracy.</p>
+
+      <p><b>Testowanie statyczne umożliwia dokonywanie oceny jakości produktów pracy i budowanie zaufania do nich.</b> Weryfikując udokumentowane wymagania, interesariusze mogą upewnić się, że opisują one ich rzeczywiste potrzeby. Ponadto — z uwagi na fakt, że testowanie statyczne można wykonywać we wczesnych fazach cyklu wytwarzania oprogramowania — zaangażowani w ten proces interesariusze mogą wypracować wspólny punkt widzenia.</p>
+
+      <p><b>Inną ważną korzyścią jest usprawnienie wymiany informacji pomiędzy interesariuszami.</b> Z tego powodu zaleca się, aby w proces testowania statycznego zaangażowane było możliwie szerokie grono zainteresowanych osób.</p>
+
+      <p>Chociaż przeprowadzanie przeglądów może być kosztowne, łączne koszty projektu są zwykle dużo niższe niż w przypadku rezygnacji z tego procesu, ponieważ dzięki przeglądom zmniejsza się czasochłonność i pracochłonność usuwania defektów na późniejszych etapach projektu.</p>
+
+      <p><b>Analiza statyczna pozwala wykrywać określone defekty kodu bardziej efektywnie niż testowanie dynamiczne</b>, co przekłada się zwykle na zmniejszenie liczby tego rodzaju defektów oraz obniżenie łącznych nakładów pracy związanych z wytwarzaniem oprogramowania.</p>
+
       <h4>3.1.3 Różnice między testowaniem statycznym a dynamicznym</h4>
+      <p>Testowanie statyczne i testowanie dynamiczne wzajemnie się uzupełniają. Techniki te mają podobne cele, takie jak wspomaganie wykrywania defektów w produktach pracy (patrz sekcja 1.1.1), ale różnią się pod pewnymi względami, które opisano poniżej.</p>
+
       <ul>
-        <li>Statyczne <b>bezpośrednio</b> wykrywa defekty w artefaktach; dynamiczne wywołuje <b>awarie</b> i analizuje ich
-        przyczyny.</li>
-        <li>Statyczne dotyczy również artefaktów <b>niewykonywalnych</b>; dynamiczne – tylko wykonywalnych.</li>
-        <li>Statyczne łatwiej ujawnia defekty na <b>rzadkich ścieżkach</b> lub trudno osiągalnych w runtime.</li>
-        <li>Statyczne mierzy cechy niezależne od wykonania (np. utrzymywalność); dynamiczne – zależne od wykonania (np. wydajność).</li>
+        <li><b>Zarzówno testowanie statyczne, jak i testowanie dynamiczne (z analizą awarii) może prowadzić do wykrycia defektów, jednak istnieją pewne rodzaje defektów, które można wykryć tylko jedną z powyższych metod.</b></li>
+        <li><b>Testowanie statyczne umożliwia bezpośrednie wykrywanie defektów, natomiast testowanie dynamiczne powoduje występowanie awarii, które są następnie analizowane w celu zidentyfikowania związanych z nimi defektów.</b></li>
+        <li><b>Testowanie statyczne pozwala łatwiej wykryć defekty, które znajdują się na rzadko wykonywanych ścieżkach w kodzie lub w miejscach trudno dostępnych podczas testowania dynamicznego.</b></li>
+        <li><b>Testowanie statyczne można stosować do niewykonywalnych produktów pracy, a testowanie dynamiczne — tylko do produktów pracy wykonywalnych.</b></li>
+        <li><b>Testowanie statyczne może służyć do mierzenia charakterystyk jakościowych, które nie są zależne od wykonywania kodu (takich jak utrzymywalność), a testowanie dynamiczne — do mierzenia charakterystyk jakościowych zależnych od wykonywania kodu (takich jak wydajność).</b></li>
       </ul>
-      <p><b>Typowe defekty</b> skutecznie wykrywane statycznie: niespójności i niejednoznaczności w wymaganiach;
-      w projektach – błędna modularyzacja, struktury danych; w kodzie – niezainicjowane/niezadeklarowane
-      zmienne, nieosiągalny lub zduplikowany kod, nadmierna złożoność; odchylenia od standardów; błędne
-      specyfikacje interfejsów; podatności bezpieczeństwa; luki w pokryciu kryteriów akceptacji.</p>
-      <h4>Przeglądy – typy i role (skrót)</h4>
+
+      <p><b>Przykładami typowych defektów, które są łatwiejsze i/lub tańsze do wykrycia przy zastosowaniu metody testowania statycznego, są między innymi:</b></p>
+
+      <p><b>• Defekty w wymaganiach</b> (np. niespójności, niejednoznaczności, sprzeczności, przeoczenia, nieścisłości czy powtórzenia)</p>
+
+      <p><b>• Defekty w projekcie</b> (np. nieefektywne struktury baz danych bądź niewłaściwa modularyzacja)</p>
+
+      <p><b>• Niektóre typy defektów w kodzie</b> (np. zmienne z niezdefiniowanymi wartościami, niezadeklarowane zmienne, nieosiągalny lub wielokrotnie powtórzony kod bądź kod o nadmiernej złożoności)</p>
+
+      <p><b>• Odchylenia od standardów</b> (np. brak zgodności z konwencjami nazewnictwa określonymi w standardach tworzenia kodu)</p>
+
+      <p><b>• Niepoprawne specyfikacje interfejsów</b> (np. niezgodność liczby, typu lub kolejności parametrów)</p>
+
+      <p><b>• Określone rodzaje słabych punktów zabezpieczeń</b> (np. podatność na przepełnienie bufora)</p>
+
+      <p><b>• Luki lub nieścisłości w pokryciu podstawy testów</b> (np. brak testów odpowiadających kryteriom akceptacji)</p>
+      <h3>3.2 Informacje zwrotne i proces przeglądu</h3>
+
+      <h4>3.2.1 Korzyści wynikające z wczesnego i częstego otrzymywania informacji zwrotnych od interesariuszy</h4>
+      <p><b>Przekazywane w odpowiednim czasie i z odpowiednią częstotliwością informacje zwrotne umożliwiają wczesne rozpoznawanie i sygnalizowanie potencjalnych problemów z jakością.</b> Jeśli zaangażowanie interesariuszy w trakcie cyklu wytwarzania oprogramowania jest niewielkie, wytwarzany produkt może okazać się niezgodny z ich pierwotną lub obecną wizją.</p>
+
+      <p><b>Niespełnienie oczekiwań interesariuszy może mieć poważne konsekwencje, takie jak:</b></p>
       <ul>
-        <li><b>Typy:</b> nieformalny, przejrzenie (autor prowadzi), przegląd techniczny (moderator), inspekcja (najbardziej formalna, metryki).</li>
-        <li><b>Role:</b> kierownik, autor, moderator, protokolant, przeglądający, lider przeglądu.</li>
-        <li><b>Czynniki sukcesu:</b> jasne cele i kryteria, właściwy dobór typu, małe partie materiału, czas na przygotowanie, kultura informacji zwrotnej.</li>
+        <li>konieczność wprowadzenia kosztownych poprawek</li>
+        <li>niedotrzymanie terminów</li>
+        <li>przerzucanie się odpowiedzialnością</li>
+        <li>a nawet niepowodzenie całego projektu</li>
+      </ul>
+
+      <p><b>Częste przekazywanie przez interesariuszy informacji zwrotnych we wszystkich fazach cyklu wytwarzania oprogramowania pozwala:</b></p>
+      <ul>
+        <li>zapobiec ewentualnym nieporozumieniom w kwestii wymagań</li>
+        <li>umożliwić szybsze analizowanie i wprowadzanie ewentualnych zmian</li>
+        <li>dysponować lepszą wiedzą na temat budowanego systemu</li>
+        <li>skoncentrować się na działaniach, które przynoszą interesariuszom największe korzyści</li>
+        <li>najskuteczniej łagodzić zidentyfikowane ryzyka</li>
+      </ul>
+
+      <h4>3.2.2 Czynności wykonywane w procesie przeglądu</h4>
+      <p>W standardzie <b>ISO/IEC 20246</b> zdefiniowano ogólny proces przeglądu, który wyznacza usystematyzowane, a zarazem elastyczne ramy będące podstawą do wypracowania szczegółowego procesu dostosowanego do konkretnej sytuacji. Jeśli wymagany przegląd ma charakter bardziej formalny, konieczne jest wykonanie większej liczby zadań opisanych w kontekście poszczególnych czynności.</p>
+
+      <p>Wiele produktów pracy ma zbyt duże rozmiary, aby można je było objąć pojedynczym przeglądem. W takiej sytuacji w celu przeanalizowania całego produktu pracy proces przeglądu można przeprowadzić wielokrotnie.</p>
+
+      <p><b>W procesie przeglądu można wyróżnić następujące czynności:</b></p>
+
+      <p><b>• Planowanie.</b> W fazie planowania określa się zakres przeglądu, w tym cel przeglądu, produkt pracy będący jego przedmiotem, oceniane charakterystyki jakościowe, obszary wymagające szczególnej uwagi, kryteria wyjścia, informacje pomocnicze (takie jak standardy), nakład pracy oraz ramy czasowe.</p>
+
+      <p><b>• Rozpoczęcie przeglądu.</b> Na etapie rozpoczęcia przeglądu należy upewnić się, że wszystkie zaangażowane osoby i wszystkie niezbędne elementy są gotowe do jego wykonania. Należy między innymi sprawdzić, czy każdy uczestnik ma dostęp do produktu pracy będącego przedmiotem przeglądu, zna swoją rolę i swoje obowiązki oraz otrzymał wszystkie materiały niezbędne do przeprowadzenia przeglądu.</p>
+
+      <p><b>• Przegląd indywidualny.</b> Każdy przeglądający dokonuje przeglądu indywidualnego, aby ocenić jakość produktu pracy będącego przedmiotem przeglądu oraz zidentyfikować ewentualne anomalie, zalecenia i pytania, korzystając w tym celu z jednej lub kilku technik przeglądu (takich jak przegląd oparty na liście kontrolnej czy przegląd oparty na scenariuszach). Dokładniejsze informacje na temat poszczególnych technik przeglądu zawiera standard ISO/IEC 20246. Przeglądający odnotowują wszystkie zidentyfikowane przez siebie anomalie, zalecenia i pytania.</p>
+
+      <p><b>• Przekazanie informacji i analiza.</b> Z uwagi na to, że anomalie zidentyfikowane w trakcie przeglądu nie muszą być defektami, konieczne jest przeanalizowanie i omówienie każdej z nich, a następnie określenie jej statusu, wyznaczenie osoby odpowiedzialnej i wskazanie wymaganych działań. Zwykle odbywa się to w ramach spotkania związanego z przeglądem, podczas którego uczestnicy podejmują również decyzję co do poziomu jakości produktu pracy będącego przedmiotem przeglądu oraz wymaganych dalszych działań. Może się również okazać, że zakończenie podjętych działań będzie wymagało zorganizowania kolejnego przeglądu.</p>
+
+      <p><b>• Usunięcie defektów i raportowanie.</b> W odniesieniu do każdego defektu należy sporządzić raport o defekcie, aby umożliwić zweryfikowanie wykonania działań naprawczych. Po spełnieniu kryteriów wyjścia można dokonać odbioru produktu pracy. Wyniki przeglądu należy ująć w raporcie.</p>
+
+      <h4>3.2.3 Role i obowiązki w przeglądach</h4>
+      <p>W przeglądach uczestniczą różni interesariusze, którzy mogą pełnić kilka ról. Poniżej omówiono najważniejsze role i związane z nimi odpowiedzialności:</p>
+
+      <p><b>• Kierownik</b> — decyduje o tym, co ma być przedmiotem przeglądu, a także udostępnia niezbędne zasoby — w tym wyznacza pracowników oraz określa ramy czasowe przeglądu.</p>
+
+      <p><b>• Autor</b> — tworzy produkt pracy będący przedmiotem przeglądu i usuwa występujące w nim defekty.</p>
+
+      <p><b>• Moderator</b> (zwany także facylitatorem) — dba o sprawny przebieg spotkań związanych z przeglądem. Występuje w roli mediatora, zarządza czasem oraz zapewnia bezpieczne warunki, w których każdy uczestnik przeglądu może swobodnie wyrażać swoje zdanie.</p>
+
+      <p><b>• Protokolant</b> (zwany także rejestrującym) — gromadzi informacje o anomaliach przekazane przez przeglądających takie jak decyzje i nowe anomalie znalezione podczas spotkania przeglądowego i protokołuje informacje związane z przeglądem, w tym informacje o podjętych decyzjach oraz o nowych anomaliach stwierdzonych w trakcie spotkania związanego z przeglądem.</p>
+
+      <p><b>• Przeglądający</b> — wykonuje przegląd. Rolę tę może pełnić osoba pracująca przy projekcie, ekspert merytoryczny lub dowolny inny interesariusz.</p>
+
+      <p><b>• Lider przeglądu</b> — ponosi ogólną odpowiedzialność za przegląd, w tym decyduje o tym, kto ma wziąć udział w przeglądzie, oraz określa miejsce i termin przeglądu.</p>
+
+      <p>Oprócz ról opisanych powyżej mogą również występować bardziej szczegółowe role opisane w standardzie ISO/IEC 20246.</p>
+
+      <h4>3.2.4 Typy przeglądów</h4>
+      <p>Istnieje wiele typów przeglądów — od nieformalnych po formalne. <b>Wymagany stopień sformalizowania przeglądu zależy od takich czynników jak:</b></p>
+      <ul>
+        <li>przyjęty model cyklu wytwarzania oprogramowania</li>
+        <li>dojrzałość procesu wytwarzania oprogramowania</li>
+        <li>krytyczność i złożoność produktu pracy będącego przedmiotem przeglądu</li>
+        <li>wymogi prawne</li>
+        <li>konieczność prowadzenia ścieżki audytu</li>
+      </ul>
+
+      <p>Ten sam produkt pracy może być objęty różnymi typami przeglądów, na przykład najpierw przeglądem nieformalnym, a następnie przeglądem bardziej sformalizowanym.</p>
+
+      <p><b>Wybór właściwego typu przeglądu ma zasadnicze znaczenie dla osiągnięcia wymaganych celów przeglądu.</b> Wyboru tego dokonuje się nie tylko na podstawie celów, ale również na podstawie czynników takich jak: potrzeby projektu, dostępne zasoby, typ produktu pracy i związane z nim ryzyka, dziedzina biznesowa oraz kultura organizacyjna firmy.</p>
+
+      <p><b>Poniżej omówiono kilka często stosowanych typów przeglądów:</b></p>
+
+      <p><b>• Przegląd nieformalny.</b> Przeglądy nieformalne nie przebiegają zgodnie ze zdefiniowanym procesem, a uzyskanych dzięki nim informacji nie trzeba formalnie dokumentować. Głównym celem jest wykrycie anomalii.</p>
+
+      <p><b>• Przejrzenie.</b> Przejrzenie, które prowadzi autor, może służyć wielu celom, takim jak: dokonanie oceny jakości produktu pracy i zwiększenie zaufania do niego, edukowanie przeglądających, osiągnięcie konsensusu, wygenerowanie nowych pomysłów, zmotywowanie autorów do udoskonalania przyszłych produktów pracy i stworzenie im warunków do tego oraz wykrycie anomalii. Przed rozpoczęciem przejrzenia przeglądający mogą przeprowadzić przegląd indywidualny, ale nie jest to konieczne.</p>
+
+      <p><b>• Przegląd techniczny.</b> Przegląd techniczny wykonują przeglądający, którzy dysponują odpowiednimi kwalifikacjami technicznymi, a nad przebiegiem procesu czuwa moderator. Celem przeglądu technicznego jest nie tylko osiągnięcie konsensusu i podjęcie decyzji w sprawie problemu technicznego, ale również wykrycie anomalii, dokonanie oceny jakości produktu pracy i zwiększenie zaufania do niego, wygenerowanie nowych pomysłów oraz zmotywowanie autorów do wprowadzania udoskonaleń i stworzenie im warunków do tego.</p>
+
+      <p><b>• Inspekcja.</b> Inspekcja jest najbardziej formalnym typem przeglądu, w związku z czym odbywa się zgodnie z pełnym ogólnym procesem przeglądu. Głównym celem jest wykrycie jak największej liczby anomalii, a pozostałe cele to: dokonanie oceny jakości produktu pracy i zwiększenie zaufania do niego oraz zmotywowanie autorów do wprowadzania udoskonaleń i stworzenie im warunków do tego. Zbierane są metryki wykorzystywane następnie do udoskonalania cyklu wytwarzania oprogramowania (w tym procesu inspekcji). W ramach inspekcji autor nie może być liderem przeglądu ani protokolantem.</p>
+
+      <h4>3.2.5 Czynniki powodzenia związane z przeglądami</h4>
+      <p>Można wyróżnić kilka czynników, które decydują o pomyślnym przebiegu przeglądu, w tym:</p>
+
+      <ul>
+        <li><b>określenie jednoznacznych celów i mierzalnych kryteriów wyjścia</b> (przy czym celem nie powinna być w żadnym razie ocena uczestników)</li>
+        <li><b>wybór odpowiedniego typu przeglądu</b>, który pozwoli osiągnąć zakładane cele oraz będzie odpowiedni do typu produktu pracy, uczestników przeglądu, potrzeb projektu i kontekstu</li>
+        <li><b>przeprowadzanie przeglądów w odniesieniu do mniejszych partii materiału</b>, tak aby przeglądający nie tracili koncentracji podczas przeglądu indywidualnego i/lub spotkania związanego z przeglądem (jeśli jest organizowane)</li>
+        <li><b>przekazywanie informacji zwrotnych z przeglądów interesariuszom i autorom</b>, tak aby mogli oni udoskonalać produkt i usprawniać swoje działania</li>
+        <li><b>wyznaczenie uczestnikom wystarczającej ilości czasu na przygotowanie się do przeglądu</b></li>
+        <li><b>uzyskanie wsparcia kierownictwa dla procesu przeglądu</b></li>
+        <li><b>włączenie przeglądów w kulturę organizacyjną</b> w celu stworzenia atmosfery sprzyjającej poszerzaniu wiedzy i doskonaleniu procesów</li>
+        <li><b>zapewnienie wszystkim uczestnikom należytego przeszkolenia</b> niezbędnego do prawidłowego wykonywania wyznaczonych im ról</li>
+        <li><b>dbanie o sprawny przebieg spotkań</b></li>
       </ul>`,
     flashcards:[
       {q:"Podaj 2 korzyści z testowania statycznego.", a:"Wczesne wykrycie defektów (tańsze poprawki), możliwość oceny niewykonywalnych artefaktów, poprawa komunikacji, metryki jakości."},
@@ -523,7 +844,12 @@ const syllabus = [
     quiz:[
       {q:"Które stwierdzenie najlepiej odróżnia testowanie statyczne od dynamicznego?", opt:["Statyczne uruchamia kod","Statyczne nie uruchamia kodu i może badać wymagania","Dynamiczne służy tylko do przeglądów","Statyczne wykrywa tylko błędy kompilacji"], a:1},
       {q:"Który typ przeglądu zbiera metryki i ma najsurowszy proces?", opt:["Nieformalny","Przejrzenie","Przegląd techniczny","Inspekcja"], a:3},
-      {q:"Kto NIE jest rolą w przeglądach wg sylabusa?", opt:["Moderator","Product Owner","Protokolant","Przeglądający"], a:1}
+      {q:"Kto NIE jest rolą w przeglądach wg sylabusa?", opt:["Moderator","Product Owner","Protokolant","Przeglądający"], a:1},
+      {q:"Które produkty pracy można badać metodą testowania statycznego?", opt:["Tylko kod źródłowy","Tylko dokumenty","Niemal wszystkie produkty pracy","Tylko plany testów"], a:2, exp:"Testowaniem statycznym można badać niemal wszystkie produkty pracy, w tym wymagania, kod, plany, przypadki testowe, dokumentację."},
+      {q:"Co to jest analiza statyczna?", opt:["Przegląd kodu przez człowieka","Automatyczne badanie kodu bez uruchamiania","Testowanie wydajności","Testowanie bezpieczeństwa"], a:1, exp:"Analiza statyczna to automatyczne badanie kodu bez jego uruchamiania, często z wykorzystaniem narzędzi."},
+      {q:"Które stwierdzenie o testowaniu statycznym jest prawdziwe?", opt:["Jest droższe od testowania dynamicznego","Wymaga tworzenia przypadków testowych","Może być elementem ciągłej integracji","Wykrywa tylko błędy składniowe"], a:2, exp:"Testowanie statyczne może być elementem mechanizmów ciągłej integracji i jest często mniej pracochłonne."},
+      {q:"Który typ przeglądu jest najmniej formalny?", opt:["Inspekcja","Przegląd techniczny","Przejrzenie","Nieformalny"], a:3, exp:"Przegląd nieformalny jest najmniej formalnym typem przeglądu, często odbywa się ad-hoc."},
+      {q:"Co to jest walkthrough?", opt:["Najbardziej formalny typ przeglądu","Przegląd prowadzony przez autora","Automatyczna analiza kodu","Testowanie dynamiczne"], a:1, exp:"Walkthrough to przegląd prowadzony przez autora produktu pracy, mniej formalny niż inspekcja."}
     ]
   },
   {
@@ -531,75 +857,236 @@ const syllabus = [
     title:"4. Analiza i projektowanie testów",
     read:`<h2>4. Analiza i projektowanie testów</h2>
       <h3>4.1 Ogólna charakterystyka technik testowania</h3>
-      <p>Techniki testowania wspierają <b>analizę</b> (co testować) i <b>projektowanie</b> (jak testować). Pozwalają
-      systematycznie wyznaczyć niewielki, lecz wystarczający zbiór przypadków testowych, a także definiować
-      warunki testowe, elementy pokrycia i dane testowe. Zob. ISO/IEC/IEEE 29119‑4 oraz klasyczne opracowania
-      (Beizer, Craig, Copeland, Koomen, Jorgensen, Ammann, Forgács).</p>
-      <p>Techniki dzielimy na: <b>czarnoskrzynkowe</b> (na podstawie specyfikacji – niezależne od implementacji),
-      <b>białoskrzynkowe</b> (na podstawie struktury/implementacji) oraz <b>oparte na doświadczeniu</b>
-      (wykorzystujące wiedzę testera; uzupełniają dwie pierwsze grupy).</p>
+      <p><b>Techniki testowania pomagają testerom w przeprowadzaniu analizy testów</b> (która odpowiada na pytanie „co należy przetestować") oraz w projektowaniu testów (które odpowiada na pytanie „jak należy testować"). Za pomocą tego typu technik można systematycznie opracować stosunkowo niewielki, ale wystarczający zbiór przypadków testowych.</p>
+
+      <p>Ponadto techniki testowania ułatwiają definiowanie warunków testowych oraz identyfikowanie elementów pokrycia i danych testowych na etapie analizy i projektowania testów. Więcej informacji na temat technik testowania i odpowiadających im miar można znaleźć w standardzie <b>ISO/IEC/IEEE 29119-4</b> oraz w (Beizer 1990, Craig 2002, Copeland 2004, Koomen 2006, Jorgensen 2014, Ammann 2016, Forgács 2019).</p>
+
+      <p>W niniejszym sylabusie techniki testowania podzielono na <b>czarnoskrzynkowe, białoskrzynkowe i oparte na doświadczeniu</b>.</p>
+
+      <p><b>Czarnoskrzynkowe techniki testowania</b> (zwane także technikami opartymi na specyfikacji) bazują na analizie wyspecyfikowanego zachowania przedmiotu testów bez odwoływania się do jego struktury wewnętrznej. Oznacza to, że przypadki testowe są niezależne od sposobu implementacji oprogramowania, a co za tym idzie mogą być nadal stosowane w przypadku zmiany implementacji, która nie pociąga za sobą zmiany wymaganego zachowania.</p>
+
+      <p><b>Podstawą białoskrzynkowych technik testowania</b> (zwanych także technikami opartymi na strukturze) jest analiza struktury wewnętrznej przedmiotu testów i wykonywanego w nim przetwarzania. Przypadki testowe są uzależnione od sposobu, w jaki zaprojektowano dane oprogramowanie, w związku z czym można je tworzyć dopiero po zaprojektowaniu lub zaimplementowaniu przedmiotu testów.</p>
+
+      <p><b>Techniki testowania oparte na doświadczeniu</b> pozwalają wykorzystać wiedzę i doświadczenie testerów do projektowania i implementowania przypadków testowych. Skuteczność tego rodzaju technik zależy w dużej mierze od umiejętności testera. Techniki oparte na doświadczeniu pozwalają wykrywać defekty, które łatwo jest przeoczyć w przypadku stosowania technik czarnoskrzynkowych i białoskrzynkowych, a tym samym znakomicie uzupełniają powyższe techniki.</p>
 
       <h3>4.2 Czarnoskrzynkowe techniki testowania</h3>
-      <p>Najczęściej stosowane techniki: <b>podział na klasy równoważności</b>, <b>analiza wartości brzegowych</b>,
-      <b>tablice decyzyjne</b> oraz <b>przejścia pomiędzy stanami</b>.</p>
-      <h4>4.2.1 Podział na klasy równoważności</h4>
-      <p>Dzielimy dane na <b>klasy równoważności</b> tak, aby wszystkie wartości w klasie były traktowane tak samo.
-      Wystarczy jeden test na klasę, aby wykryć defekt reprezentatywny dla całej klasy.</p>
+      <p>W kolejnych sekcjach omówione zostały następujące powszechnie stosowane czarnoskrzynkowe techniki testowania:</p>
       <ul>
-        <li>Dotyczy wejść, wyjść, konfiguracji, wartości wewnętrznych, zależnych od czasu, parametrów interfejsu.</li>
-        <li>Klasy mogą być ciągłe/dyskretne, uporządkowane/nieuporządkowane, skończone/nieskończone; <b>bez nakładania</b> i bez zbiorów pustych.</li>
-        <li>Rozróżniamy klasy <b>poprawne</b> i <b>niepoprawne</b> (definicje zależne od specyfikacji/kontekstu).</li>
-        <li><b>Pokrycie</b> elementu: klasy równoważności. 100% = sprawdzona co najmniej raz każda zidentyfikowana klasa (w tym niepoprawne).</li>
-        <li>Przy wielu parametrach stosujemy m.in. kryterium <i>each choice</i> – co najmniej jeden test dla każdej klasy w każdym zbiorze klas.</li>
+        <li>podział na klasy równoważności</li>
+        <li>analiza wartości brzegowych</li>
+        <li>testowanie w oparciu o tablicę decyzyjną</li>
+        <li>testowanie przejść pomiędzy stanami</li>
       </ul>
+
+      <h4>4.2.1 Podział na klasy równoważności</h4>
+      <p><b>Technika podziału na klasy równoważności polega na dzieleniu danych na klasy (zwane klasami równoważności) zgodnie z założeniem, że każda klasa będzie zawierała elementy, które mają być przetwarzane przez przedmiot testów w ten sam sposób.</b> U podstaw tej techniki leży teoria, zgodnie z którą jeśli przypadek testowy służący do testowania jednej wartości z klasy równoważności wykryje defekt, to defekt ten powinien również zostać wykryty przez przypadki testowe służące do testowania każdej innej wartości należącej do tej samej klasy. Oznacza to, że wystarczające jest utworzenie jednego testu w odniesieniu do każdej z klas.</p>
+
+      <p><b>Klasy równoważności można wyznaczać w odniesieniu do wszelkich elementów danych, które są związane z przedmiotem testów, takich jak:</b></p>
+      <ul>
+        <li>dane wejściowe</li>
+        <li>dane wyjściowe</li>
+        <li>elementy konfiguracji</li>
+        <li>wartości wewnętrzne</li>
+        <li>wartości zależne od czasu</li>
+        <li>parametry interfejsu</li>
+      </ul>
+
+      <p>Klasy mogą być ciągłe lub dyskretne, uporządkowane lub nieuporządkowane oraz skończone lub nieskończone, nie mogą natomiast nakładać się na siebie ani być pustymi zbiorami.</p>
+
+      <p>W przypadku prostych elementów testowych podział na klasy równoważności nie sprawia zwykle trudności, ale w praktyce zrozumienie tego, jak dany obiekt testowy będzie traktować poszczególne wartości, bywa skomplikowane. Z tego powodu przy dokonywaniu podziału należy zachować ostrożność.</p>
+
+      <p><b>Klasa równoważności zawierająca poprawne wartości jest nazywana poprawną klasą równoważności, a klasa zawierająca wartości niepoprawne — niepoprawną klasą równoważności.</b> Definicje wartości poprawnych i niepoprawnych mogą przy tym różnić się w zależności od zespołu lub organizacji. Za wartości poprawne mogą być na przykład uważane takie, które powinny być przetwarzane przez przedmiot testów, lub takie, w przypadku których sposób przetwarzania określa specyfikacja. Z kolei za wartości niepoprawne mogą być uznawane wartości, które przedmiot testów powinien zignorować lub odrzucić, bądź wartości, w odniesieniu do których w specyfikacji przedmiotu testów nie zdefiniowano sposobu przetwarzania.</p>
+
+      <p><b>W przypadku podziału na klasy równoważności elementami pokrycia są klasy równoważności.</b> Warunkiem uzyskania stuprocentowego pokrycia przy korzystaniu z tej techniki jest sprawdzenie za pomocą przypadków testowych wszystkich zidentyfikowanych klas (w tym klas niepoprawnych) poprzez pokrycie każdej klasy co najmniej raz. Pokrycie mierzy się jako iloraz liczby klas sprawdzonych za pomocą co najmniej jednego przypadku testowego przez łączną liczbę zidentyfikowanych klas, a uzyskaną wartość wyraża się w procentach.</p>
+
+      <p>W wielu elementach testowych występuje po kilka zbiorów klas (przykładem mogą być elementy testowe mające więcej niż jeden parametr wejściowy), co oznacza, że przypadek testowy będzie pokrywać klasy należące do kilku różnych zbiorów. <b>Najprostszym kryterium pokrycia w przypadku występowania wielu zbiorów klas jest pokrycie typu „każdy wybór" (ang. each choice)</b> (Ammann 2016). Wymaga ono, aby przypadki testowe sprawdzały każdą klasę z każdego zbioru klas co najmniej raz. Pokrycie to nie uwzględnia kombinacji klas.</p>
 
       <h4>4.2.2 Analiza wartości brzegowych</h4>
-      <p>Sprawdzamy <b>wartości brzegowe</b> klas uporządkowanych (min./max.). Błędy często pojawiają się właśnie na brzegach.</p>
-      <ul>
-        <li><b>DWU‑punktowa</b>: dla każdego brzegu testujemy samą wartość brzegową i najbliższą wartość z sąsiedniej klasy.</li>
-        <li><b>TRZY‑punktowa</b>: dla każdego brzegu testujemy wartość brzegową oraz obie wartości sąsiednie (bardziej rygorystyczna).</li>
-        <li><b>Pokrycie</b>: odsetek sprawdzonych elementów pokrycia (dwupunktowo – brzegów; trzypunktowo – brzegów i wartości sąsiednich).</li>
-      </ul>
+      <p><b>Technika analizy wartości brzegowych polega na sprawdzaniu wartości brzegowych klas równoważności</b>, w związku z czym może być stosowana tylko w odniesieniu do klas uporządkowanych. Wartościami brzegowymi klasy równoważności są jej wartość minimalna i maksymalna. W przypadku analizy wartości brzegowych zakłada się, że jeśli dwa elementy należą do tej samej klasy, to wszystkie elementy leżące pomiędzy nimi również muszą należeć do tej klasy.</p>
+
+      <p>Opisywana technika skupia się na wartościach brzegowych klas ze względu na większe prawdopodobieństwo popełnienia przez programistów pomyłek właśnie w przypadku takich wartości. <b>Typowe defekty wykrywane metodą analizy wartości brzegowych znajdują się tam, gdzie zaimplementowane wartości brzegowe zostały omyłkowo umieszczone powyżej lub poniżej zamierzonego położenia lub całkowicie pominięte.</b></p>
+
+      <p>W niniejszym sylabusie omówiono dwa warianty analizy wartości brzegowych: <b>analizę dwupunktową i analizę trójpunktową</b>. Warianty te różnią się liczbą elementów pokrycia przypadających na każdą z wartości brzegowych, które muszą zostać sprawdzone w celu uzyskania stuprocentowego pokrycia.</p>
+
+      <p><b>W przypadku dwupunktowej analizy wartości brzegowych</b> (Craig 2002, Myers 2011) na każdą wartość brzegową przypadają dwa elementy pokrycia: sama wartość brzegowa oraz najbliższa jej wartość należąca do sąsiedniej klasy równoważności. Warunkiem uzyskania stuprocentowego pokrycia przy korzystaniu z dwupunktowej analizy wartości brzegowych jest sprawdzenie za pomocą przypadków testowych wszystkich elementów pokrycia, czyli wszystkich zidentyfikowanych wartości brzegowych. Pokrycie mierzy się jako iloraz liczby sprawdzonych wartości brzegowych przez łączną liczbę zidentyfikowanych wartości brzegowych, a uzyskaną wartość wyraża się w procentach.</p>
+
+      <p><b>W przypadku trójpunktowej analizy wartości brzegowych</b> (Koomen 2006, O'Regan 2019) na każdą wartość brzegową przypadają trzy elementy pokrycia: sama wartość brzegowa oraz obie wartości sąsiednie. W związku z tym w ramach trójpunktowej analizy wartości brzegowych niektóre elementy pokrycia mogą nie być wartościami brzegowymi. Warunkiem uzyskania stuprocentowego pokrycia przy korzystaniu z trójpunktowej analizy wartości brzegowych jest sprawdzenie za pomocą przypadków testowych wszystkich elementów pokrycia, czyli zidentyfikowanych wartości brzegowych i ich wartości sąsiednich. Pokrycie mierzy się jako iloraz liczby sprawdzonych wartości brzegowych i wartości sąsiednich przez łączną liczbę zidentyfikowanych wartości brzegowych i ich wartości sąsiednich, a uzyskaną wartość wyraża się w procentach.</p>
+
+      <p><b>Trójpunktowa analiza wartości brzegowych jest bardziej rygorystyczna niż analiza dwupunktowa</b>, ponieważ pozwala wykryć defekty, które można przeoczyć w przypadku tej ostatniej. Na przykład jeśli decyzja „if (x ≤ 10) …" zostanie błędnie zaimplementowana jako „if (x = 10) …", dane testowe uzyskane w ramach dwupunktowej analizy wartości brzegowych (x = 10, x = 11) mogą nie pozwolić na wykrycie defektu. Jeśli natomiast zostanie zastosowana wartość x = 9 uzyskana w wyniku analizy trójpunktowej, defekt prawdopodobnie zostanie wykryty.</p>
 
       <h4>4.2.3 Testowanie w oparciu o tablicę decyzyjną</h4>
-      <p>Modele reguł, które wskazują, jak <b>kombinacje warunków</b> przekładają się na <b>akcje</b>. Pomaga testować złożone reguły biznesowe.</p>
+      <p><b>Tablice decyzyjne służą do testowania implementacji wymagań systemowych, które określają, w jaki sposób różne kombinacje warunków powodują uzyskanie różnych wyników.</b> Za pomocą tablic decyzyjnych można sprawnie odzwierciedlać złożone mechanizmy logiczne, takie jak reguły biznesowe.</p>
+
+      <p>Przy opracowywaniu tablic decyzyjnych określa się warunki i wynikające z nich akcje systemu, które tworzą wiersze tablicy. Każda kolumna odpowiada regule decyzyjnej, która określa unikatową kombinację warunków wraz z powiązanymi akcjami. <b>W ograniczonych tablicach decyzyjnych wszystkie wartości warunków i akcji</b> (z wyjątkiem warunków nieistotnych lub niemożliwych do spełnienia; patrz poniżej) <b>przedstawia się jako wartości logiczne (prawda/fałsz).</b> Alternatywą dla powyższego wariantu są uogólnione tablice decyzyjne, w których niektóre lub wszystkie warunki i akcje mogą również przyjmować wiele wartości (takich jak przedziały liczb, klasy równoważności czy wartości dyskretne).</p>
+
+      <p><b>Notacja warunków jest następująca:</b></p>
       <ul>
-        <li>Warunki i akcje tworzą wiersze; kolumny to <b>reguły</b> (unikalne kombinacje).</li>
-        <li>Wersje: ograniczone (P/F/–/nd) oraz uogólnione (zakresy, klasy, wartości dyskretne).</li>
-        <li><b>Pokrycie</b>: kolumny wykonalne. 100% = przetestowane wszystkie reguły. Uproszczenia: eliminacja kolumn niemożliwych i minimalizacja.</li>
+        <li>„P" (prawda) oznacza, że warunek został spełniony</li>
+        <li>„F" (fałsz) oznacza, że warunek nie został spełniony</li>
+        <li>„—" oznacza, że wartość warunku nie ma znaczenia dla wyniku akcji</li>
+        <li>„nd" („nie dotyczy") oznacza, że warunek nie występuje w przypadku danej reguły</li>
       </ul>
+
+      <p>W przypadku akcji „X" oznacza, że akcja powinna zostać wykonana, a puste pole — że nie powinna zostać wykonana. Mogą być również stosowane inne notacje.</p>
+
+      <p><b>Pełna tablica decyzyjna zawiera tyle kolumn, ile jest niezbędne do pokrycia wszystkich kombinacji warunków.</b> Tablicę można uprościć poprzez usunięcie kolumn zawierających kombinacje warunków, które są niemożliwe do spełnienia. Ponadto można ją zminimalizować poprzez scalenie kolumn, w których część warunków nie ma wpływu na wynik, w jedną kolumnę. Należy jednak zaznaczyć, że algorytmy minimalizowania tablic decyzyjnych nie są przedmiotem niniejszego sylabusa.</p>
+
+      <p><b>W przypadku testowania w oparciu o tablicę decyzyjną elementami pokrycia są kolumny zawierające możliwe do spełnienia kombinacje warunków.</b> Warunkiem uzyskania stuprocentowego pokrycia przy korzystaniu z tej techniki jest sprawdzenie za pomocą przypadków testowych wszystkich powyższych kolumn. Pokrycie mierzy się jako iloraz liczby sprawdzonych kolumn przez łączną liczbę kolumn zawierających możliwe do spełnienia warunki, a uzyskana wartość jest wyrażona w procentach.</p>
+
+      <p><b>Zaletą testowania w oparciu o tablicę decyzyjną jest systematyczne podejście umożliwiające zidentyfikowanie wszystkich kombinacji warunków, które w innym przypadku mogłyby zostać przeoczone.</b> Ponadto metoda ta pomaga znaleźć ewentualne luki lub sprzeczności w wymaganiach. Jeśli występuje duża liczba warunków, sprawdzenie wszystkich reguł decyzyjnych może być czasochłonne, ponieważ liczba reguł rośnie wykładniczo wraz z liczbą warunków. W takim przypadku w celu zmniejszenia liczby reguł wymagających sprawdzenia można zminimalizować tablicę decyzyjną lub zastosować podejście oparte na ryzyku.</p>
 
       <h4>4.2.4 Testowanie przejść pomiędzy stanami</h4>
-      <p>Diagram lub tablica stanów modeluje zachowanie. Test to sekwencja zdarzeń prowadząca przez sekwencję przejść.</p>
-      <ul>
-        <li><b>Pokrycie stanów</b>: odwiedź każdy stan co najmniej raz.</li>
-        <li><b>Pokrycie poprawnych przejść (0‑switch)</b>: wykonaj wszystkie poprawne przejścia.</li>
-        <li><b>Pokrycie wszystkich przejść</b>: wykonaj poprawne i podejmij próbę niepoprawnych (po jednej próbie na test, by uniknąć maskowania).</li>
-      </ul>
+      <p><b>Diagram stanów umożliwia modelowanie zachowania systemu poprzez zobrazowanie jego możliwych stanów i poprawnych przejść między nimi.</b> Przejście jest inicjowane przez zdarzenie, które może być dodatkowo kwalifikowane przez warunek dozoru. Przyjmuje się, że przejścia są natychmiastowe i mogą niekiedy powodować wykonanie przez oprogramowanie określonej akcji. <b>Typowa notacja stosowana do oznaczania przejść ma postać „zdarzenie [warunek dozoru] / akcja"</b>, przy czym warunki dozoru i akcje można pominąć, jeśli nie istnieją lub są nieistotne z punktu widzenia testera.</p>
+
+      <p><b>Tablica stanów jest modelem równoważnym diagramowi stanów.</b> Jej wiersze odpowiadają stanom, a kolumny — zdarzeniom (wraz z ewentualnymi warunkami dozoru). Wpisy w tabeli (komórki) odpowiadają przejściom i zawierają informacje o stanie docelowym oraz o akcjach wynikających z przejść (jeśli zostały zdefiniowane). W przeciwieństwie od diagramu stanów tablica stanów wyraźnie wskazuje niepoprawne przejścia, którym odpowiadają puste komórki.</p>
+
+      <p><b>Przypadek testowy oparty na diagramie stanów lub tablicy stanów jest zwykle wyrażany w postaci sekwencji zdarzeń, która powoduje wykonanie sekwencji zmian stanu (oraz akcji, jeśli są wymagane).</b> Jeden przypadek testowy może pokrywać (i zwykle pokrywa) kilka przejść pomiędzy stanami.</p>
+
+      <p>Istnieje wiele kryteriów pokrycia, które można wykorzystać w testowaniu przejść pomiędzy stanami. W niniejszym sylabusie omówiono trzy z nich.</p>
+
+      <p><b>W przypadku pokrycia wszystkich stanów elementami pokrycia są właśnie stany.</b> Warunkiem uzyskania stuprocentowego pokrycia wszystkich stanów jest przejście za pomocą przypadków testowych przez wszystkie istniejące stany. Pokrycie mierzy się jako iloraz liczby wykonanych stanów przez łączną liczbę stanów, a uzyskana wartość jest wyrażona w procentach.</p>
+
+      <p><b>W przypadku pokrycia poprawnych przejść (zwanego także pokryciem 0-przełączeń) elementami pokrycia są pojedyncze poprawne przejścia.</b> Warunkiem uzyskania stuprocentowego pokrycia poprawnych przejść jest wykonanie za pomocą przypadków testowych wszystkich poprawnych przejść. Pokrycie mierzy się jako iloraz liczby wykonanych poprawnych przejść przez łączną liczbę poprawnych przejść, a uzyskana wartość jest wyrażona w procentach.</p>
+
+      <p><b>W przypadku pokrycia wszystkich przejść elementami pokrycia są wszystkie przejścia wskazane w tablicy stanów.</b> Warunkiem uzyskania stuprocentowego pokrycia wszystkich przejść jest wykonanie za pomocą przypadków testowych wszystkich poprawnych przejść oraz podjęcie próby wykonania niepoprawnych przejść. Testowanie tylko jednego niepoprawnego przejścia w jednym przypadku testowym pozwala uniknąć maskowania defektów, czyli sytuacji, w której jeden defekt uniemożliwia wykrycie innego defektu. Pokrycie mierzy się jako iloraz liczby poprawnych i niepoprawnych przejść, które zostały wykonane lub w przypadku których podjęto próbę wykonania za pomocą przypadków testowych przez łączną liczbę poprawnych i niepoprawnych przejść, a uzyskana wartość jest wyrażona w procentach.</p>
+
+      <p><b>Pokrycie wszystkich stanów jest słabszym kryterium niż pokrycie poprawnych przejść</b>, ponieważ można je zwykle osiągnąć bez wykonania wszystkich przejść. <b>Pokrycie poprawnych przejść jest najczęściej stosowanym kryterium pokrycia.</b> Uzyskanie pełnego pokrycia poprawnych przejść gwarantuje pełne pokrycie wszystkich stanów, a uzyskanie pełnego pokrycia wszystkich przejść gwarantuje zarówno pełne pokrycie wszystkich stanów, jak i pełne pokrycie poprawnych przejść, w związku z czym powinno być wymogiem minimalnym w przypadku oprogramowania o newralgicznym znaczeniu dla działalności przedsiębiorstwa, a także oprogramowania krytycznego ze względów bezpieczeństwa.</p>
 
       <h3>4.3 Białoskrzynkowe techniki testowania</h3>
-      <h4>4.3.1 Testowanie instrukcji i pokrycie instrukcji</h4>
-      <p>Element pokrycia: <b>instrukcja wykonywalna</b>. 100% = każda instrukcja wykonana co najmniej raz. Uwaga na defekty zależne od danych i na brak pełnego pokrycia logiki decyzyjnej.</p>
+      <p>Z uwagi na ich popularność i prostotę w niniejszym podrozdziale skupiono się na dwóch białoskrzynkowych technikach testowania związanych z kodem. Są to:</p>
+      <ul>
+        <li>testowanie instrukcji</li>
+        <li>testowanie gałęzi</li>
+      </ul>
+
+      <p>Istnieją również bardziej rygorystyczne techniki, których używa się w systemach krytycznych ze względów bezpieczeństwa, w systemach o newralgicznym znaczeniu dla działalności przedsiębiorstwa oraz w środowiskach wymagających wysokiego poziomu integralności w celu uzyskania pełniejszego pokrycia kodu. Istnieją także białoskrzynkowe techniki testowania używane na wyższych poziomach testów (np. w ramach testowania API) lub korzystające z pokrycia niezwiązanego z kodem (np. pokrycia neuronów w testowaniu sieci neuronowych). Nie są one jednak przedmiotem niniejszego sylabusa.</p>
+
+      <h4>4.3.1 Testowanie instrukcji i pokrycie instrukcji kodu</h4>
+      <p><b>W przypadku testowania instrukcji elementami pokrycia są instrukcje wykonywalne.</b> Technika ta służy do projektowania przypadków testowych, które sprawdzają instrukcje w kodzie do momentu osiągnięcia akceptowalnego poziomu pokrycia. Pokrycie mierzy się jako iloraz liczby instrukcji sprawdzonych za pomocą przypadków testowych przez łączną liczbę instrukcji wykonywalnych w kodzie, a uzyskana wartość jest wyrażona w procentach.</p>
+
+      <p><b>Uzyskanie stuprocentowego pokrycia instrukcji kodu gwarantuje, że każda instrukcja wykonywalna została sprawdzona co najmniej raz.</b> Oznacza to w szczególności wykonanie każdej instrukcji zawierającej defekt, co może spowodować awarię potwierdzającą istnienie defektu. Należy jednak zaznaczyć, że sprawdzenie instrukcji za pomocą przypadku testowego nie zawsze powoduje wykrycie defektu — istnieje na przykład ryzyko niewykrycia defektów, które są zależne od danych (takich jak dzielenie przez zero, które powoduje awarię tylko w przypadku nadania mianownikowi wartości zerowej).</p>
+
+      <p>Ponadto uzyskanie stuprocentowego pokrycia instrukcji kodu nie gwarantuje, że została przetestowana cała logika decyzyjna, ponieważ testy mogą na przykład nie sprawdzać wszystkich gałęzi kodu (patrz sekcja 4.3.2).</p>
+
       <h4>4.3.2 Testowanie gałęzi i pokrycie gałęzi</h4>
-      <p>Element pokrycia: <b>gałąź</b> (przepływ sterowania). 100% = wszystkie gałęzie, w tym wyniki decyzji (prawda/fałsz). <b>Pokrycie gałęzi subsumuje pokrycie instrukcji</b>.</p>
-      <h4>4.3.3 Korzyści białej skrzynki</h4>
-      <p>Uwzględnia całą implementację (wykrywa luki mimo niepełnej specyfikacji), umożliwia mierzenie pokrycia i wyznaczanie dodatkowych testów. Ryzyko: pominięcia, gdy wymaganie nie zostało zaimplementowane.</p>
+      <p><b>Gałąź reprezentuje przepływ sterowania między dwoma wierzchołkami w diagramie przepływu sterowania przedstawiającym możliwe sekwencje wykonywania instrukcji kodu źródłowego w przedmiocie testów.</b> Każdy przepływ sterowania może odbywać się albo bezwarunkowo (kod liniowy), albo warunkowo (wynik decyzji).</p>
 
-      <h3>4.4 Techniki oparte na doświadczeniu</h3>
+      <p><b>W przypadku testowania gałęzi elementami pokrycia są gałęzie, a celem jest zaprojektowanie przypadków testowych sprawdzających gałęzie kodu do momentu osiągnięcia akceptowalnego poziomu pokrycia.</b> Pokrycie mierzy się jako iloraz liczby gałęzi sprawdzonych za pomocą co najmniej jednego przypadku testowego przez łączną liczbę gałęzi, a uzyskana wartość jest wyrażona w procentach.</p>
+
+      <p><b>Uzyskanie stuprocentowego pokrycia gałęzi oznacza, że wszystkie gałęzie kodu — zarówno bezwarunkowe, jak i warunkowe — zostały sprawdzone za pomocą przypadków testowych.</b> Gałęzie warunkowe zwykle odpowiadają wynikowi „prawda" lub „fałsz" decyzji „IF … THEN", wynikowi instrukcji SWITCH/CASE bądź decyzji o wyjściu z pętli lub dalszym wykonywaniu pętli. Należy jednak zaznaczyć, że sprawdzenie gałęzi za pomocą przypadku testowego nie zawsze powoduje wykrycie defektu — istnieje na przykład ryzyko niewykrycia defektów, które wymagają wykonania konkretnej ścieżki w kodzie.</p>
+
+      <p><b>Pokrycie gałęzi subsumuje pokrycie instrukcji kodu, co oznacza, że każdy zbiór przypadków testowych osiągający stuprocentowe pokrycie gałęzi osiąga również stuprocentowe pokrycie instrukcji kodu (ale nie odwrotnie).</b></p>
+
+      <h4>4.3.3 Korzyści wynikające z testowania białoskrzynkowego</h4>
+      <p><b>Zasadniczą zaletą wszystkich technik białoskrzynkowych jest fakt, że podczas testowania uwzględniana jest cała implementacja oprogramowania, co ułatwia wykrywanie defektów nawet w przypadku, gdy specyfikacja oprogramowania jest niejednoznaczna, nieaktualna lub niekompletna.</b> Wadą jest z kolei fakt, że w przypadku niezaimplementowania w oprogramowaniu jednego lub kilku wymagań testowanie białoskrzynkowe może nie wykryć spowodowanych tym defektów w postaci pominięć (Watson 1996).</p>
+
+      <p><b>Techniki białoskrzynkowe mogą być stosowane w testowaniu statycznym</b> (np. podczas próbnych przebiegów kodu - ang. dry runs). Sprawdzają się również w przeglądach kodu, który nie jest jeszcze gotowy do uruchomienia (Hetzel 1988), a także pseudokodu oraz mechanizmów logicznych, które można odwzorować w postaci diagramu przepływu sterowania.</p>
+
+      <p><b>Wykonanie jedynie testowania czarnoskrzynkowego nie pozwala zmierzyć faktycznego pokrycia kodu</b>, natomiast miary pokrycia stosowane w technikach białoskrzynkowych zapewniają obiektywny pomiar pokrycia i dostarczają niezbędnych informacji umożliwiających wygenerowanie dodatkowych testów w celu jego zwiększenia, co ostatecznie przekłada się na wzrost zaufania do kodu.</p>
+
+      <h3>4.4 Techniki testowania oparte na doświadczeniu</h3>
+      <p>W kolejnych sekcjach omówiono następujące powszechnie stosowane techniki testowania oparte na doświadczeniu:</p>
+      <ul>
+        <li>zgadywanie błędów</li>
+        <li>testowanie eksploracyjne</li>
+        <li>testowanie w oparciu o listę kontrolną</li>
+      </ul>
+
       <h4>4.4.1 Zgadywanie błędów</h4>
-      <p>Wykorzystuje wiedzę o typowych błędach (wejścia, wyjścia, logika, obliczenia, interfejsy, dane). Wersja metodyczna: <b>ataki usterek</b> – lista potencjalnych defektów i testy na ich uwidocznienie.</p>
-      <h4>4.4.2 Testowanie eksploracyjne</h4>
-      <p>Równoczesne projektowanie i wykonywanie testów podczas poznawania systemu. Często w <b>sesjach</b> (karta celu, limit czasu, spotkanie podsumowujące, arkusz sesji). Wspiera brakujące specyfikacje i presję czasu; skuteczność rośnie z doświadczeniem testera.</p>
-      <h4>4.4.3 Testowanie w oparciu o listę kontrolną</h4>
-      <p>Testy pokrywają elementy listy (najczęściej pytania). Źródła: doświadczenie, UX, przyczyny awarii. Listy aktualizujemy na podstawie analizy defektów; zbyt obszerne obniżają użyteczność.</p>
+      <p><b>Zgadywanie błędów to technika pozwalająca przewidywać wystąpienie błędów, defektów i awarii na podstawie wiedzy testera dotyczącej między innymi:</b></p>
+      <ul>
+        <li>dotychczasowego działania aplikacji</li>
+        <li>typowych błędów popełnianych przez programistów i typów wynikających z nich defektów</li>
+        <li>rodzajów awarii, które wystąpiły w innych podobnych aplikacjach</li>
+      </ul>
 
-      <h3>4.5 Podejścia oparte na współpracy</h3>
+      <p><b>Zasadniczo błędy, defekty i awarie mogą być związane z:</b></p>
+      <ul>
+        <li><b>danymi wejściowymi</b> (np. nieprzyjęcie poprawnych danych wejściowych bądź błędne lub brakujące parametry)</li>
+        <li><b>danymi wyjściowymi</b> (np. nieprawidłowy format lub nieprawidłowy rezultat)</li>
+        <li><b>logiką</b> (np. brakujące przypadki lub nieprawidłowy operator)</li>
+        <li><b>obliczeniami</b> (np. niepoprawny argument operacji lub błędne obliczenie)</li>
+        <li><b>interfejsami</b> (np. niezgodność parametrów lub typów)</li>
+        <li><b>danymi</b> (np. niepoprawne zainicjowanie lub niewłaściwy typ danych)</li>
+      </ul>
+
+      <p><b>Przykładem metodycznego podejścia do zgadywania błędów są ataki usterek.</b> Technika ta wymaga od testera stworzenia lub uzyskania listy potencjalnych błędów, defektów i awarii, a następnie zaprojektowania testów pozwalających zidentyfikować defekty związane z błędami z listy, uwidocznić defekty z listy bądź spowodować awarie z listy. Listy takie można opracowywać na podstawie własnego doświadczenia, danych dotyczących defektów i awarii oraz powszechnej wiedzy na temat przyczyn awarii oprogramowania.</p>
+
+      <p>Więcej informacji na temat zgadywania błędów i ataków usterek zawierają pozycje (Whittaker 2002, Whittaker 2003, Andrews 2006).</p>
+
+      <h4>4.4.2 Testowanie eksploracyjne</h4>
+      <p><b>Testowanie eksploracyjne polega na równoczesnym projektowaniu, wykonywaniu i dokonywaniu oceny testów w czasie, gdy tester zapoznaje się z przedmiotem testów.</b> Proces ten dostarcza wiedzy na temat przedmiotu testów, a także pozwala tworzyć ukierunkowane testy umożliwiające jego dokładniejsze zbadanie oraz testy dotyczące obszarów dotychczas nieprzetestowanych.</p>
+
+      <p><b>Testowanie eksploracyjne jest czasami przeprowadzane metodą tzw. testowania w sesjach, która pozwala uporządkować cały proces.</b> W ramach testowania w sesjach testowanie eksploracyjne odbywa się w ściśle określonym przedziale czasu, a tester prowadzi testy zgodnie z kartą opisu testu (zawierającą cele testów). Po zakończeniu sesji testowej zwykle odbywa się spotkanie podsumowujące, którego elementem jest dyskusja między testerem a interesariuszami zainteresowanymi wynikami sesji testowej.</p>
+
+      <p>W ramach tego podejścia cele testów można potraktować jako warunki testowe wysokiego poziomu. W trakcie sesji testowej identyfikuje się i sprawdza elementy pokrycia. Do dokumentowania wykonywanych kroków testowych i uzyskiwanych informacji służą arkusze sesji testowych.</p>
+
+      <p><b>Testowanie eksploracyjne jest przydatne w przypadku niepełnych lub niewłaściwie sporządzonych specyfikacji bądź w przypadku testowania pod presją czasu.</b> Ponadto może być uzupełnieniem innych, bardziej formalnych technik testowania. Wśród czynników zwiększających skuteczność testowania eksploracyjnego można wymienić doświadczenie i wiedzę merytoryczną testera oraz wysoki poziom niezbędnych umiejętności, takich jak umiejętność analizy, ciekawość i kreatywność (patrz sekcja 1.5.1).</p>
+
+      <p>W ramach testowania eksploracyjnego można korzystać także z innych technik (np. techniki podziału na klasy równoważności). Więcej informacji na temat testowania eksploracyjnego można znaleźć w (Kaner 1999, Whittaker 2009, Hendrickson 2013).</p>
+
+      <h4>4.4.3 Testowanie w oparciu o listę kontrolną</h4>
+      <p><b>W ramach testowania w oparciu o listę kontrolną testerzy projektują, implementują i wykonują testy tak, aby pokryć warunki testowe wymienione na liście kontrolnej.</b> Listy kontrolne można opracowywać na podstawie własnego doświadczenia, znajomości oczekiwań użytkowników lub wiedzy na temat przyczyn i objawów awarii oprogramowania. Należy jednak pamiętać, że nie powinny one zawierać elementów, które można sprawdzić automatycznie, które lepiej jest wykorzystać jako kryteria wejścia lub kryterium wyjścia lub które są zbyt ogólne (Brykczynski 1999).</p>
+
+      <p><b>Elementy listy kontrolnej są często formułowane jako pytania, przy czym powinno być możliwe bezpośrednie sprawdzenie każdego z nich z osobna.</b> Elementy te mogą dotyczyć wymagań, właściwości interfejsu graficznego, charakterystyk jakościowych lub innego rodzaju warunków testowych. Listy kontrolne można tworzyć na potrzeby różnych typów testów, w tym na potrzeby testowania funkcjonalnego i niefunkcjonalnego, czego przykładem jest 10 heurystyk w zakresie testowania użyteczności (Nielsen 1994).</p>
+
+      <p><b>Z czasem niektóre pozycje listy kontrolnej mogą stopniowo tracić skuteczność, ponieważ programiści uczą się unikać popełniania tych samych pomyłek.</b> Ponadto może być konieczne dodanie nowych pozycji odzwierciedlających nowo wykryte defekty o dużej krytyczności. Z powyższych powodów listy kontrolne powinny być regularnie aktualizowane na podstawie analizy defektów, jednak należy zachować ostrożność, aby nie stały się one zbyt obszerne (Gawande 2009).</p>
+
+      <p>W sytuacji, w której brakuje szczegółowych przypadków testowych, testowanie w oparciu o listę kontrolną zapewnia niezbędne wytyczne i pozwala uzyskać pewien stopień spójności testowania. Jeśli listy kontrolne mają charakter wysokopoziomowy, podczas faktycznego testowania może występować pewna zmienność przekładająca się na większe pokrycie, ale kosztem mniejszej powtarzalności.</p>
+
+      <h3>4.5 Podejścia do testowania oparte na współpracy</h3>
+      <p>Każda z wyżej wymienionych technik (patrz podrozdziały 4.2, 4.3 i 4.4) ma określony cel związany z wykrywaniem defektów, natomiast <b>podejścia oparte na współpracy koncentrują się również na unikaniu defektów poprzez zapewnienie współpracy i wymiany informacji.</b></p>
+
       <h4>4.5.1 Wspólne pisanie historyjek użytkownika</h4>
-      <p>„3C": <b>Card</b> (opis), <b>Conversation</b> (uzgodnienia), <b>Confirmation</b> (kryteria). Dobre historyjki spełniają <b>INVEST</b> i są testowalne; współpraca trzech perspektyw (biznes‑dev‑test).</p>
+      <p><b>Historyjka użytkownika reprezentuje cechę systemu wartościową dla użytkownika bądź nabywcy systemu lub oprogramowania.</b> W historyjkach użytkownika wyróżnia się trzy kluczowe aspekty (Jeffries 2000) nazywane łącznie „3 C" od pierwszych liter ich angielskich nazw. Są to:</p>
+      <ul>
+        <li><b>karta (ang. card)</b>, czyli nośnik zawierający opis historyjki użytkownika (np. karta katalogowa bądź wpis w kartotece elektronicznej)</li>
+        <li><b>rozmowa (ang. conversation)</b>, która wyjaśnia, w jaki sposób będzie używane oprogramowanie (w postaci udokumentowanej lub słownej)</li>
+        <li><b>potwierdzenie (ang. confirmation)</b>, czyli kryteria akceptacji (patrz sekcja 4.5.2)</li>
+      </ul>
+
+      <p><b>Najczęściej stosowany format historyjki użytkownika ma postać zdania „Jako [rola] chcę [zakładany cel do osiągnięcia], abym mógł/mogła [wartość biznesowa uzyskiwana w kontekście danej roli]", po którym następują kryteria akceptacji.</b></p>
+
+      <p>Podczas wspólnego tworzenia historyjki użytkownika można korzystać z technik takich jak burza mózgów czy tworzenie map myśli. Dzięki współpracy zespół może wypracować wspólną wizję tego, co należy dostarczyć, z uwzględnieniem trzech punktów widzenia: biznesowego, programistycznego i testowego.</p>
+
+      <p><b>Dobre historyjki użytkownika powinny być niezależne, negocjowalne, wartościowe, możliwe do oszacowania, zwięzłe i testowalne (ang. Independent, Negotiable, Valuable, Estimable, Small, Testable — INVEST).</b> Jeśli interesariusz nie wie, jak należy przetestować daną historyjkę użytkownika, może to wskazywać, że nie jest ona wystarczająco jednoznaczna lub nie odzwierciedla kwestii istotnych dla tego interesariusza. Nie można też jednak wykluczyć, że interesariusz po prostu potrzebuje pomocy w testowaniu (Wake 2003).</p>
+
       <h4>4.5.2 Kryteria akceptacji</h4>
-      <p>Definiują warunki akceptacji; traktujemy je jako warunki testowe. Format: <b>scenariusze</b> (Given/When/Then) lub <b>reguły</b> (lista/tabela). Pomagają planować i szacować.</p>
-      <h4>4.5.3 ATDD</h4>
-      <p>Testy akceptacyjne powstają <b>przed</b> implementacją (warsztaty/specyfikacja przykładami). Najpierw przypadki pozytywne, potem negatywne oraz niefunkcjonalne. Przypadki powinny być zrozumiałe dla interesariuszy; mogą stać się <b>wykonywalnymi wymaganiami</b> dzięki automatyzacji.</p>`,
+      <p><b>Kryteria akceptacji związane z historyjką użytkownika to warunki, jakie muszą zostać spełnione, aby implementacja tej historyjki została zaakceptowana przez interesariuszy.</b> Z tej perspektywy kryteria akceptacji można potraktować jako warunki testowe, których spełnienie powinno zostać sprawdzone w trakcie testów. Kryteria akceptacji powstają zwykle w wyniku rozmowy (patrz sekcja 4.5.1).</p>
+
+      <p><b>Celem kryteriów akceptacji jest:</b></p>
+      <ul>
+        <li>określenie zakresu historyjki użytkownika</li>
+        <li>osiągnięcie konsensusu wśród interesariuszy</li>
+        <li>opisanie pozytywnych i negatywnych scenariuszy</li>
+        <li>stworzenie podstawy do testowania akceptacyjnego historyjki użytkownika (patrz sekcja 4.5.3)</li>
+        <li>umożliwienie dokładnego planowania i szacowania</li>
+      </ul>
+
+      <p><b>Kryteria akceptacji związane z historyjką użytkownika można pisać na kilka sposobów. Dwa najpopularniejsze formaty to:</b></p>
+      <ul>
+        <li><b>format ukierunkowany na scenariusze</b> (np. format Given/When/Then stosowany w wytwarzaniu sterowanym zachowaniem; patrz sekcja 2.1.3)</li>
+        <li><b>format ukierunkowany na reguły</b> (np. lista weryfikacyjna w punktach lub przypisanie danych wejściowych do danych wyjściowych w formie tabelarycznej)</li>
+      </ul>
+
+      <p>Większość kryteriów akceptacji można udokumentować w jednym z dwóch powyższych formatów, ale zespół może również skorzystać z innego, niestandardowego formatu pod warunkiem, że kryteria będą należycie zdefiniowane i jednoznaczne.</p>
+
+      <h4>4.5.3 Wytwarzanie sterowane testami akceptacyjnymi (ATDD)</h4>
+      <p><b>Wytwarzanie sterowane testami akceptacyjnymi to podejście typu „najpierw test" (patrz sekcja 2.1.3), zgodnie z którym przypadki testowe tworzy się przed zaimplementowaniem historyjki użytkownika.</b> Tworzeniem przypadków testowych zajmują się członkowie zespołu mający różne punkty widzenia, na przykład klienci, programiści i testerzy (Adzic 2009). Uzyskane w ten sposób przypadki testowe mogą być następnie wykonywane manualnie lub automatycznie.</p>
+
+      <p><b>Pierwszym krokiem jest przeprowadzenie warsztatów tworzenia specyfikacji, podczas których członkowie zespołu analizują, omawiają i piszą historyjkę użytkownika oraz związane z nią kryteria akceptacji</b> (o ile nie zostały jeszcze zdefiniowane). W ramach tego procesu korygowane są wszelkie braki, niejednoznaczności lub defekty występujące w historyjce użytkownika. Kolejnym krokiem jest stworzenie przypadków testowych, przy czym czynność ta może być wykonywana przez cały zespół lub indywidualnie przez testera.</p>
+
+      <p><b>Przypadki testowe są tworzone w oparciu o kryteria akceptacji i mogą być traktowane jako przykłady sposobu działania oprogramowania.</b> Dzięki temu zespół może poprawnie zaimplementować historyjkę użytkownika.</p>
+
+      <p>Z uwagi na to, że przykłady i testy są takie same, pojęcia te bywają często używane zamiennie. Podczas projektowania testów można stosować techniki testowania opisane w podrozdziałach 4.2, 4.3 i 4.4.</p>
+
+      <p><b>Pierwsze przypadki testowe są z reguły przypadkami pozytywnymi, co oznacza, że mają na celu potwierdzenie prawidłowego zachowania — bez wyjątków lub warunków błędów — i odzwierciedlają sekwencję czynności wykonywaną w sytuacji, w której wszystko działa zgodnie z oczekiwaniami.</b> Po wykonaniu pozytywnych przypadków testowych zespół powinien przystąpić do testowania negatywnego, a na koniec powinien również zadbać o pokrycie niefunkcjonalnych charakterystyk jakościowych (takich jak wydajność czy użyteczność).</p>
+
+      <p><b>Przypadki testowe powinny być wyrażone w sposób zrozumiały dla interesariuszy.</b> Zazwyczaj zawierają one zdania w języku naturalnym określające niezbędne warunki wstępne (jeśli mają zastosowanie), dane wejściowe oraz warunki wyjściowe.</p>
+
+      <p><b>Przypadki testowe muszą pokrywać wszystkie charakterystyki historyjki użytkownika, ale nie powinny wykraczać poza jej zakres</b>, natomiast kryteria akceptacji mogą opisywać szczegółowo niektóre kwestie opisane w historyjce. Ponadto należy unikać sytuacji, w których dwa przypadki testowe opisują tę samą charakterystykę historyjki użytkownika.</p>
+
+      <p><b>Jeśli przypadki testowe zostaną zarejestrowane w formacie obsługiwanym przez strukturę do testów automatycznych, programiści mogą zautomatyzować ich wykonywanie poprzez opracowanie kodu pomocniczego w trakcie implementowania funkcjonalności opisanej w historyjce użytkownika. Testy akceptacyjne stają się wówczas wykonywalnymi wymaganiami.</b></p>`,
     flashcards:[
       {q:"ECP – co jest elementem pokrycia?", a:"Klasa równoważności (poprawna/niepoprawna)."},
       {q:"BVA 3‑punktowa – jakie wartości wokół progu?", a:"Wartość brzegowa oraz obie wartości sąsiednie (np. 9,10,11 dla progu 10)."},
@@ -610,7 +1097,12 @@ const syllabus = [
       {q:"W ECP elementem pokrycia jest…", opt:["Wartość brzegowa","Klasa równoważności","Ścieżka w kodzie","Przejście stanu"], a:1},
       {q:"Próg 10 (≤10 dozwolone). Który zestaw najlepiej pokrywa BVA 3‑punktowe?", opt:["8,9,10","9,10,11","10,11,12","0,10,20"], a:1},
       {q:"Co zapewni 100% pokrycia stanów?", opt:["Odpalimy wszystkie poprawne i niepoprawne przejścia","Odwiedzimy każdy stan co najmniej raz","Odwiedzimy każdy stan dokładnie raz","Sprawdzimy wszystkie wejścia/wyjścia"], a:1},
-      {q:"Które stwierdzenie o pokryciu jest prawdziwe?", opt:["100% instrukcji ⇒ 100% gałęzi","100% gałęzi ⇒ 100% instrukcji","Żadne nie zachodzi","Zawsze potrzeba 100% ścieżek"], a:1}
+      {q:"Które stwierdzenie o pokryciu jest prawdziwe?", opt:["100% instrukcji ⇒ 100% gałęzi","100% gałęzi ⇒ 100% instrukcji","Żadne nie zachodzi","Zawsze potrzeba 100% ścieżek"], a:1},
+      {q:"Co to jest technika czarnoskrzynkowa?", opt:["Analiza struktury wewnętrznej kodu","Analiza wyspecyfikowanego zachowania bez odwoływania się do struktury wewnętrznej","Testowanie oparte na doświadczeniu","Testowanie tylko automatyczne"], a:1, exp:"Techniki czarnoskrzynkowe bazują na analizie wyspecyfikowanego zachowania bez odwoływania się do struktury wewnętrznej."},
+      {q:"Która technika NIE jest czarnoskrzynkowa?", opt:["Podział na klasy równoważności","Analiza wartości brzegowych","Testowanie przejść stanów","Pokrycie instrukcji"], a:3, exp:"Pokrycie instrukcji to technika białoskrzynkowa, pozostałe to techniki czarnoskrzynkowe."},
+      {q:"Co to jest BVA dwupunktowa?", opt:["Testowanie tylko wartości brzegowych","Testowanie wartości brzegowej i jednej sąsiedniej","Testowanie trzech wartości wokół progu","Testowanie wszystkich możliwych wartości"], a:1, exp:"BVA dwupunktowa testuje wartość brzegową i jedną wartość sąsiednią (np. 9,10 dla progu 10)."},
+      {q:"Które stwierdzenie o technikach opartych na doświadczeniu jest prawdziwe?", opt:["Są mniej skuteczne od technik czarnoskrzynkowych","Wykrywają defekty łatwe do przeoczenia w innych technikach","Wymagają znajomości kodu","Są zawsze automatyczne"], a:1, exp:"Techniki oparte na doświadczeniu wykrywają defekty łatwe do przeoczenia w technikach czarnoskrzynkowych i białoskrzynkowych."},
+      {q:"Co to jest testowanie eksploracyjne?", opt:["Testowanie automatyczne","Testowanie oparte na doświadczeniu i eksperymentowaniu","Testowanie tylko funkcjonalne","Testowanie tylko niefunkcjonalne"], a:1, exp:"Testowanie eksploracyjne to technika oparta na doświadczeniu, łącząca projektowanie i wykonywanie testów."}
     ]
   },
   {
@@ -621,124 +1113,310 @@ const syllabus = [
 
       <h3>5.1 Planowanie testów</h3>
       <h4>5.1.1 Cel i treść planu testów</h4>
-      <p>Plan testów definiuje <b>cele</b>, <b>zakres</b>, <b>zasoby</b>, <b>podejście</b> i <b>harmonogram</b> działań testowych. Wspiera zgodność ze <b>strategią testów</b> i polityką jakości oraz stanowi kontrakt informacyjny z interesariuszami.</p>
+      <p><b>W planie testów opisuje się cele, zasoby i procesy związane z projektem testowania.</b> Plan testów:</p>
       <ul>
-        <li><b>Kontekst i zakres</b>: przedmiot testów, ograniczenia, zależności, wymagania regulacyjne.</li>
-        <li><b>Cele i mierniki sukcesu</b>: kryteria wejścia/wyjścia, docelowe poziomy pokrycia, progi jakości.</li>
-        <li><b>Interesariusze i role</b>: odpowiedzialności (RACI), potrzeby szkoleniowe, niezależność testowania.</li>
-        <li><b>Podejście do testów</b>: poziomy i typy testów, techniki (czarno-/białoskrzynkowe, eksploracyjne), strategia automatyzacji, dane testowe, środowiska.</li>
-        <li><b>Ryzyko i zgodność</b>: rejestr ryzyk (produktowe/projektowe), łagodzenie, wymagania prawne i umowne.</li>
-        <li><b>Komunikacja</b>: częstotliwość i forma raportów (status, sumaryczny), przeglądy, kanały.</li>
-        <li><b>Budżet i harmonogram</b>: kamienie milowe, bufory, zależności zewnętrzne, okna środowiskowe.</li>
+        <li>pozwala udokumentować sposób i harmonogram osiągania celów testów</li>
+        <li>pomaga zagwarantować, że wykonywane czynności testowe spełnią ustalone kryteria</li>
+        <li>służy do wymiany informacji z członkami zespołu i innymi interesariuszami</li>
+        <li>pozwala wykazać, że testowanie będzie odbywać się zgodnie z dotychczasową polityką testów i strategią testów (bądź uzasadnić ewentualne odstępstwa od nich)</li>
       </ul>
-      <p>Szablon planu testów zgodny z ISO/IEC/IEEE 29119-3 obejmuje sekcje: Wprowadzenie, Przedmiot i Zakres, Podejście, Zasoby, Harmonogram, Ryzyka, Kryteria, Komunikacja oraz Załączniki (np. matryca pokrycia).</p>
+
+      <p><b>Planowanie testów pozwala odpowiednio ukierunkować sposób myślenia testerów i zmusza ich do stawienia czoła przyszłym wyzwaniom związanym z ryzykami, harmonogramami, relacjami interpersonalnymi, narzędziami, kosztami, nakładami pracy itd.</b> Proces przygotowywania planu testów jest dobrą okazją do przemyślenia nakładów pracy, jakie będą niezbędne do osiągnięcia celów projektu testowania.</p>
+
+      <p><b>Typowe zagadnienia poruszane w planie testów to między innymi:</b></p>
+      <ul>
+        <li><b>kontekst testowania</b> (np. zakres, cele testów i podstawa testów)</li>
+        <li><b>założenia i ograniczenia</b> projektu testowania</li>
+        <li><b>interesariusze</b> (np. role, obowiązki, istotność z punktu widzenia testowania, potrzeby w zakresie rekrutacji i szkoleń)</li>
+        <li><b>wymiana informacji</b> (np. formy i częstotliwość wymiany informacji, szablony dokumentów)</li>
+        <li><b>rejestr ryzyk</b> (np. ryzyk produktowych i projektowych)</li>
+        <li><b>podejście do testowania</b> (np. poziomy testów, typy testów, techniki testowania, produkty pracy związane z testami, kryteria wejścia i wyjścia, niezależność testowania, gromadzone metryki, wymagania dotyczące danych testowych, wymagania dotyczące środowiska testowego, odstępstwa od polityki testów i strategii testów obowiązujących w organizacji)</li>
+        <li><b>budżet i harmonogram</b></li>
+      </ul>
+
+      <p>Dokładniejsze informacje na temat planu testów i jego treści zawiera standard <b>ISO/IEC/IEEE 29119-3</b>.</p>
 
       <h4>5.1.2 Wkład testera w planowanie iteracji i wydań</h4>
+      <p><b>W iteracyjnych cyklach wytwarzania oprogramowania występują zwykle dwa rodzaje planowania: planowanie wydań i planowanie iteracji.</b></p>
+
+      <p><b>Planowanie wydań odbywa się w perspektywie wprowadzenia produktu do eksploatacji i obejmuje definiowanie/redefiniowanie backlogu produktu, a w pewnych przypadkach również doprecyzowanie większych historyjek użytkownika poprzez podzielenie ich na szereg mniejszych historyjek.</b> Opracowany w ten sposób plan jest też podstawą podejścia do testowania i planu testów we wszystkich iteracjach.</p>
+
+      <p><b>Testerzy zaangażowani w planowanie wydań:</b></p>
       <ul>
-        <li><b>Planowanie wydań</b>: doprecyzowanie historyjek i kryteriów akceptacji (ATDD/BDD), ocena ryzyk, wybór podejścia i metryk, plan regresji i danych.</li>
-        <li><b>Planowanie iteracji</b>: weryfikacja testowalności, dekompozycja na zadania testowe, estymacja pracochłonności, przygotowanie środowisk i danych, uzgodnienie zależności.</li>
+        <li>piszą testowalne historyjki użytkownika i kryteria akceptacji (patrz podrozdział 4.5)</li>
+        <li>uczestniczą w analizach ryzyka projektowego i produktowego (patrz podrozdział 5.2)</li>
+        <li>szacują pracochłonność testowania związaną z historyjkami użytkownika (patrz sekcja 5.1.4)</li>
+        <li>ustalają podejście do testowania</li>
+        <li>planują testowanie w związku z danym wydaniem</li>
       </ul>
 
-      <h4>5.1.3 Kryteria wejścia i wyjścia</h4>
-      <p><b>Kryteria wejścia</b> (DoR) zapewniają gotowość do rozpoczęcia; <b>kryteria wyjścia</b> (DoD) obiektywnie potwierdzają zakończenie testów danego poziomu.</p>
+      <p><b>Planowanie iteracji odbywa się z kolei w perspektywie zakończenia pojedynczej iteracji produktu i dotyczy backlogu tej iteracji.</b> Testerzy zaangażowani w planowanie iteracji:</p>
       <ul>
-        <li><b>Wejście — przykłady</b>: dostępne środowisko i dane, zintegrowane buildy, przeglądnięta podstawa testów, plan/analiza zakończone, smoke test = OK.</li>
-        <li><b>Wyjście — przykłady</b>: wykonane przypadki z priorytetem P1/P2, osiągnięte pokrycie (np. ≥80% gałęzi dla modułów krytycznych), brak defektów o krytyczności Blocker/Critical, zrealizowane testy zgodności/regulacyjne, ukończone raporty.</li>
+        <li>uczestniczą w szczegółowej analizie ryzyka związanego z historyjkami użytkownika</li>
+        <li>określają testowalność historyjek użytkownika</li>
+        <li>dzielą historyjki użytkownika na zadania (w szczególności zadania testowe)</li>
+        <li>szacują pracochłonność wszystkich zadań testowych</li>
+        <li>identyfikują i doprecyzowują aspekty funkcjonalne i niefunkcjonalne przedmiotu testów</li>
       </ul>
-      <p>W wyjątkowych sytuacjach możliwe jest zakończenie mimo niespełnienia części kryteriów — wymaga to <b>świadomej akceptacji ryzyka</b> przez interesariuszy.</p>
+
+      <h4>5.1.3 Kryteria wejścia i kryteria wyjścia</h4>
+      <p><b>Kryteria wejścia określają warunki wstępne, które muszą zostać spełnione przed rozpoczęciem danej czynności.</b> W przypadku niespełnienia kryteriów wejścia wykonanie tej czynności może być trudniejsze oraz bardziej czasochłonne, kosztowne i ryzykowne. <b>Kryteria wyjścia określają warunki, które muszą zostać spełnione, aby można było uznać wykonywanie danej czynności za zakończone.</b> Kryteria wejścia i kryteria wyjścia należy zdefiniować w odniesieniu do każdego poziomu testów (kryteria te różnią się w zależności od celów testów).</p>
+
+      <p><b>Typowe kryteria wejścia to między innymi:</b></p>
+      <ul>
+        <li><b>dostępność zasobów</b> (takich jak pracownicy, narzędzia, środowiska, dane testowe, budżet i czas)</li>
+        <li><b>dostępność testaliów</b> (takich jak podstawa testów, testowalne wymagania, historyjki użytkownika i przypadki testowe)</li>
+        <li><b>początkowy poziom jakości przedmiotu testów</b> (np. pomyślne przejście wszystkich testów dymnych)</li>
+      </ul>
+
+      <p><b>Typowe kryteria wyjścia to między innymi:</b></p>
+      <ul>
+        <li><b>miary staranności</b> (np. osiągnięty poziom pokrycia, liczba nieusuniętych defektów, gęstość defektów lub liczba niezaliczonych przypadków testowych)</li>
+        <li><b>binarne kryteria „tak/nie"</b> (np. wykonanie zaplanowanych testów, wykonanie testowania statycznego, zgłoszenie wszystkich wykrytych defektów bądź zautomatyzowanie wszystkich testów regresji)</li>
+      </ul>
+
+      <p><b>Za poprawne kryterium wyjścia można także uznać przekroczenie terminu lub budżetu.</b> Zakończenie testowania w takich okolicznościach — nawet w przypadku niespełnienia innych kryteriów wyjścia — może być dopuszczalne, o ile interesariusze znają i akceptują ryzyko związane z wydaniem systemu bez dalszego testowania.</p>
+
+      <p><b>W modelu zwinnego wytwarzania oprogramowania kryteria wyjścia są zwykle nazywane definicją ukończenia (ang. Definition of Done) i określają obiektywne metryki, zgodnie z którymi zespół może uznać dany element za nadający się do przekazania do eksploatacji.</b> Kryteria wejścia, które musi spełnić historyjka użytkownika, aby można było rozpocząć prace programistyczne i/lub czynności związane z testowaniem, są nazywane definicją gotowości (ang. Definition of Ready).</p>
 
       <h4>5.1.4 Techniki szacowania</h4>
-      <ul>
-        <li><b>Proporcje historyczne</b>: kalibracja na podstawie danych organizacyjnych (np. dev:test = 3:2 → 600 dev‑osobodnix ⇒ ~400 test‑osobodnix).</li>
-        <li><b>Ekstrapolacja</b>: prędkość zespołu i średnie z ostatnich iteracji (velocity), krzywe uczenia.</li>
-        <li><b>Szerokopasmowa delficka / Poker planistyczny</b>: iteracyjne oszacowania ekspertów do konsensusu.</li>
-        <li><b>Trójpunktowa</b>: E=(a+4m+b)/6, SD=(b−a)/6; używaj do budowy buforów i przedziałów ufności.</li>
-      </ul>
-      <p>Uzupełnij o <b>czynniki ryzyka</b> (np. złożoność, dostępność środowisk, zależności), <b>bufory</b> i <b>czas pielęgnacji automatyzacji</b>. Duże zadania rozbijaj na mniejsze — poprawa trafności.</p>
+      <p><b>Szacowanie pracochłonności testów polega na przewidywaniu nakładów pracy związanych z testowaniem, które są niezbędne do osiągnięcia celów projektu testowania.</b> Ważne jest przy tym uświadomienie interesariuszom, że oszacowania dokonuje się na podstawie szeregu założeń, w związku z czym jest ono zawsze obarczone błędem szacowania. Oszacowania są zwykle dokładniejsze w przypadku mniejszych zadań, dlatego przy szacowaniu dużych zadań należy rozbić takie zadania na szereg mniejszych elementów, co ułatwia określenie przewidywanego nakładu pracy.</p>
 
-      <h4>5.1.5 Priorytetyzacja przypadków testowych</h4>
-      <ul>
-        <li><b>Na podstawie ryzyka</b>: najpierw przypadki pokrywające ryzyka o najwyższym poziomie (prawdopodobieństwo×wpływ).</li>
-        <li><b>Na podstawie pokrycia</b>: maksymalizacja przyrostu pokrycia (strategia dodatkowego pokrycia).</li>
-        <li><b>Na podstawie wymagań</b>: priorytety biznesowe i krytyczność przepływów.</li>
-      </ul>
-      <p>Uwzględnij <b>zależności</b> (kolejność uruchamiania), <b>okna dostępności środowisk</b>, <b>koszt uruchomienia</b> oraz <b>wartość informacyjną</b> (ile nowej wiedzy daje test).</p>
+      <p><b>W niniejszym sylabusie opisano następujące cztery techniki szacowania:</b></p>
+
+      <p><b>Szacowanie na podstawie proporcji.</b> W ramach tej techniki opartej na metrykach gromadzi się dane liczbowe z wcześniejszych projektów realizowanych w danej organizacji, co umożliwia ustalenie „standardowych" proporcji współczynników w odniesieniu do podobnych projektów. Współczynniki opisujące własne projekty danej organizacji (określone np. na podstawie danych historycznych) są co do zasady najlepszym źródłem informacji na potrzeby procesu szacowania. W oparciu o powyższe współczynniki standardowe można następnie oszacować pracochłonność nowego projektu. Na przykład jeśli w poprzednim projekcie proporcja pracochłonności wytwarzania do testowania oprogramowania wyniosła 3:2, a w bieżącym projekcie nakłady pracy na wytwarzanie mają wynieść 600 osobodni, to pracochłonność testowania można oszacować na poziomie 400 osobodni.</p>
+
+      <p><b>Ekstrapolacja.</b> Podstawą tej techniki opartej na metrykach jest dokonywanie pomiarów na jak najwcześniejszym etapie bieżącego projektu w celu zebrania niezbędnych danych. Po dokonaniu wystarczającej liczby obserwacji pracochłonność pozostałych zadań można określić w przybliżeniu poprzez ekstrapolację dostępnych danych (zwykle z zastosowaniem modelu matematycznego). Metoda ta doskonale sprawdza się w iteracyjnych cyklach wytwarzania oprogramowania, w których zespół może na przykład ekstrapolować pracochłonność testów w nadchodzącej iteracji poprzez wyciągnięcie średniej z ostatnich trzech iteracji.</p>
+
+      <p><b>Szerokopasmowa technika delficka.</b> W przypadku tej iteracyjnej techniki eksperckiej eksperci dokonują oszacowań na podstawie posiadanego doświadczenia. Każdy ekspert szacuje nakłady pracy samodzielnie (bez konsultacji z innymi). Następnie wyniki są zbierane i analizowane pod kątem występowania odchyleń wykraczających poza uzgodnione granice, a w przypadku wystąpienia takich odchyleń eksperci wspólnie omawiają bieżące oszacowania. Następnie każdy z ekspertów jest proszony o przygotowanie (również bez konsultacji z innymi ekspertami) nowego oszacowania na podstawie otrzymanych informacji zwrotnych. Proces ten jest powtarzany do momentu osiągnięcia konsensusu. Wariantem szerokopasmowej techniki delfickiej jest tzw. <b>poker planistyczny</b> — metoda powszechnie stosowana w zwinnym wytwarzaniu oprogramowania. W ramach tej metody oszacowań dokonuje się zwykle przy użyciu kart z liczbami odpowiadającymi wielkości nakładów pracy.</p>
+
+      <p><b>Szacowanie trójpunktowe.</b> W przypadku tej techniki eksperckiej eksperci przygotowują trzy oszacowania: najbardziej optymistyczne (a), najbardziej prawdopodobne (m) i najbardziej pesymistyczne (b), a ostateczna szacowana wartość (E) jest ich średnią ważoną arytmetyczną. W najpopularniejszym wariancie tej techniki przewidywany nakład pracy oblicza się według wzoru: <b>E = (a + 4 × m + b) / 6</b>. Zaletą tej techniki jest fakt, że umożliwia ona ekspertom obliczenie błędu pomiaru: <b>SD = (b – a) / 6</b>. Na przykład jeśli szacowane wartości (w osobogodzinach) wynoszą a = 6, m = 9 i b = 18, to ostateczna szacowana wartość wynosi 10±2 osobogodzin (tj. od 8 do 12 osobogodzin), ponieważ E = (6 + 4 × 9 + 18) / 6 = 10, a SD = (18 – 6) / 6 = 2.</p>
+
+      <p>Więcej informacji na temat tych i wielu innych technik szacowania testów można znaleźć w (Kan 2003, Koomen 2006, Westfall 2009).</p>
+
+      <h4>5.1.5 Ustalanie priorytetów przypadków testowych</h4>
+      <p><b>Po opracowaniu specyfikacji przypadków i procedur testowych oraz zgrupowaniu ich w zestawy testowe można utworzyć na ich podstawie harmonogram wykonywania testów, który określa kolejność, w jakiej mają być uruchamiane.</b> Przy ustalaniu priorytetów przypadków testowych należy uwzględnić różne czynniki. Poniżej opisano najczęściej stosowane strategie ustalania priorytetów przypadków testowych.</p>
+
+      <p><b>Ustalanie priorytetów na podstawie ryzyka.</b> W przypadku tej strategii o kolejności wykonywania testów decydują wyniki analizy ryzyka (patrz sekcja 5.2.3). Jako pierwsze wykonywane są przypadki testowe pokrywające najważniejsze ryzyka.</p>
+
+      <p><b>Ustalanie priorytetów na podstawie pokrycia.</b> W przypadku tej strategii kolejność wykonywania testów wynika z pokrycia (np. pokrycia instrukcji kodu). Jako pierwsze wykonywane są przypadki testowe pozwalające uzyskać największe pokrycie. W innym wariancie, zwanym ustalaniem priorytetów na podstawie dodatkowego pokrycia, jako pierwszy wykonywany jest przypadek testowy zapewniający największe pokrycie, a w następnej kolejności — przypadki zapewniające największe dodatkowe pokrycie.</p>
+
+      <p><b>Ustalanie priorytetów na podstawie wymagań.</b> Zgodnie z tą strategią kolejność wykonywania testów ustala się na podstawie priorytetów wymagań, które można powiązać z odpowiadającymi im przypadkami testowymi. Priorytety wymagań określają w tym przypadku interesariusze. Jako pierwsze wykonywane są przypadki testowe związane z najważniejszymi wymaganiami.</p>
+
+      <p><b>O ile jest to możliwe, przypadki testowe powinny być wykonywane w kolejności odpowiadającej poziomom priorytetów — na przykład z wykorzystaniem jednej z wyżej wymienionych strategii ustalania priorytetów.</b> Praktyka ta może jednak nie mieć zastosowania, jeśli przypadki testowe lub testowane przez nie cechy są uzależnione od innych elementów. Przykładem może być sytuacja, gdy przypadek testowy o wyższym priorytecie jest uzależniony od przypadku o niższym priorytecie — wówczas należy w pierwszej kolejności wykonać przypadek o niższym priorytecie.</p>
+
+      <p><b>Przy ustalaniu kolejności wykonywania testów należy również wziąć pod uwagę dostępność zasobów.</b> Wynika to z faktu, że niektóre zasoby — takie jak niezbędne narzędzia lub środowiska testowe bądź pracownicy — mogą być dostępne tylko przez określony czas.</p>
 
       <h4>5.1.6 Piramida testów</h4>
-      <p>Preferuj <b>liczne, szybkie i stabilne testy niskopoziomowe</b> (modułowe/integracji usług) oraz <b>niewielką liczbę</b> testów E2E/UI.</p>
-      <ul>
-        <li><b>Antywzorce</b>: „lodowy rożek” (przewaga testów UI), „klepsydra” (mało testów integracyjnych).</li>
-        <li><b>Wskazówki</b>: kontrakty API, wirtualizacja usług, hermetyzacja danych, deterministyczne dane i izolacja.</li>
-      </ul>
+      <p><b>Piramida testów to model odzwierciedlający fakt, że różne testy mogą mieć różną szczegółowość.</b> Model piramidy testów pomaga zespołowi w automatyzowaniu testów i określaniu ich pracochłonności poprzez wskazanie, że różne cele testów można osiągnąć przy zastosowaniu różnych poziomów automatyzacji.</p>
+
+      <p><b>Poszczególne warstwy piramidy odpowiadają grupom testów — im wyższa warstwa, tym niższy poziom ich izolacji i dłuższy czas ich wykonywania.</b> Testy umieszczone w najniższej warstwie są małe, odizolowane i szybkie, a do tego sprawdzają niewielką część funkcjonalności, w związku z czym do uzyskania należytego pokrycia potrzebna jest zwykle ich bardzo duża liczba. W najwyższej warstwie znajdują się z kolei złożone i kompleksowe testy wysokiego poziomu. Ich wykonywanie zajmuje więcej czasu niż wykonywanie testów z niższych warstw, a sprawdzany przez nie obszar funkcjonalności jest szeroki, co oznacza, że do uzyskania należytego poziomu pokrycia wystarczy tylko kilka takich testów.</p>
+
+      <p>Liczba i nazewnictwo warstw bywają różne. Na przykład w pierwotnym modelu piramidy testów (Cohn 2009) zdefiniowano trzy warstwy: „testy modułowe", „testy usług" i „testy interfejsu użytkownika", a w innym popularnym modelu określono testy modułowe, testy integracyjne (testy integracji modułów) i testy kompleksowe (ang. end-to-end). Mogą być również stosowane inne poziomy testów (patrz sekcja 2.2.1).</p>
 
       <h4>5.1.7 Kwadranty testowe</h4>
+      <p><b>Kwadranty testowe, które zdefiniował jako pierwszy Brian Marick (Marick 2003, Crispin 2008), służą do grupowania poziomów testów wraz z odpowiednimi typami testów, czynnościami, technikami testowania i produktami pracy w kontekście zwinnego wytwarzania oprogramowania.</b> Model ten ułatwia zarządzanie testami poprzez wizualizowanie powyższych elementów — co zapewnia uwzględnienie wszystkich odpowiednich typów i poziomów testów w cyklu wytwarzania oprogramowania — oraz uświadamianie testerom, że niektóre typy testów są bardziej istotne niż inne na określonych poziomach testów. Dodatkową zaletą jest możliwość rozróżniania i opisywania poszczególnych typów testów na potrzeby wszystkich interesariuszy, w tym programistów, testerów i przedstawicieli jednostek biznesowych.</p>
+
+      <p><b>W opisywanym modelu testy mogą mieć cel biznesowy lub technologiczny oraz mogą służyć wspieraniu zespołu (np. poprzez ukierunkowanie procesu wytwarzania oprogramowania) lub krytyce produktu (np. poprzez mierzenie jego zachowania względem oczekiwań).</b> Wypadkowa tych dwóch aspektów decyduje o przynależności do jednego z czterech kwadrantów:</p>
+
       <ul>
-        <li><b>Q1</b> (tech, wsparcie): testy modułowe i integracji modułów, CI, analiza statyczna.</li>
-        <li><b>Q2</b> (biznes, wsparcie): testy oparte o kryteria akceptacji, API, prototypy UX, symulacje.</li>
-        <li><b>Q3</b> (biznes, krytyka): eksploracyjne, użyteczność, UAT.</li>
-        <li><b>Q4</b> (tech, krytyka): wydajność, niezawodność, bezpieczeństwo, dymne — często automatyczne.</li>
+        <li><b>Kwadrant Q1 (cel technologiczny, wspieranie zespołu)</b> obejmuje testy modułowe i testy integracji modułów. Testy te powinny być wykonywane automatycznie i objęte procesem ciągłej integracji.</li>
+        <li><b>Kwadrant Q2 (cel biznesowy, wspieranie zespołu)</b> obejmuje testy funkcjonalne, przykłady, testy oparte na historyjkach użytkownika, prototypy doświadczenia użytkownika, testowanie API oraz symulacje. Testy te sprawdzają spełnienie kryteriów akceptacji i mogą być wykonywane manualnie lub automatycznie.</li>
+        <li><b>Kwadrant Q3 (cel biznesowy, krytyka produktu)</b> obejmuje testowanie eksploracyjne, testowanie użyteczności i testowanie akceptacyjne przez użytkownika. Testy te są ukierunkowane na użytkownika i często wykonywane manualnie.</li>
+        <li><b>Kwadrant Q4 (cel technologiczny, krytyka produktu)</b> obejmuje testy dymne i testy niefunkcjonalne (z wyłączeniem testów użyteczności). Testy te są często wykonywane automatycznie.</li>
       </ul>
 
       <h3>5.2 Zarządzanie ryzykiem</h3>
-      <p>Zarządzanie ryzykiem obejmuje <b>analizę</b> (identyfikację i ocenę) oraz <b>kontrolę</b> (łagodzenie i monitorowanie). Poziom ryzyka = f(prawdopodobieństwo, wpływ).</p>
-      <h4>5.2.1 Definicja i atrybuty ryzyka</h4>
+      <p>Organizacje mają do czynienia z wieloma czynnikami wewnętrznymi i zewnętrznymi, które wywołują niepewność co do tego, czy i kiedy zostaną osiągnięte zakładane cele (ISO 31000). <b>Zarządzanie ryzykiem to proces, który umożliwia organizacjom zwiększanie prawdopodobieństwa osiągnięcia celów i podnoszenie jakości produktów, a także budowanie zaufania interesariuszy.</b></p>
+
+      <p><b>Najważniejsze działania związane z zarządzaniem ryzykiem to:</b></p>
       <ul>
-        <li><b>Prawdopodobieństwo</b>: szacowane jakościowo (np. niskie/średnie/wysokie) lub ilościowo.</li>
-        <li><b>Wpływ</b>: konsekwencje dla bezpieczeństwa, reputacji, finansów, zgodności, UX.</li>
-      </ul>
-      <h4>5.2.2 Ryzyka projektowe vs. produktowe</h4>
-      <ul>
-        <li><b>Projektowe</b>: harmonogram, budżet, zasoby, dostawcy, narzędzia, governance.</li>
-        <li><b>Produktowe</b>: funkcjonalność, wydajność, bezpieczeństwo, niezawodność, odporność, zgodność.</li>
-      </ul>
-      <h4>5.2.3 Analiza ryzyka produktowego</h4>
-      <ul>
-        <li><b>Identyfikacja</b>: burze mózgów, listy kontrolne, warsztaty, diagramy przyczynowo‑skutkowe, przeglądy, dane eksploatacyjne.</li>
-        <li><b>Ocena</b>: macierze ryzyka (L×I), metody ilościowe (np. oszacowanie poziomu ryzyka liczbowo), kategoryzacja ryzyk i priorytety.</li>
-        <li><b>Wpływ na testy</b>: zakres i staranność, dobór poziomów/typów testów, technik i pokrycia, kolejność i intensywność regresji.</li>
-      </ul>
-      <h4>5.2.4 Kontrola ryzyka</h4>
-      <ul>
-        <li><b>Łagodzenie przez testowanie</b>: właściwe typy testów (np. wydajności, bezpieczeństwa), odpowiednie pokrycie i niezależność, analiza statyczna, przeglądy.</li>
-        <li><b>Inne reakcje</b>: akceptacja, przeniesienie (np. kontrakt SLA), plany awaryjne (rollback, feature toggle, dark‑launch).</li>
-        <li><b>Monitorowanie</b>: wskaźniki wiodące (defect trend, DRE, poziom ryzyka rezydualnego), progi i wyzwalacze decyzji.</li>
+        <li><b>analiza ryzyka</b> (obejmująca identyfikację ryzyka i ocenę ryzyka; patrz sekcja 5.2.3)</li>
+        <li><b>kontrola ryzyka</b> (obejmująca łagodzenie ryzyka i monitorowanie ryzyka; patrz sekcja 5.2.4)</li>
       </ul>
 
-      <h3>5.3 Monitorowanie testów, nadzór i ukończenie</h3>
-      <h4>5.3.1 Metryki testowania</h4>
+      <p><b>Podejście do testowania, zgodnie z którym podstawą doboru czynności testowych i ustalania ich priorytetów oraz zarządzania nimi są analiza ryzyka i kontrola ryzyka, jest nazywane testowaniem opartym na ryzyku.</b></p>
+
+      <h4>5.2.1 Definicja i atrybuty ryzyka</h4>
+      <p><b>Ryzyko to potencjalne zdarzenie, niebezpieczeństwo, zagrożenie bądź sytuacja, którego lub której wystąpienie powoduje niekorzystny skutek.</b> Do charakteryzowania ryzyka służą dwa parametry:</p>
       <ul>
-        <li><b>Postęp</b>: wykonane/pozostałe TC, lead time, czas wykonania, przepustowość, burn‑down/burn‑up.</li>
-        <li><b>Jakość</b>: DRE (Defect Removal Efficiency), MTTD/MTTR, gęstość defektów, wskaźnik „escaped defects”.</li>
-        <li><b>Pokrycie</b>: wymagania/ryzyka, kod (instrukcje/gałęzie/warunki), scenariusze biznesowe.</li>
-        <li><b>Koszt</b>: nakład/test, koszt jakości, koszt automatyzacji vs. oszczędność regresji.</li>
+        <li><b>prawdopodobieństwo ryzyka</b>, czyli prawdopodobieństwo wystąpienia danego ryzyka (większe niż zero i mniejsze niż jeden)</li>
+        <li><b>wpływ ryzyka (szkoda)</b>, czyli konsekwencje wystąpienia danego ryzyka</li>
       </ul>
-      <p>Unikaj „metryk próżności”. Raportuj trend i kontekst, nie tylko wartości punktowe.</p>
-      <h4>5.3.2 Raporty z testów</h4>
+
+      <p><b>Powyższe dwa parametry wyrażają poziom ryzyka, który jest miarą wielkości danego ryzyka: im wyższy poziom ryzyka, tym ważniejsze jest podjęcie działań zaradczych.</b></p>
+
+      <h4>5.2.2 Ryzyka projektowe i produktowe</h4>
+      <p><b>W testowaniu oprogramowania istotne są zasadniczo dwa typy ryzyk: ryzyka projektowe oraz ryzyka produktowe.</b></p>
+
+      <p><b>Ryzyka projektowe są związane z zarządzaniem projektem i nadzorem nad jego realizacją.</b> Do ryzyk projektowych należą:</p>
       <ul>
-        <li><b>Status (cyklicznie)</b>: zakres okresu, postęp, przeszkody i obejścia, metryki, nowe/zmienione ryzyka, plan na kolejny okres.</li>
-        <li><b>Sumaryczny</b>: podsumowanie, ocena jakości i spełnienia kryteriów, odstępstwa, ryzyka niezamknięte, wnioski i rekomendacje.</li>
+        <li><b>problemy organizacyjne</b> (np. opóźnienia w dostawach produktów pracy, niedokładne oszacowania lub cięcia finansowe)</li>
+        <li><b>problemy kadrowe</b> (np. niewystarczające umiejętności, konflikty, problemy z wymianą informacji lub braki kadrowe)</li>
+        <li><b>problemy techniczne</b> (np. nieplanowane rozszerzanie zakresu projektu lub niedostateczna obsługa narzędzi)</li>
+        <li><b>problemy związane z dostawcami</b> (np. niedostarczenie niezbędnego elementu przez zewnętrznego dostawcę lub ogłoszenie upadłości przez firmę świadczącą usługi wsparcia technicznego)</li>
       </ul>
-      <h4>5.3.3 Przekazywanie statusu</h4>
-      <p>Dopasuj formę do odbiorcy: rozmowy, dashboardy (CI/CD, testy), kanały asynchroniczne, dokumenty formalne. Dla biznesu stosuj <b>RAG</b>, decyzje wymagane, wpływ ryzyk.</p>
+
+      <p>Wystąpienie ryzyka projektowego może mieć wpływ na harmonogram realizacji, budżet lub zakres projektu, a tym samym na możliwość osiągnięcia jego celów.</p>
+
+      <p><b>Ryzyka produktowe są związane z charakterystykami jakościowymi produktu (opisanymi np. w modelu jakości określonym przez standard ISO 25010).</b> Przykładami ryzyka produktowego mogą być następujące problemy: brakujące lub niewłaściwe elementy funkcjonalności, niepoprawne obliczenia, awarie podczas wykonywania programu, niedopracowana architektura, nieefektywne algorytmy, zbyt długi czas odpowiedzi, niski poziom doświadczenia użytkownika (ang. User Experience — UX) lub podatności na zagrożenia zabezpieczeń.</p>
+
+      <p><b>Wystąpienie ryzyka produktowego może pociągać za sobą cały szereg negatywnych konsekwencji, takich jak:</b></p>
+      <ul>
+        <li>niezadowolenie użytkowników</li>
+        <li>utrata przychodów, zaufania lub reputacji</li>
+        <li>szkody wyrządzone stronom trzecim</li>
+        <li>wysokie koszty pielęgnacji i przeciążenie struktur wsparcia technicznego</li>
+        <li>odpowiedzialność karna</li>
+        <li>w skrajnych przypadkach — szkody materialne, uszczerbek na zdrowiu, a nawet śmierć</li>
+      </ul>
+
+      <h4>5.2.3 Analiza ryzyka produktowego</h4>
+      <p><b>Z perspektywy testowania celem analizy ryzyka produktowego jest uzyskanie wiedzy na temat tego rodzaju ryzyka i wykorzystanie jej do ukierunkowania działań wykonywanych podczas testowania w sposób pozwalający zminimalizować poziom ryzyka rezydualnego (resztkowego).</b> Analizę ryzyka produktowego należy w miarę możliwości rozpocząć na wczesnym etapie cyklu wytwarzania oprogramowania.</p>
+
+      <p><b>Analiza ryzyka produktowego obejmuje identyfikację ryzyka i ocenę ryzyka.</b> Identyfikacja ryzyka polega na wygenerowaniu wyczerpującej listy ryzyk, przy czym interesariusze mogą identyfikować takie ryzyka za pomocą różnych technik i narzędzi, takich jak burza mózgów, warsztaty, wywiady i diagramy przyczynowo-skutkowe. Ocena ryzyka obejmuje z kolei sklasyfikowanie zidentyfikowanych ryzyk, ustalenie prawdopodobieństwa, wpływu i poziomu ryzyka oraz ustalenie priorytetów ryzyk i zaproponowanie sposobów postępowania z nimi. Klasyfikacja ułatwia przypisanie odpowiednich działań związanych z łagodzeniem ryzyka, ponieważ ryzyka zaliczane do tej samej kategorii można zwykle łagodzić podobnymi sposobami.</p>
+
+      <p><b>Oceny ryzyka można dokonać metodą ilościową, jakościową bądź mieszaną.</b> W przypadku podejścia ilościowego poziom ryzyka oblicza się jako iloczyn prawdopodobieństwa ryzyka i wpływu ryzyka, natomiast podejście jakościowe przewiduje ustalanie poziomu ryzyka przy użyciu macierzy ryzyka.</p>
+
+      <p><b>Analiza ryzyka produktowego może mieć wpływ na staranność i zakres testowania. Jej wyniki wykorzystuje się do:</b></p>
+      <ul>
+        <li>określenia zakresu wykonywanych testów</li>
+        <li>ustalenia konkretnych poziomów testów i zaproponowania typów testów, jakie mają zostać wykonane</li>
+        <li>wskazania odpowiednich technik testowania i zakładanego poziomu pokrycia</li>
+        <li>oszacowania pracochłonności testowania w odniesieniu do każdego zadania</li>
+        <li>ustalenia priorytetów testowania w sposób sprzyjający jak najwcześniejszemu wykryciu defektów krytycznych</li>
+        <li>ustalenia, czy w celu zmniejszenia ryzyka należy wykonać dodatkowe czynności (poza samym testowaniem)</li>
+      </ul>
+
+      <h4>5.2.4 Kontrola ryzyka produktowego</h4>
+      <p><b>Kontrola ryzyka produktowego obejmuje wszystkie środki podejmowane w odpowiedzi na zidentyfikowane i ocenione ryzyka produktowe.</b> W ramach kontroli ryzyka produktowego wyróżnia się łagodzenie ryzyka i monitorowanie ryzyka. Łagodzenie ryzyka polega na wykonywaniu działań zaproponowanych na etapie oceny ryzyka w celu obniżenia jego poziomu, natomiast celem monitorowania ryzyka jest zapewnienie skuteczności działań związanych z łagodzeniem ryzyka, uzyskanie dalszych informacji pozwalających usprawnić proces oceny ryzyka oraz zidentyfikowanie nowych ryzyk.</p>
+
+      <p><b>Po przeanalizowaniu danego ryzyka proces kontroli ryzyka produktowego przewiduje kilka wariantów, takich jak: łagodzenie ryzyka poprzez testowanie, akceptacja ryzyka, przeniesienie ryzyka oraz plany awaryjne</b> (Veenendaal 2012).</p>
+
+      <p><b>Działania, które można podjąć w celu łagodzenia ryzyka produktowego poprzez testowanie, obejmują:</b></p>
+      <ul>
+        <li>wytypowanie testerów dysponujących właściwym poziomem doświadczenia i umiejętności — adekwatnie do danego typu ryzyka</li>
+        <li>zapewnienie odpowiedniego poziomu niezależności testowania</li>
+        <li>przeprowadzenie przeglądów i analizy statycznej</li>
+        <li>zastosowanie odpowiednich technik testowania i poziomów pokrycia</li>
+        <li>zastosowanie odpowiednich typów testów uwzględniających charakterystyki jakościowe, których dotyczy ryzyko</li>
+        <li>wykonanie testowania dynamicznego, w tym testowania regresji</li>
+      </ul>
+
+      <h3>5.3 Monitorowanie testów, nadzór nad testami i ukończenie testów</h3>
+      <p><b>Celem monitorowania testów jest gromadzenie informacji na temat przebiegu procesu testowania.</b> Informacje te są wykorzystywane do oceny postępu testów oraz do pomiaru spełnienia kryteriów wyjścia lub wykonania związanych z nimi zadań testowych (takich jak osiągnięcie zakładanego pokrycia ryzyk produktowych, wymagań lub kryteriów akceptacji).</p>
+
+      <p><b>W ramach nadzoru nad testami informacje uzyskane w procesie monitorowania testów są wykorzystywane do określenia (w formie dyrektyw nadzoru) niezbędnych działań korygujących, które pozwolą uzyskać maksymalną skuteczność i efektywność testowania.</b> Dyrektywy nadzoru mogą obejmować na przykład:</p>
+      <ul>
+        <li>ponowne ustalenie priorytetów testów w przypadku wystąpienia problemów wynikających ze zidentyfikowanego ryzyka</li>
+        <li>dokonanie ponownej oceny elementu testowego pod kątem spełnienia kryteriów wejścia lub wyjścia w związku z wprowadzeniem poprawek</li>
+        <li>wprowadzenie zmian w harmonogramie testów w związku z opóźnieniami w realizacji środowiska testowego</li>
+        <li>dodanie nowych zasobów w zależności od bieżących potrzeb</li>
+      </ul>
+
+      <p><b>Ukończenie testów polega na zebraniu danych pochodzących z wykonanych czynności testowych w celu usystematyzowania i połączenia zdobytych doświadczeń, testaliów i innych istotnych informacji.</b> Czynności związane z ukończeniem testów są wykonywane w momencie osiągnięcia kamieni milowych projektu, takich jak: ukończenie testów danego poziomu, zakończenie iteracji projektu zwinnego, zakończenie realizacji (lub anulowanie) projektu testowania, przekazanie systemu oprogramowania do eksploatacji bądź zakończenie prac nad wydaniem pielęgnacyjnym (ang. maintenance release).</p>
+
+      <h4>5.3.1 Metryki stosowane w testowaniu</h4>
+      <p><b>Metryki dotyczące testów gromadzi się w celu określenia postępu realizacji harmonogramu i budżetu, bieżącej jakości przedmiotu testów oraz skuteczności czynności testowych z punktu widzenia realizacji celów testów lub celu iteracji.</b> W ramach monitorowania testów zbiera się wiele metryk przydatnych w kontekście nadzoru nad testami i ukończenia testów.</p>
+
+      <p><b>Powszechnie stosowane są między innymi następujące metryki dotyczące testów:</b></p>
+      <ul>
+        <li><b>metryki dotyczące postępu realizacji projektu</b> (np. ukończenie zadań, użycie zasobów, pracochłonność testowania)</li>
+        <li><b>metryki dotyczące postępu testów</b> (np. postęp implementacji przypadków testowych, postęp przygotowania środowiska testowego, liczba wykonanych/niewykonanych i zaliczonych/niezaliczonych przypadków testowych, czas wykonywania testów)</li>
+        <li><b>metryki dotyczące jakości produktów</b> (np. dostępność, czas odpowiedzi, średni czas do awarii)</li>
+        <li><b>metryki dotyczące defektów</b> (np. liczba i priorytety wykrytych/usuniętych defektów, gęstość defektów, odsetek wykrytych defektów)</li>
+        <li><b>metryki dotyczące ryzyka</b> (np. poziom ryzyka rezydualnego)</li>
+        <li><b>metryki dotyczące pokrycia</b> (np. pokrycie wymagań, pokrycie kodu)</li>
+        <li><b>metryki dotyczące kosztów</b> (np. koszty testowania, koszt jakości na poziomie organizacji)</li>
+      </ul>
+
+      <h4>5.3.2 Cel, treść i odbiorcy raportów z testów</h4>
+      <p><b>Raporty z testów służą do podsumowywania i przekazywania informacji na temat testów w trakcie testowania i po jego zakończeniu.</b> Raporty o postępie testów są elementem ciągłego nadzoru nad testami, w związku z czym zawarte w nich informacje muszą być na tyle obszerne, aby w razie potrzeby umożliwić modyfikację harmonogramu testów, przydziału zasobów lub planu testów — na przykład w związku z odstępstwami od planu lub zmieniającymi się okolicznościami. <b>Sumaryczne raporty z testów stanowią podsumowanie określonego etapu testowania (np. poziomu testów, cyklu testowego lub iteracji) i mogą dostarczać informacji na potrzeby dalszego testowania.</b></p>
+
+      <p><b>W ramach monitorowania testów i nadzoru nad testami, zespół testowy sporządza raporty o postępie testów, aby zapewnić interesariuszom stały dostęp do informacji.</b> Raporty takie są zazwyczaj sporządzane regularnie (np. raz dziennie, raz w tygodniu itp.) i zawierają informacje na temat:</p>
+      <ul>
+        <li>okresu testowania</li>
+        <li>postępu testów (np. wykonania zadań przed terminem lub po terminie), w tym wszelkich istotnych odchyleń</li>
+        <li>utrudnień w testowaniu i sposobów ich obejścia</li>
+        <li>metryk dotyczących testów (przykłady podano w sekcji 5.3.1)</li>
+        <li>nowych i zmienionych ryzyk zaobserwowanych w okresie testowania</li>
+        <li>testów zaplanowanych na następny okres</li>
+      </ul>
+
+      <p><b>Sumaryczny raport z testów jest sporządzany na etapie ukończenia testów — po zakończeniu realizacji projektu bądź po wykonaniu testów danego poziomu lub typu, iteracji oraz, w sytuacji idealnej, po spełnieniu kryteriów wyjścia.</b> W raporcie tym wykorzystywane są dane z raportów o postępie testów oraz inne dane.</p>
+
+      <p><b>Typowy sumaryczny raport z testów zawiera między innymi:</b></p>
+      <ul>
+        <li>podsumowanie testów</li>
+        <li>ocenę jakości testowania i produktu z punktu widzenia pierwotnego planu testów (tj. celów testów i kryteriów wyjścia)</li>
+        <li>informacje o odstępstwach od planu testów (np. o różnicach w stosunku do pierwotnie zakładanego harmonogramu, czasu trwania i nakładu pracy)</li>
+        <li>informacje o utrudnieniach w testowaniu i sposobach ich obejścia</li>
+        <li>metryki dotyczące testów określone na podstawie raportów o postępie testów</li>
+        <li>informacje o niezłagodzonych ryzykach i nieusuniętych defektach</li>
+        <li>zdobyte doświadczenia, które są istotne z punktu widzenia testowania</li>
+      </ul>
+
+      <p><b>Poszczególne grupy odbiorców mają różne wymagania co do zakresu informacji podawanych w raportach, a także różne oczekiwania co do stopnia sformalizowania i częstotliwości przekazywania raportów.</b> Wymiana informacji o postępie testów w obrębie zespołu odbywa się zwykle z dużą częstotliwością i na stopie nieformalnej, natomiast raport na temat testowania dotyczący ukończonego projektu jest sporządzany zgodnie z określonym wzorem i przedstawiany tylko raz.</p>
+
+      <p>Szablony i przykłady raportów o postępie testów (nazywanych raportami o statusie testów) oraz sumarycznych raportów z testów zawiera standard <b>ISO/IEC/IEEE 29119-3</b>.</p>
+
+      <h4>5.3.3 Przekazywanie informacji o statusie testowania</h4>
+      <p><b>Optymalny sposób przekazywania informacji o statusie testów zależy od uwarunkowań związanych z zarządzaniem testami, strategii testów przyjętej w danej organizacji i obowiązujących norm prawnych, a w przypadku samoorganizujących się zespołów (patrz sekcja 1.5.2) — również od samego zespołu.</b></p>
+
+      <p><b>Dostępne są między innymi następujące opcje:</b></p>
+      <ul>
+        <li>słowna wymiana informacji z członkami zespołu i innymi interesariuszami</li>
+        <li><b>tablice wskaźników (ang. dashboard)</b>, np. tablice wskaźników dotyczące ciągłej integracji lub ciągłego dostarczania, tablice zadań i wykresy spalania</li>
+        <li>kanały komunikacji elektronicznej, np. e-mail czy chat</li>
+        <li>dokumentacja w formie elektronicznej</li>
+        <li>formalne raporty z testów (patrz sekcja 5.3.2)</li>
+      </ul>
+
+      <p>Zależnie od sytuacji można stosować jedną lub kilka z powyższych opcji. W przypadku rozproszonych zespołów, w których bezpośrednie rozmowy nie zawsze są możliwe z uwagi na odległość czy różnicę czasu, lepszym rozwiązaniem może być bardziej formalna wymiana informacji. Ponadto różni interesariusze są zwykle zainteresowani różnymi informacjami, w związku z czym ważne jest odpowiednie dostosowanie treści przekazywanych komunikatów.</p>
 
       <h3>5.4 Zarządzanie konfiguracją</h3>
-      <p>Zapewnia identyfikowalność, kontrolę wersji i odtwarzalność testów dla <b>elementów konfiguracji</b>: planów, przypadków, skryptów, danych, środowisk, wyników i raportów.</p>
+      <p><b>W kontekście testowania zarządzanie konfiguracją to uporządkowany proces umożliwiający identyfikowanie, nadzorowanie i śledzenie produktów pracy, takich jak: plany testów, strategie testów, warunki testowe, przypadki testowe, skrypty testowe, wyniki testów, dzienniki testów oraz raporty z testów.</b> W ramach tego procesu powyższe produkty pracy są nazywane elementami konfiguracji.</p>
+
+      <p><b>W przypadku złożonego elementu konfiguracji (np. środowiska testowego) zarządzanie konfiguracją pozwala zarejestrować również jego elementy składowe wraz z informacją o relacjach między takimi elementami i ich wersjach.</b> Element konfiguracji, który został zatwierdzony do testowania, staje się konfiguracją bazową i może być modyfikowany wyłącznie w ramach formalnego procesu nadzoru nad zmianami.</p>
+
+      <p><b>W przypadku utworzenia nowej konfiguracji bazowej zmodyfikowane elementy konfiguracji są dokumentowane, aby umożliwić powrót do poprzedniej konfiguracji bazowej w celu odtworzenia wcześniejszych wyników testów.</b></p>
+
+      <p><b>Zarządzanie konfiguracją umożliwia sprawny przebieg testowania poprzez zagwarantowanie, że:</b></p>
       <ul>
-        <li><b>Konfiguracje bazowe</b>: formalne zatwierdzanie i kontrola zmian (change control).</li>
-        <li><b>Środowiska</b>: wersjonowanie zależności, IaC, hermetyczne dane, snapshoty.</li>
-        <li><b>Śledzenie powiązań</b>: wymaganie → warunek → przypadek → przebieg → defekt → zmiana.</li>
+        <li><b>wszystkie elementy konfiguracji, w tym elementy testowe (tj. poszczególne elementy przedmiotu testów), są jednoznacznie identyfikowane, objęte kontrolą wersji i śledzeniem zmian oraz powiązane z innymi elementami konfiguracji w sposób pozwalający utrzymać możliwość śledzenia na wszystkich etapach procesu testowego</b></li>
+        <li><b>wszystkie zidentyfikowane dokumenty i elementy oprogramowania są przywoływane w sposób jednoznaczny w testaliach</b></li>
       </ul>
 
+      <p><b>Ciągła integracja, ciągłe dostarczanie i ciągłe wdrażanie oraz związane z nimi procesy testowania są zwykle realizowane w ramach zautomatyzowanego potoku DevOps (patrz sekcja 2.1.4), który standardowo obejmuje również zautomatyzowane zarządzanie konfiguracją.</b></p>
+
       <h3>5.5 Zarządzanie defektami</h3>
-      <p>Ustandaryzowany proces obsługi anomalii od zgłoszenia do zamknięcia wspiera jakość produktu i doskonalenie procesu.</p>
+      <p><b>Z uwagi na to, że jednym z głównych celów testów jest wykrywanie defektów, niezbędny jest ustalony proces zarządzania defektami.</b> Chociaż w tym podrozdziale jest mowa o „defektach", zgłaszane anomalie mogą okazać się zarówno rzeczywistymi defektami, jak i czymś zupełnie innym (np. rezultatami fałszywie pozytywnymi lub żądaniami zmiany). Wszelkie wątpliwości w tym zakresie są rozstrzygane podczas rozpatrywania raportów o defektach. Anomalie mogą być zgłaszane w dowolnej fazie cyklu wytwarzania oprogramowania, a sposób ich zgłaszania zależy od konkretnego cyklu.</p>
+
+      <p><b>Nieodzownymi elementami procesu zarządzania defektami są: przepływ pracy umożliwiający obsługę poszczególnych defektów lub anomalii od momentu ich wykrycia do momentu zamknięcia zgłoszenia oraz reguły klasyfikacji takich defektów lub anomalii.</b> Na powyższy przepływ pracy składają się czynności związane z rejestrowaniem, analizowaniem i klasyfikowaniem zgłaszanych anomalii, podejmowaniem decyzji o właściwym sposobie reagowania (usunięcie problemu, pozostawienie bez zmian) oraz zamykaniem raportów o defektach. Ustalonej procedury muszą przestrzegać wszyscy zaangażowani interesariusze. Podobny sposób postępowania jest również zalecany w przypadku defektów wykrytych w trakcie testowania statycznego (a zwłaszcza analizy statycznej).</p>
+
+      <p><b>Typowy raport o defekcie ma na celu:</b></p>
       <ul>
-        <li><b>Cykl życia</b>: Nowy → W triage → Przyjęty/Odrzucony/Duplikat → W naprawie → Do weryfikacji → Zweryfikowany/Zamknięty (lub Ponownie otwarty).</li>
-        <li><b>Krytyczność vs. priorytet</b>: wpływ na biznes/bezpieczeństwo vs. pilność usunięcia.</li>
-        <li><b>Treść raportu</b>: identyfikator, tytuł i skrót, kontekst (TC, środowisko, dane), kroki odtworzenia, oczekiwany vs. rzeczywisty rezultat, artefakty (logi, zrzuty), krytyczność/prior, powiązania, status.</li>
-        <li><b>Triage</b>: weryfikacja, deduplikacja, klasyfikacja, przypisanie; <b>SLA</b> reakcji i napraw.</li>
-        <li><b>Weryfikacja</b>: test potwierdzający i regresja, kryteria zamknięcia, analiza przyczyn źródłowych (RCA) i działania zapobiegawcze.</li>
+        <li>dostarczenie osobom, które są odpowiedzialne za obsługę i usuwanie zgłoszonych defektów, informacji wystarczających do rozwiązania problemu</li>
+        <li>umożliwienie śledzenia jakości produktu pracy</li>
+        <li>przedstawienie sugestii dotyczących usprawnienia procesu wytwarzania oprogramowania i procesu testowego</li>
       </ul>
-      <p>Wzorce raportowe i przykłady zgodnie z ISO/IEC/IEEE 29119‑3 (raporty o incydentach).</p>`,
+
+      <p><b>Raport o defekcie rejestrowany podczas testowania dynamicznego zawiera zwykle następujące informacje:</b></p>
+      <ul>
+        <li><b>jednoznaczny identyfikator</b></li>
+        <li><b>tytuł i krótkie podsumowanie zgłaszanej anomalii</b></li>
+        <li><b>data zaobserwowania anomalii, zgłaszająca jednostka organizacyjna i autor zgłoszenia (w tym jego rola)</b></li>
+        <li><b>identyfikacja przedmiotu testów i środowiska testowego</b></li>
+        <li><b>kontekst wystąpienia defektu</b> (np. uruchamiany przypadek testowy, wykonywana czynność testowa, faza cyklu wytwarzania oprogramowania oraz inne istotne informacje, takie jak stosowana technika testowania, lista kontrolna czy dane testowe)</li>
+        <li><b>opis awarii umożliwiający jej odtworzenie i usunięcie</b> (w tym kroki testowe, które umożliwiły wykrycie anomalii) oraz wszelkie istotne dzienniki testów, zrzuty baz danych, zrzuty ekranu lub nagrania</li>
+        <li><b>oczekiwane i rzeczywiste rezultaty</b></li>
+        <li><b>krytyczność (stopień wpływu) defektu z punktu widzenia interesariuszy lub wymagań</b></li>
+        <li><b>priorytet usunięcia</b></li>
+        <li><b>status defektu</b> (np. otwarty, odroczony, powielony, oczekujący na poprawkę, oczekujący na testowanie potwierdzające, ponownie otwarty, zamknięty, odrzucony)</li>
+        <li><b>odwołania do innych elementów</b> (np. do przypadku testowego)</li>
+      </ul>
+
+      <p>Niektóre z powyższych danych (np. identyfikator, data, autor i początkowy status) mogą zostać uwzględnione automatycznie w przypadku korzystania z narzędzi do zarządzania defektami. Szablony raportów o defektach i przykładowe raporty tego typu przedstawiono w standardzie <b>ISO/IEC/IEEE 29119-3</b> (raporty o defektach są w nim nazywane raportami o incydentach).</p>`,
     flashcards:[
       {q:"Wymień 3 elementy planu testów.", a:"Kontekst i zakres; role/odpowiedzialności; podejście i kryteria; rejestr ryzyk; budżet i harmonogram; komunikacja."},
       {q:"Czym jest Definition of Done / Ready?", a:"DoD – kryteria wyjścia dla elementu; DoR – kryteria wejścia, by rozpocząć pracę nad historyjką."},
@@ -749,7 +1427,12 @@ const syllabus = [
       {q:"Który element nie należy do typowej treści planu testów?", opt:["Rejestr ryzyk","Budżet","Szczegóły implementacji baz danych","Kryteria wejścia/wyjścia"], a:2},
       {q:"W technice trójpunktowej przy a=6, m=9, b=18 – E wynosi?", opt:["9","10","11","12"], a:1, exp:"E=(6+4*9+18)/6=10."},
       {q:"Która strategia priorytetyzacji wykonuje najpierw testy o największym wkładzie w pokrycie?", opt:["Wg wymagań","Wg ryzyka","Wg dodatkowego pokrycia","Losowa"], a:2},
-      {q:"Które zdanie o ryzyku jest prawdziwe?", opt:["Poziom ryzyka to iloczyn prawdopodobieństwa i wpływu","Ryzyka dotyczą tylko projektu, nie produktu","Ocena ryzyka nie wpływa na testy","Ryzyka ustala wyłącznie kierownik projektu"], a:0}
+      {q:"Które zdanie o ryzyku jest prawdziwe?", opt:["Poziom ryzyka to iloczyn prawdopodobieństwa i wpływu","Ryzyka dotyczą tylko projektu, nie produktu","Ocena ryzyka nie wpływa na testy","Ryzyka ustala wyłącznie kierownik projektu"], a:0},
+      {q:"Co to jest Definition of Done (DoD)?", opt:["Kryteria wejścia dla historyjki","Kryteria wyjścia dla elementu","Plan testów","Strategia testów"], a:1, exp:"Definition of Done to kryteria wyjścia określające, kiedy element jest gotowy do przekazania."},
+      {q:"Które stwierdzenie o monitorowaniu testów jest prawdziwe?", opt:["Nie wymaga metryk","Pozwala na korekty w trakcie projektu","Jest opcjonalne","Dotyczy tylko automatycznych testów"], a:1, exp:"Monitorowanie testów pozwala na korekty w trakcie projektu na podstawie zebranych informacji."},
+      {q:"Co to jest zarządzanie konfiguracją?", opt:["Zarządzanie zespołem testowym","Zarządzanie wersjami produktów pracy","Zarządzanie budżetem","Zarządzanie harmonogramem"], a:1, exp:"Zarządzanie konfiguracją to zarządzanie wersjami produktów pracy i ich powiązaniami."},
+      {q:"Które stwierdzenie o zarządzaniu defektami jest prawdziwe?", opt:["Defekty są zawsze usuwane natychmiast","Proces obejmuje identyfikację, dokumentowanie i śledzenie","Dotyczy tylko krytycznych defektów","Nie wymaga priorytetyzacji"], a:1, exp:"Zarządzanie defektami obejmuje identyfikację, dokumentowanie, priorytetyzację i śledzenie defektów."},
+      {q:"Co to jest testowanie oparte na ryzyku?", opt:["Testowanie tylko krytycznych funkcji","Priorytetyzacja testów wg zidentyfikowanych ryzyk","Testowanie tylko automatyczne","Testowanie tylko manualne"], a:1, exp:"Testowanie oparte na ryzyku to priorytetyzacja testów wg zidentyfikowanych ryzyk produktowych i projektowych."}
     ]
   },
   {
@@ -757,67 +1440,60 @@ const syllabus = [
     title:"6. Narzędzia testowe",
     read:`<h2>6. Narzędzia testowe</h2>
       <h3>6.1 Narzędzia wspomagające testowanie</h3>
-      <p>Narzędzia testowe wspierają większość czynności testowych — od planowania, przez analizę i projektowanie, implementację i wykonywanie, po monitorowanie i ukończenie testów. Poniżej przedstawiono kluczowe kategorie wraz z zakresem wsparcia i typowymi przykładami zastosowań.</p>
-      <h4>Narzędzia do zarządzania</h4>
-      <ul>
-        <li><b>Application Lifecycle Management (ALM)</b>: planowanie wydań/iteracji, powiązania wymagań–testy–defekty, raportowanie i śledzenie postępu.</li>
-        <li><b>Zarządzanie wymaganiami</b>: wersjonowanie i śledzenie zmian, atrybuty priorytetu/ryzyka, definicja gotowości/ukończenia, matryce pokrycia.</li>
-        <li><b>Zarządzanie testami</b>: repozytorium przypadków i zestawów, harmonogramy przebiegów, dane testowe, raporty statusu i sumaryczne.</li>
-        <li><b>Zarządzanie defektami</b>: cykl życia zgłoszeń (triage, naprawa, weryfikacja), SLA, kategoryzacja, powiązania z przebiegami i zmianami.</li>
-        <li><b>Zarządzanie konfiguracją</b>: identyfikowalność elementów konfiguracji (plany, skrypty, dane, środowiska), konfiguracje bazowe, kontrola zmian.</li>
-      </ul>
-      <h4>Narzędzia do testowania statycznego</h4>
-      <ul>
-        <li><b>Wsparcie przeglądów</b>: komentarze w linii, listy kontrolne, szablony protokołów, agregacja uwag i metryk (np. zagęszczenie defektów na stronę).</li>
-        <li><b>Analiza statyczna</b>: reguły jakości i bezpieczeństwa (lint, SAST), złożoność, duplikacje, pokrycie martwego/nieosiągalnego kodu, integracja z CI.</li>
-        <li><b>Formatery/konwencje</b>: automatyczne formatowanie i weryfikacja standardów kodu przed wykonaniem testów dynamicznych.</li>
-      </ul>
-      <h4>Narzędzia do projektowania i implementacji testów</h4>
-      <ul>
-        <li><b>Projektowanie przypadków</b>: wsparcie technik (np. klasy równoważności, wartości brzegowe, tablice decyzyjne), generatory szkieletów testów.</li>
-        <li><b>Dane testowe</b>: generatory danych syntetycznych, maskowanie/anonymizacja, seedy i fixture’y, odtwarzalne snapshoty baz danych.</li>
-        <li><b>Frameworki testów</b>: struktury do testów modułowych/integracyjnych/E2E, biblioteki asercji, stuby/mockey, wirtualizacja usług.</li>
-      </ul>
-      <h4>Narzędzia do wykonywania testów i pomiaru pokrycia</h4>
-      <ul>
-        <li><b>Orkiestracja i uruchamianie</b>: runner’y, kolejkowanie i równoległe uruchamianie, selekcja testów po zmianach (test impact analysis).</li>
-        <li><b>Raportowanie wyników</b>: dashboardy przebiegów, logi kroków, zrzuty ekranu/filmów, artefakty do analizy incydentów.</li>
-        <li><b>Pokrycie</b>: pomiar instrukcji/gałęzi/warunków, mapowanie do wymagań/ryzyk, progowe bramki jakości w CI.</li>
-      </ul>
-      <h4>Narzędzia do testowania niefunkcjonalnego</h4>
-      <ul>
-        <li><b>Wydajność/skalowalność</b>: testy obciążenia, stresu i wytrzymałości, profilowanie zużycia zasobów, SLA (czasy odpowiedzi, throughput, percentyle).</li>
-        <li><b>Bezpieczeństwo</b>: skanery SAST/DAST/IAST, testy podatności, analiza zależności (SCA), polityki haseł/sekretów, hardening.</li>
-        <li><b>Użyteczność</b>: zdalne badania użyteczności, mapy kliknięć/nagrań, ankiety SUS, heurystyki i checklisty.</li>
-        <li><b>Niezawodność/odporność</b>: chaos engineering, testy failover, symulacja awarii sieci/zasobów.</li>
-      </ul>
-      <h4>Narzędzia DevOps</h4>
-      <ul>
-        <li><b>CI/CD</b>: serwery CI, potoki budowania/testów/wdrożeń, artefakty release, gate’y jakości, rollback/feature toggles.</li>
-        <li><b>Artefakty i rejestry</b>: rejestry pakietów/obrazów, podpisy i skanowanie bezpieczeństwa, polityki retencji.</li>
-        <li><b>Infrastruktura jako kod (IaC)</b>: deklaratywne środowiska testowe, powtarzalność, ephemeral test env (on‑demand).</li>
-      </ul>
-      <h4>Narzędzia wspomagające współpracę</h4>
-      <ul>
-        <li><b>Komunikacja i backlog</b>: tablice zadań, wiki, szablony przypadków i raportów, decyzje architektoniczne (ADR), kanały statusów.</li>
-        <li><b>Zaangażowanie interesariuszy</b>: przeglądy kryteriów akceptacji, example mapping, śledzenie decyzji/ryzyk.</li>
-      </ul>
-      <h4>Skalowalność i standaryzacja wdrażania</h4>
-      <ul>
-        <li><b>Maszyny wirtualne i kontenery</b>: standardowe obrazy testowe, izolacja środowisk, powtarzalne wdrożenia.</li>
-        <li><b>Provisioning</b>: automatyczne tworzenie i niszczenie środowisk, testy w równoległych kopiach (parallelization).</li>
-      </ul>
-      <h4>Inne narzędzia</h4>
-      <ul>
-        <li><b>Narzędzia ogólnego przeznaczenia</b>: arkusze kalkulacyjne, skrypty, notatniki — przydatne do ad‑hoc analizy danych, planów i zestawień.</li>
-      </ul>
+      <p><b>Narzędzia testowe wspomagają i ułatwiają wykonywanie wielu czynności testowych.</b> Dostępne są między innymi następujące narzędzia:</p>
+
+      <p><b>● narzędzia do zarządzania</b> — zwiększające efektywność procesu testowego poprzez ułatwienie zarządzania cyklem wytwarzania oprogramowania, wymaganiami, testami, defektami i konfiguracją</p>
+
+      <p><b>● narzędzia do testowania statycznego</b> — pomagające testerom w przeprowadzaniu przeglądów i analizy statycznej</p>
+
+      <p><b>● narzędzia do projektowania testów i implementacji testów</b> — ułatwiające tworzenie przypadków, danych i procedur testowych</p>
+
+      <p><b>● narzędzia do wykonywania testów i pomiaru pokrycia</b> — ułatwiające automatyczne wykonywanie testów i mierzenie pokrycia</p>
+
+      <p><b>● narzędzia do testowania niefunkcjonalnego</b> — umożliwiające testerom wykonywanie testów niefunkcjonalnych, które są trudne lub niemożliwe do wykonania w trybie manualnym</p>
+
+      <p><b>● narzędzia DevOps</b> — wspomagające działanie potoku dostarczania, śledzenie przepływu pracy, wykonywanie zautomatyzowanych procesów budowania oraz funkcjonowanie mechanizmów ciągłej integracji i ciągłego dostarczania w metodyce DevOps</p>
+
+      <p><b>● narzędzia wspomagające współpracę</b> — ułatwiające wymianę informacji</p>
+
+      <p><b>● narzędzia zwiększające skalowalność i standaryzację wdrażania</b> (np. maszyny wirtualne lub narzędzia do konteneryzacji)</p>
+
+      <p><b>● wszelkie inne narzędzia wspomagające testowanie</b> (np. w kontekście testowania narzędziem testowym może być również arkusz kalkulacyjny)</p>
 
       <h3>6.2 Korzyści i ryzyka związane z automatyzacją testów</h3>
-      <p>Automatyzacja przynosi wymierne korzyści, lecz wymaga inwestycji w <b>wdrożenie, szkolenia i utrzymanie</b>. Należy ocenić opłacalność oraz ryzyka i je łagodzić.</p>
-      <ul>
-        <li><b>Korzyści</b>: redukcja powtarzalnych czynności, spójność i powtarzalność przebiegów, obiektywne pomiary (np. pokrycie), łatwy dostęp do metryk i trendów, krótszy czas informacji zwrotnej, wcześniejsze wykrywanie defektów, więcej czasu na projektowanie lepszych testów.</li>
-        <li><b>Ryzyka</b>: nierealistyczne oczekiwania, niedoszacowanie kosztów/utrzymania, użycie nie tam, gdzie lepsze testy manualne, nadmierne poleganie na narzędziu (spadek krytycznego myślenia), zależność od dostawcy lub porzuconych OSS, niekompatybilność z platformą, niespełnienie wymogów prawnych/bezpieczeństwa.</li>
-      </ul>`,
+      <p><b>Sam zakup narzędzia nie gwarantuje jeszcze sukcesu.</b> Osiągnięcie realnych i trwałych korzyści z wdrożenia nowego narzędzia zawsze wymaga dodatkowego wysiłku (związanego np. z wprowadzeniem i utrzymaniem takiego narzędzia oraz przeprowadzeniem związanych z nim szkoleń). Ponadto należy również uwzględnić pewne ryzyka, które wymagają przeanalizowania i złagodzenia.</p>
+
+      <p><b>Potencjalne korzyści wynikające z automatyzacji testów to między innymi:</b></p>
+
+      <p><b>● oszczędność czasu poprzez ograniczenie powtarzalnych czynności wykonywanych manualnie</b> (takich jak uruchamianie testów regresji, wielokrotne wprowadzanie tych samych danych testowych, porównywanie rzeczywistych rezultatów z oczekiwanymi czy sprawdzanie zgodności ze standardami tworzenia kodu)</p>
+
+      <p><b>● zapobieganie prostym błędom ludzkim poprzez zwiększenie spójności i powtarzalności</b> (np. poprzez wyprowadzanie testów w spójny sposób z wymagań, systematyczne tworzenie danych testowych oraz wykonywanie testów przy użyciu narzędzia w tej samej kolejności i z tą samą częstotliwością)</p>
+
+      <p><b>● bardziej obiektywna ocena (np. w zakresie pokrycia) i przeprowadzanie pomiarów, które są zbyt skomplikowane, aby mogły zostać określone przez ludzi</b></p>
+
+      <p><b>● łatwiejszy dostęp do informacji na temat testowania, które ułatwiają zarządzanie testami i raportowanie na temat testów</b> (np. danych statystycznych, wykresów i zagregowanych danych obrazujących postęp testów, współczynników występowania awarii oraz danych dotyczących czasu trwania wykonywanych testów)</p>
+
+      <p><b>● skrócenie czasu wykonywania testów, co przekłada się na wcześniejsze wykrywanie defektów oraz szybsze przekazywanie informacji zwrotnych i wprowadzanie produktów na rynek</b></p>
+
+      <p><b>● zapewnienie testerom dodatkowego czasu na projektowanie nowych, bardziej wnikliwych i skuteczniejszych testów</b></p>
+
+      <p><b>Do potencjalnych ryzyk związanych z automatyzacją testów należą:</b></p>
+
+      <p><b>● nierealistyczne oczekiwania co do korzyści wynikających z zastosowania narzędzia</b> (w tym funkcjonalności i łatwości obsługi)</p>
+
+      <p><b>● niedokładne oszacowanie czasu, kosztów i nakładów pracy związanych z wprowadzeniem narzędzia, utrzymaniem skryptów testowych oraz zmianą dotychczasowego manualnego procesu testowego</b></p>
+
+      <p><b>● stosowanie narzędzia w sytuacjach, w których lepiej sprawdzi się testowanie manualne</b></p>
+
+      <p><b>● nadmierne uzależnienie od narzędzia</b> (np. lekceważenie potrzeby krytycznego myślenia)</p>
+
+      <p><b>● uzależnienie od dostawcy narzędzia, który może zakończyć działalność, wycofać narzędzie lub sprzedać je innemu dostawcy bądź świadczyć niskiej jakości usługi wsparcia technicznego</b> (np. w zakresie reagowania na zapytania, dostarczania uaktualnień lub usuwania defektów)</p>
+
+      <p><b>● korzystanie z oprogramowania open source, które może zostać porzucone</b> (co oznacza brak dalszych aktualizacji) lub którego elementy wewnętrzne mogą wymagać stosunkowo częstych aktualizacji w związku z dalszymi pracami rozwojowymi</p>
+
+      <p><b>● brak kompatybilności narzędzia do automatyzacji z daną platformą programistyczną</b></p>
+
+      <p><b>● wybór nieodpowiedniego narzędzia, które nie spełnia wymogów prawnych i/lub norm bezpieczeństwa</b></p>`,
     flashcards:[
       {q:"Podaj 2 korzyści automatyzacji.", a:"Szybsza regresja i powtarzalność; spójne środowiska; ślad audytu."},
       {q:"Podaj jedno ryzyko automatyzacji.", a:"Koszty utrzymania, kruchość testów UI, nietrafiony dobór narzędzi."}
@@ -995,6 +1671,7 @@ const state = {
   page: 0,
   flash: {side:"q", i:0},
   quizAnswers: {},
+  currentQuestionIndex: 0, // Indeks aktualnego pytania na stronie
   results: JSON.parse(localStorage.getItem("istqb_results")||"{}")
 };
 
@@ -1065,53 +1742,26 @@ const questionMatcher = {
   }
 };
 
-// Ładowanie pytań z pliku egzamin_quiz_full.html
-let examQuestions = [];
+// Pytania egzaminacyjne - skopiowane z egzamin_quiz_full.html
+const examQuestions = [
+  {q:"Która z poniższych odpowiedzi opisuje poprawny cel testów?", opt:["Udowodnienie, że w systemie podlegającym testowaniu nie występują żadne nieusunięte defekty.","Udowodnienie, że po wprowadzeniu systemu do eksploatacji nie będą występowały żadne awarie.","Obniżenie poziomu ryzyka związanego z przedmiotem testów i zwiększenie zaufania do jego jakości.","Sprawdzenie, czy nie pozostały żadne nieprzetestowane kombinacje danych wejściowych."], a:2, exp:"Testy dostarczają informacji, redukują ryzyko i budują zaufanie; nie dowodzą braku defektów."},
+  {q:"Które z poniższych stwierdzeń zawiera przykład czynności testowych, które przyczyniają się do powodzenia projektu?", opt:["Zaangażowanie testerów w różne działania podejmowane w ramach cyklu wytwarzania oprogramowania (SDLC) pomaga wykryć defekty w produktach pracy.","Testerzy starają się nie przeszkadzać programistom na etapie pisania kodu, aby umożliwić im tworzenie kodu o wyższej jakości.","Współpraca testerów z użytkownikami pozwala podnieść jakość raportów o defektach podczas testowania integracji modułów i testowania systemowego.","Certyfikowani testerzy projektują znacznie lepsze przypadki testowe niż testerzy, którzy nie posiadają certyfikatu."], a:0, exp:"Wczesne i szerokie włączenie testów w SDLC zwiększa jakość i szybkość informacji zwrotnej."},
+  {q:"Rozpoczynasz pracę jako tester w zespole opracowującym nowy system metodą przyrostową. Zauważasz, że od kilku iteracji nie wprowadzono żadnych zmian w przypadkach testowych używanych do testowania regresji, a także nie zidentyfikowano żadnych nowych defektów związanych z regresją. Twój kierownik jest zadowolony — w przeciwieństwie do ciebie. Która zasada testowania uzasadnia twój sceptycyzm?", opt:["Testy ulegają zużyciu.","Przekonanie o braku defektów jest błędem.","Defekty mogą się kumulować.","Testowanie gruntowne jest niemożliwe."], a:0, exp:"Nieaktualizowane testy regresji tracą skuteczność (zużywają się)."},
+  {q:"Pracujesz w zespole, który tworzy aplikację mobilną do zamawiania posiłków. Zespół postanowił, że w bieżącej iteracji ma zostać zaimplementowana funkcjonalność obsługi płatności. Która z wymienionych czynności jest elementem analizy testów?", opt:["Oszacowanie, że testowanie integracji z usługą płatniczą potrwa 8 osobodni.","Podjęcie decyzji, że zespół powinien przetestować, czy istnieje możliwość prawidłowego podziału płatności między kilku użytkowników.","Zastosowanie metody analizy wartości brzegowych w celu opracowania danych testowych na potrzeby przypadków testowych, które sprawdzają prawidłowość przetwarzania płatności w minimalnej dozwolonej kwocie.","Przeanalizowanie rozbieżności między rzeczywistym a oczekiwanym rezultatem po wykonaniu przypadku testowego sprawdzającego przetwarzanie płatności kartą kredytową, a następnie zgłoszenie defektu."], a:1, exp:"Analiza testów identyfikuje co testować (warunki), projektowanie określa dane (np. BVA)."},
+  {q:"Które z poniższych czynników (i–v) mają ISTOTNY wpływ na podejście do testów? i. Cykl życia wytwarzania oprogramowania (SDLC). ii. Liczba defektów wykrytych w poprzednich projektach. iii. Zidentyfikowane ryzyka produktowe. iv. Nowe wymagania wynikające z przepisów wymuszające formalne testowanie białoskrzynkowe. v. Konfiguracja środowiska testowego.", opt:["i oraz ii mają istotny wpływ.","i, iii oraz iv mają istotny wpływ.","ii, iv oraz v mają istotny wpływ.","iii oraz v mają istotny wpływ."], a:1, exp:"Kontekst SDLC, ryzyka produktowe oraz wymogi (np. regulacyjne) kształtują podejście."},
+  {q:"Wskaż DWA z wymienionych poniżej zadań, które są przypisane GŁÓWNIE do roli związanej z testowaniem.", opt:["Konfigurowanie środowiska testowego.","Prowadzenie backlogu produktu.","Projektowanie rozwiązań dla nowych wymagań.","Tworzenie planu testów.","Analizowanie podstawy testów."], a:[0,4], exp:"Głównie testerskie: analizowanie podstawy testów oraz (w wielu organizacjach) konfiguracja środowiska testowego."},
+  {q:"Które z poniższych umiejętności (i–v) są NAJBARDZIEJ ISTOTNYMI umiejętnościami w pracy testera? i. Posiadanie wiedzy merytorycznej. ii. Tworzenie wizji produktu. iii. Umiejętność sprawnej pracy w zespole. iv. Planowanie i organizowanie pracy zespołu. v. Krytyczne myślenie.", opt:["Umiejętności ii oraz iv.","Umiejętności i, iii oraz v.","Umiejętności i, ii oraz v.","Umiejętności iii oraz iv."], a:1, exp:"Esencja: domena, współpraca i krytyczne myślenie."},
+  {q:"W jaki sposób podejście 'cały zespół' uwidacznia się w kontaktach testerów z przedstawicielami jednostek biznesowych?", opt:["Przedstawiciele jednostek biznesowych decydują o podejściu do automatyzacji testów.","Testerzy pomagają przedstawicielom jednostek biznesowych w określaniu strategii testów.","Przedstawiciele jednostek biznesowych nie są objęci podejściem opartym na zaangażowaniu całego zespołu (podejście 'cały zespół').","Testerzy pomagają przedstawicielom jednostek biznesowych w tworzeniu odpowiednich testów akceptacyjnych."], a:3, exp:"W whole‑team testerzy współtworzą z biznesem testy akceptacyjne."},
+  {q:"Zastanów się nad następującą zasadą: 'Do każdej czynności związanej z wytwarzaniem oprogramowania (SDLC) powinna być przypisana odpowiadająca jej czynność testowa'. W których modelach cyklu wytwarzania oprogramowania (SDLC) obowiązuje ta zasada?", opt:["Tylko w sekwencyjnych modelach wytwarzania oprogramowania.","Tylko w iteracyjnych modelach wytwarzania oprogramowania.","Tylko w iteracyjnych i przyrostowych modelach wytwarzania oprogramowania.","W sekwencyjnych, przyrostowych i iteracyjnych modelach wytwarzania oprogramowania."], a:3, exp:"Dotyczy wszystkich modeli SDLC."},
+  {q:"Które z poniższych stwierdzeń NAJLEPIEJ opisuje wytwarzanie sterowane testami akceptacyjnymi (ATDD)?", opt:["W modelu ATDD kryteria akceptacji są zwykle tworzone w formacie Given/When/Then (Mając/Kiedy/Wtedy).","W modelu ATDD przypadki testowe są zwykle tworzone na etapie testowania modułowego i są ukierunkowane na kod.","W modelu ATDD testy są tworzone na podstawie kryteriów akceptacji i określają sposób tworzenia związanego z nimi oprogramowania.","W modelu ATDD testy są tworzone na podstawie pożądanego zachowania oprogramowania, co ułatwia członkom zespołu ich zrozumienie."], a:2, exp:"ATDD: zaczynamy od kryteriów akceptacji, które prowadzą implementację."},
+  {q:"Twoim zadaniem jest przeanalizowanie i usunięcie przyczyn awarii w nowym systemie, który ma zostać przekazany do eksploatacji. Którą z wymienionych czynności wykonujesz?", opt:["Debugowanie.","Testowanie oprogramowania.","Pozyskiwanie wymagań.","Zarządzanie defektami."], a:0, exp:"Debugowanie = diagnoza przyczyny awarii i wprowadzenie poprawki (potem test potwierdzający i regresja)."},
+  {q:"W wielu organizacjach, które wytwarzają oprogramowanie, dział odpowiedzialny za testowanie jest nazywany działem zapewnienia jakości. Czy to zdanie jest poprawne, a jeśli nie, to dlaczego?", opt:["Zdanie jest poprawne. Testowanie i zapewnienie jakości to dwa różne określenia na ten sam proces.","Zdanie jest poprawne. Określenia te mogą być używane wymiennie, ponieważ działania wykonywane w ramach testowania i działania wykonywane w ramach zapewnienia jakości koncentrują się na tych samych problemach związanych z jakością.","Zdanie jest niepoprawne. Testowanie jest szerszym procesem, który obejmuje wszystkie działania związane z jakością, a zapewnienie jakości koncentruje się na procesach związanych z jakością.","Zdanie jest niepoprawne. Zapewnienie jakości koncentruje się na procesach związanych z jakością, a testowanie — na wykazaniu, że dany moduł lub system jest zdatny do użytku zgodnie z przeznaczeniem, oraz na wykryciu ewentualnych defektów."], a:3, exp:"QA koncentruje się na procesach jakości; testowanie ocenia produkt i ujawnia defekty."},
+  {q:"Telefon dzwoniący w sąsiednim pomieszczeniu chwilowo rozproszył programistę, przez co niewłaściwie zaprogramował on logikę sprawdzającą górną wartość brzegową jednej ze zmiennych wejściowych. Później, w trakcie testowania systemowego, tester zauważył, że system akceptuje nieprawidłowe wartości wejściowe wpisywane w polu wprowadzania danych. Nieprawidłowo zakodowana logika sprawdzania górnej wartości brzegowej to:", opt:["Podstawowa przyczyna.","Awaria.","Pomyłka.","Defekt."], a:3, exp:"Błędny kod = defekt; awaria to objaw; pomyłka to błąd ludzki prowadzący do defektu."}
+];
 
+// Funkcja do ładowania pytań (teraz nie jest potrzebna, ale zostawiamy dla kompatybilności)
 async function loadExamQuestions() {
-  try {
-    const response = await fetch('egzamin_quiz_full.html');
-    const html = await response.text();
-    
-    // Wyciągnij pytania z pliku HTML
-    const scriptMatch = html.match(/const builtIn = \[([\s\S]*?)\];/);
-    if (scriptMatch) {
-      const questionsText = scriptMatch[1];
-      // Parsuj pytania - to jest uproszczona wersja, może wymagać dostosowania
-      const questions = [];
-      const questionMatches = questionsText.match(/\{[^}]*q:"[^"]*"[^}]*\}/g);
-      
-      if (questionMatches) {
-        for (const match of questionMatches) {
-          try {
-            // Wyciągnij podstawowe informacje o pytaniu
-            const qMatch = match.match(/q:"([^"]*)"/);
-            const optsMatch = match.match(/opts:\[(.*?)\]/);
-            const correctMatch = match.match(/correct:"([^"]*)"/);
-            const expMatch = match.match(/exp:"([^"]*)"/);
-            
-            if (qMatch && optsMatch && correctMatch) {
-              const question = {
-                q: qMatch[1],
-                opt: optsMatch[1].split('","').map(opt => opt.replace(/^"/, '').replace(/"$/, '')),
-                a: correctMatch[1],
-                exp: expMatch ? expMatch[1] : ""
-              };
-              questions.push(question);
-            }
-          } catch (e) {
-            console.warn('Błąd parsowania pytania:', e);
-          }
-        }
-      }
-      
-      examQuestions = questions;
-      console.log(`Załadowano ${examQuestions.length} pytań egzaminacyjnych`);
-    }
-  } catch (error) {
-    console.error('Błąd ładowania pytań egzaminacyjnych:', error);
-    examQuestions = [];
-  }
+  console.log(`Załadowano ${examQuestions.length} pytań egzaminacyjnych`);
 }
 
 // Funkcja do pobierania pytań dla konkretnej strony
@@ -1194,8 +1844,8 @@ function renderPagedChapter(ch){
     ${isLast? renderInlineFooterEnd() : renderInlinePager()}
   `;
 
-  const nextBtn = $$("#nextPage"); if(nextBtn){ nextBtn.onclick = ()=>{ state.page = Math.min(state.page+1, total-1); renderPagedChapter(ch); }; }
-  const prevBtn = $$("#prevPage"); if(prevBtn){ prevBtn.onclick = ()=>{ state.page = Math.max(state.page-1, 0); renderPagedChapter(ch); }; if(idx===0) { prevBtn.disabled=true; prevBtn.style.visibility='hidden'; } }
+  const nextBtn = $$("#nextPage"); if(nextBtn){ nextBtn.onclick = ()=>{ state.page = Math.min(state.page+1, total-1); state.currentQuestionIndex = 0; renderPagedChapter(ch); }; }
+  const prevBtn = $$("#prevPage"); if(prevBtn){ prevBtn.onclick = ()=>{ state.page = Math.max(state.page-1, 0); state.currentQuestionIndex = 0; renderPagedChapter(ch); }; if(idx===0) { prevBtn.disabled=true; prevBtn.style.visibility='hidden'; } }
   const nextChapBtn = $$("#endNextChapter"); if(nextChapBtn){ nextChapBtn.onclick = ()=>{ state.current = Math.min(state.current+1, syllabus.length-1); state.page=0; renderChapter(); }; }
 
   // Wire inline flash
@@ -1237,20 +1887,19 @@ function renderPagedChapter(ch){
   // Wire next question button
   const nextQuestionBtn = $$("#nextQuestion");
   if(nextQuestionBtn){
-    let currentQuestionIndex = 0;
     nextQuestionBtn.onclick = ()=>{
       const questions = getQuestionsForPage(page);
       if(questions.length <= 1) return;
       
-      currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
-      const q = questions[currentQuestionIndex];
+      state.currentQuestionIndex = (state.currentQuestionIndex + 1) % questions.length;
+      const q = questions[state.currentQuestionIndex];
       const multi = q && Array.isArray(q.a);
       
       // Zaktualizuj treść pytania
       const quizDiv = $$(".inline-quiz");
       if(quizDiv){
         quizDiv.innerHTML = `
-          <div class="tag">Pytanie ${currentQuestionIndex + 1} z ${questions.length}</div>
+          <div class="tag">Pytanie ${state.currentQuestionIndex + 1} z ${questions.length}</div>
           <div style="font-weight:700;margin-bottom:6px">${q.q}</div>
           ${q.opt.map((o,oi)=>{
             const input = multi? `<input type=\"checkbox\" name=\"iq\" value=\"${oi}\">` : `<input type=\"radio\" name=\"iq\" value=\"${oi}\">`;
@@ -1277,6 +1926,12 @@ function renderPagedChapter(ch){
             });
           };
         }
+        
+        // Ponownie podłącz przycisk następnego pytania
+        const newNextBtn = $$("#nextQuestion");
+        if(newNextBtn){
+          newNextBtn.onclick = nextQuestionBtn.onclick;
+        }
       }
     };
   }
@@ -1302,8 +1957,13 @@ function renderInlineStudy(ch){
   // Pobierz pytania używając nowego systemu linkowania
   const questions = getQuestionsForPage(page);
   
-  // Wybierz pierwsze pytanie do wyświetlenia
-  const q = questions[0];
+  // Resetuj indeks pytania przy zmianie strony
+  if (state.currentQuestionIndex >= questions.length) {
+    state.currentQuestionIndex = 0;
+  }
+  
+  // Wybierz pytanie do wyświetlenia
+  const q = questions[state.currentQuestionIndex];
   const multi = q && Array.isArray(q.a);
   
   return `
@@ -1312,7 +1972,7 @@ function renderInlineStudy(ch){
       <div class="flip" id="inlineFlip"></div>
     </div>
     ${q? `<div class="inline inline-quiz">
-      <div class="tag">Pytanie ${questions.length > 1 ? `(1 z ${questions.length})` : ''}</div>
+      <div class="tag">Pytanie ${questions.length > 1 ? `(${state.currentQuestionIndex + 1} z ${questions.length})` : ''}</div>
       <div style="font-weight:700;margin-bottom:6px">${q.q}</div>
       ${q.opt.map((o,oi)=>{
         const input = multi? `<input type=\"checkbox\" name=\"iq\" value=\"${oi}\">` : `<input type=\"radio\" name=\"iq\" value=\"${oi}\">`;
