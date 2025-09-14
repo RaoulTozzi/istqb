@@ -227,6 +227,70 @@ const builtIn = [
   {q:"Model V — które aktywności MOŻNA wykonać wcześnie? (DWIE)",
     opts:["Testowanie dynamiczne","Testowanie statyczne","Planowanie testów","Wykonywanie testów akceptacyjnych","Testowanie pielęgnowalności"], correct:["B","C"],
     exp:"W V‑modelu wcześnie realizuje się planowanie i testy statyczne; wykonanie testów dynamicznych następuje później."}
+  ,{q:"Które z poniższych stwierdzeń jest NAJLEPSZYM przykładem na to, jak śledzenie powiązań pomaga w testowaniu?",
+    opts:["Analiza wpływu zmiany informuje o ukończeniu testów","Powiązania TC↔wyniki dają poziom ryzyka rezydualnego","Analiza wpływu zmiany pomaga dobrać testy regresji","Powiązania podstawa/element/TC ułatwiają dobór danych do pokrycia"], correct:"C",
+    exp:"Traceability pozwala szybko wskazać, które testy należy uruchomić po zmianie (regresja)."}
+  ,{q:"Które z poniższych stwierdzeń NAJLEPIEJ wyjaśnia korzyści z niezależności testowania?",
+    opts:["Można przenieść odpowiedzialność za jakość na zespół testowy","Zespół zewnętrzny nie ulega presji terminów","Niezależny zespół pracuje bez komunikacji – tylko raportuje defekty","Niezależni testerzy mogą zakwestionować założenia i interpretacje programisty"], correct:"D",
+    exp:"Niezależne spojrzenie ujawnia niejednoznaczności i inne defekty wcześniej."}
+  ,{q:"Które z poniższych stwierdzeń opisują zalety metodyki DevOps?",
+    html:`<div class='hint'>i) Przyspieszenie wprowadzania produktów; ii) Więcej powtarzalnych testów manualnych; iii) Stała dostępność wykonywalnego oprogramowania; iv) Mniej testów regresji po refaktoryzacji; v) Niskie koszty frameworków testów automatycznych.</div>`,
+    opts:["i, ii oraz iv","iii oraz v","i oraz iii","ii, iv oraz v"], correct:"C",
+    exp:"Najtrafniejsze korzyści: przyspieszenie wprowadzania oraz stała gotowość oprogramowania (i oraz iii)."}
+  ,{q:"Aplikacja mobilna: wymaganie <10 s w 95% przypadków. Jaki to typ testów?",
+    opts:["Funkcjonalne","Niefunkcjonalne (wydajność)","Funkcjonalne (UI)","Strukturalne"], correct:"B",
+    exp:"Mierzymy parametry wydajności – to testy niefunkcjonalne."}
+  ,{q:"Strategia wymaga przetestowania migracji danych przy wycofaniu systemu. Jaki typ testów?",
+    opts:["Testowanie pielęgnacyjne","Testowanie regresji","Testowanie modułowe","Testowanie integracyjne"], correct:"A",
+    exp:"To typowe zadanie w testowaniu pielęgnacyjnym (maintenance)."}
+  ,{q:"Które produkty pracy można objąć przeglądem?",
+    html:`<div class='hint'>i) Wymagania biznesowe; ii) Harmonogram; iii) Budżet testów; iv) Kod wykonywalny innych firm; v) Historyjki i kryteria akceptacji.</div>`,
+    opts:["i oraz iv","i, ii, iii oraz iv","i, ii, iii oraz v","iii, iv oraz v"], correct:"C",
+    exp:"Przeglądy obejmują m.in. wymagania, harmonogram, budżet i historyjki z kryteriami (i, ii, iii, v)."}
+  ,{q:"Które stwierdzenia o testowaniu statycznym są prawdziwe?",
+    html:`<div class='hint'>i) Łatwiej identyfikuje nieprawidłowe zachowania zewnętrzne; ii) Łatwiej wykrywa odstępstwa od standardu; iii) Umożliwia identyfikowanie awarii podczas uruchamiania; iv) Celem jest jak najwcześniejsze znalezienie defektów; v) Łatwiej wskazać braki w pokryciu wymagań bezpieczeństwa.</div>`,
+    opts:["i, iv oraz v","i, iii oraz iv","ii oraz iii","ii, iv oraz v"], correct:"D",
+    exp:"Prawdziwe: ii, iv, v."}
+  ,{q:"Które z poniższych stwierdzeń dotyczących przeglądów formalnych jest PRAWDZIWE?",
+    opts:["Niektóre przeglądy nie wymagają więcej niż jednej roli","Proces przeglądu składa się z kilku czynności","Dokument nie jest przekazywany przed spotkaniem","Defektów z przeglądu się nie zgłasza"], correct:"B",
+    exp:"Formalny proces przeglądu ma zdefiniowane kroki (planowanie, przygotowanie, spotkanie, rework, follow‑up)."}
+  ,{q:"Jakie zadanie może wykonywać kierownictwo podczas przeglądu formalnego?",
+    opts:["Przejęcie odpowiedzialności za cały przegląd","Decydowanie, co ma być przedmiotem przeglądu","Moderowanie spotkania i mediacja","Protokołowanie"], correct:"B",
+    exp:"To kierownictwo decyduje o zakresie/przedmiocie przeglądu; pozostałe to inne role."}
+  ,{q:"Sterowanie temperaturą: BVA 3‑punktowa dla T=12. Minimalny zbiór danych?",
+    opts:["11, 12, 13","10, 12, 14","10, 11, 12, 13, 14","10, 11, 13, 14"], correct:"A",
+    exp:"BVA 3‑punktowa: wartość brzegowa i sąsiednie (11,12,13)."}
+  ,{q:"Które stwierdzenie o testowaniu gałęzi jest POPRAWNE?",
+    opts:["Gałęzie bezwarunkowe dają 100% bez testów","Sprawdzenie wszystkich gałęzi bezwarunkowych = 100%","100% instrukcji ⇒ 100% gałęzi","100% gałęzi ⇒ sprawdzono wszystkie wyniki decyzji"], correct:"D",
+    exp:"Pokrycie gałęzi 100% wymaga przejścia wszystkich wyników decyzji."}
+  ,{q:"Ocena ekranów wg ogólnej listy dobrych praktyk UI — to…",
+    opts:["Testowanie czarnoskrzynkowe","Testowanie eksploracyjne","Testowanie w oparciu o listę kontrolną","Zgadywanie błędów"], correct:"C",
+    exp:"Checklist‑based testing = testowanie w oparciu o listę kontrolną."}
+  ,{q:"Wspólne pisanie historyjek użytkownika — najlepszy opis",
+    opts:["Tworzą je testerzy i dev, biznes tylko akceptuje","Tworzą je wspólnie biznes, programiści i testerzy","Tworzy biznes, dev/test tylko weryfikuje","Historyjki muszą spełniać INVEST"], correct:"B",
+    exp:"Podejście three‑amigos: biznes + dev + test."}
+  ,{q:"Fragment planu testów wymaga 100% pokrycia gałęzi dla krytycznych modułów. Gdzie umieścić?",
+    opts:["Wymiana informacji","Rejestr ryzyk","Kontekst testowania","Podejście do testowania"], correct:"D",
+    exp:"Kryteria pokrycia i poziomy testów należą do podejścia do testowania."}
+  ,{q:"Piramida testów — które stwierdzenie jest PRAWDZIWE?",
+    opts:["Na niższych poziomach powinno być więcej testów","Każdy test niskopoziomowy sprawdza większą część funkcjonalności","Opisuje rozkład typów testów w SDLC","Nie wpływa na budowę testów automatycznych"], correct:"A",
+    exp:"Piramida promuje większy wolumen testów niskopoziomowych (tańsze, szybsze, stabilniejsze)."}
+  ,{q:"Ocena ryzyka: wpływ bardzo duży. Co z prawdopodobieństwem?",
+    opts:["Też bardzo duże","Bardzo małe","Nie można nic powiedzieć – są niezależne","Nieistotne przy dużym wpływie"], correct:"C",
+    exp:"Wpływ i prawdopodobieństwo to niezależne wymiary oceny ryzyka."}
+  ,{q:"Które z poniższych to ryzyka projektowe?",
+    html:`<div class='hint'>i) Przeniesienie 2 testerów; ii) Brak spełnienia bezpieczeństwa funkcjonalnego; iii) Czas odpowiedzi > wymagany; iv) Nieprecyzyjne oczekiwania interesariuszy; v) Problemy z dostępnością dla osób z niepełnosprawnościami.</div>`,
+    opts:["i oraz iv","iv oraz v","i oraz iii","ii oraz v"], correct:"A",
+    exp:"Projektowe: zasoby i oczekiwania interesariuszy (i, iv)."}
+  ,{q:"Jak analiza ryzyka produktowego wpływa na staranność i zakres testów?",
+    opts:["Codzienny monitoring do decyzji release","Ryzyko braku OSS DB → integracja","Ilościowa ocena łącznego ryzyka przed testami","Wysokie ryzyko wydajności → szczegółowe testy wydajności wcześnie"], correct:"D",
+    exp:"Wysokie ryzyko wydajności uzasadnia wcześniejsze i dokładniejsze testy wydajnościowe."}
+  ,{q:"Wskaż DWIE metryki jakości przedmiotu testów",
+    opts:["Liczba defektów w testach systemowych","Nakład projektowania / liczba TC","Liczba wykonanych procedur testowych","Gęstość defektów (defekty/rozmiar)","Czas usunięcia defektu"], correct:["A","D"],
+    exp:"Typowe metryki jakości produktu: liczba defektów oraz gęstość defektów."}
+  ,{q:"Która informacja w raporcie postępu jest NAJMNIEJ przydatna dla biznesu?",
+    opts:["Przeszkody w testowaniu","Uzyskane pokrycie gałęzi","Postęp testów","Nowe ryzyka w cyklu testowym"], correct:"B",
+    exp:"Pokrycie gałęzi to techniczna metryka niskopoziomowa; biznes potrzebuje postępu/ryzyk/przeszkód."}
 ];
 
 // State
