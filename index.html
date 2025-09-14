@@ -105,46 +105,7 @@
  *  Wszystko w jednym pliku dla prostoty GitHub Pages.
  *  Możesz swobodnie rozszerzać.
  * ------------------------------------------------------*/
-// Podgląd PDF sylabusa per rozdział
-const PDF_URL = "assets/ISTQB_CertyfikowanyTester_PoziomPodstawowy_v4.0.1.pdf";
-let __pdfDoc = null;
-async function __ensurePdf(){
-  if(!window.pdfjsLib) return null;
-  if(!__pdfDoc){
-    try{ __pdfDoc = await pdfjsLib.getDocument(PDF_URL).promise; }catch(e){ __pdfDoc=null; }
-  }
-  return __pdfDoc;
-}
-async function renderPdfPages(startPage, endPage){
-  const host = $$("#reading");
-  host.innerHTML = "";
-  if(!window.pdfjsLib){
-    host.innerHTML = `<div class="tag">Podgląd sylabusa</div><div class="hint">Ładowanie podglądu PDF…</div>`;
-    setTimeout(()=>renderPdfPages(startPage, endPage), 400);
-    return;
-  }
-  const doc = await __ensurePdf();
-  if(!doc){
-    host.innerHTML = `<div class="tag">Podgląd sylabusa</div><div class="hint">Ładowanie PDF…</div>`;
-    setTimeout(()=>renderPdfPages(startPage, endPage), 500);
-    return;
-  }
-  const tag = document.createElement("div");
-  tag.className = "tag";
-  tag.textContent = `Podgląd sylabusa (${startPage}–${endPage})`;
-  host.appendChild(tag);
-  for(let p=startPage; p<=endPage; p++){
-    const page = await doc.getPage(p);
-    const viewport = page.getViewport({ scale: 1.05 });
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = viewport.width; canvas.height = viewport.height;
-    host.appendChild(canvas);
-    await page.render({ canvasContext: ctx, viewport }).promise;
-  }
-}
-// Zakresy stron PDF dla rozdziałów (przybliżone; możesz skorygować jeśli potrzebujesz)
-const chapterToPdf = { r1:{from:17,to:36}, r2:{from:37,to:60}, r3:{from:61,to:70}, r4:{from:71,to:120}, r5:{from:121,to:170}, r6:{from:171,to:186} };
+// Usunięto podgląd PDF — treści rozdziałów są renderowane wprost z danych
 const syllabus = [
   {
     id:"r1",
@@ -493,9 +454,7 @@ function renderChapter(){
   if(ch.pages && ch.pages.length){
     renderPagedChapter(ch);
   } else {
-    const rng = chapterToPdf[ch.id];
-    if(rng){ renderPdfPages(rng.from, rng.to); }
-    else { $$("#reading").innerHTML = `<div class="tag">${ch.title}</div>${ch.read}`; }
+    $$("#reading").innerHTML = `<div class="tag">${ch.title}</div>${ch.read||""}`;
   }
   $$("#after").innerHTML = `<div class="muted">Wybierz: <b>Fiszki</b> lub <b>Mini‑test</b>. Po zaliczeniu możesz przejść do kolejnego rozdziału.</div>`;
   renderTOC();
@@ -507,7 +466,12 @@ function renderPagedChapter(ch){
   const page = ch.pages[idx];
   const host = $$("#reading");
   const isLast = idx===total-1;
-  const isSub = /\d+\.\d/.test(page.id);
+  const parts = String(page.id||"").split(".");
+  const isSub = parts.length>=3; // 1.1.2 → podrozdział; 1.1 → rozdział
+  const parentId = isSub ? `${parts[0]}.${parts[1]}` : null;
+  const parent = isSub ? (ch.pages||[]).find(p=>p.id===parentId) : null;
+  const parentTitle = parent ? parent.title : null;
+
   host.innerHTML = `
     <div class="chapterHeader ${isSub?"is-sub":"is-chapter"}">
       <div class="row1">
@@ -516,9 +480,10 @@ function renderPagedChapter(ch){
         <div class="hint">Strona ${idx+1}/${total}</div>
       </div>
       <div class="row2">
-        <span class="badge">${isSub?"Podrozdział":"Rozdział"}</span>
-        <h3 class="chapterTitle">${page.title}</h3>
+        <span class="badge">Rozdział</span>
+        <h3 class="chapterTitle">${isSub ? (parentTitle||parentId) : page.title}</h3>
       </div>
+      ${isSub? `<div class="row2"><span class="badge">Podrozdział</span><h3 class="chapterTitle">${page.title}</h3></div>` : ``}
     </div>
     <div>${page.html}</div>
     ${isLast? renderInlineEnd(ch) : renderInlinePager()}
@@ -711,7 +676,6 @@ renderChapter();
 renderProgress();
 </script>
 <!-- pdf.js (CDN) do renderowania pełnego sylabusa w rozdziałach -->
-<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.min.js"></script>
-<script>pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.js";</script>
+<!-- Usunięty pdf.js, nie wykorzystujemy podglądu PDF -->
 </body>
 </html>
