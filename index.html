@@ -68,9 +68,8 @@
       <div class="brand">ISTQB Syllabus Trainer</div>
       <div class="hint">Nauka rozdziałami → fiszki → mini‑testy → egzamin końcowy</div>
       <div class="spacer"></div>
-      <a class="btn flat" href="egzamin_quiz_full40.html" title="40 pytań — pełny egzamin" style="text-decoration:none;display:inline-block;text-align:center">Egzamin 40Q</a>
+      <a class="btn flat" href="egzamin_quiz_full.html" title="Pełny egzamin" style="text-decoration:none;display:inline-block;text-align:center">Egzamin</a>
       <button class="btn flat" id="resetBtn" title="Wyczyść postęp">Reset</button>
-      <button class="btn" id="fullExamBtn">Egzamin końcowy</button>
     </div>
   </header>
 
@@ -456,7 +455,7 @@ function renderChapter(){
   } else {
     $$("#reading").innerHTML = `<div class="tag">${ch.title}</div>${ch.read||""}`;
   }
-  $$("#after").innerHTML = `<div class="muted">Wybierz: <b>Fiszki</b> lub <b>Mini‑test</b>. Po zaliczeniu możesz przejść do kolejnego rozdziału.</div>`;
+  $$("#after").innerHTML = ``;
   renderTOC();
 }
 
@@ -473,7 +472,7 @@ function renderPagedChapter(ch){
   const parentTitle = parent ? parent.title : null;
 
   host.innerHTML = `
-    <div class="chapterHeader ${isSub?"is-sub":"is-chapter"}">
+    <div class="chapterHeader is-chapter">
       <div class="row1">
         <div class="crumb">${ch.title}</div>
         <div class="spacer"></div>
@@ -486,11 +485,12 @@ function renderPagedChapter(ch){
       ${isSub? `<div class="row2"><span class="badge">Podrozdział</span><h3 class="chapterTitle">${page.title}</h3></div>` : ``}
     </div>
     <div>${page.html}</div>
-    ${isLast? renderInlineEnd(ch) : renderInlinePager()}
+    ${renderInlineStudy(ch)}
+    ${isLast? renderInlineFooterEnd() : renderInlinePager()}
   `;
 
   const nextBtn = $$("#nextPage"); if(nextBtn){ nextBtn.onclick = ()=>{ state.page = Math.min(state.page+1, total-1); renderPagedChapter(ch); }; }
-  const prevBtn = $$("#prevPage"); if(prevBtn){ prevBtn.onclick = ()=>{ state.page = Math.max(state.page-1, 0); renderPagedChapter(ch); }; if(idx===0) prevBtn.disabled=true; }
+  const prevBtn = $$("#prevPage"); if(prevBtn){ prevBtn.onclick = ()=>{ state.page = Math.max(state.page-1, 0); renderPagedChapter(ch); }; if(idx===0) { prevBtn.disabled=true; prevBtn.style.visibility='hidden'; } }
   const nextChapBtn = $$("#endNextChapter"); if(nextChapBtn){ nextChapBtn.onclick = ()=>{ state.current = Math.min(state.current+1, syllabus.length-1); state.page=0; renderChapter(); }; }
 
   // Wire inline flash
@@ -527,7 +527,7 @@ function renderInlinePager(){
   </div>`;
 }
 
-function renderInlineEnd(ch){
+function renderInlineStudy(ch){
   const q = questionsForChapter(ch.id)[0];
   const multi = q && Array.isArray(q.a);
   return `
@@ -544,11 +544,14 @@ function renderInlineEnd(ch){
       }).join("")}
       <div class="controls"><button class="btn" id="inlineCheck">Sprawdź</button></div>
     </div>` : ``}
-    <div class="pageFooter">
-      <button class="btn flat" id="prevPage">← Poprzednia strona</button>
-      <button class="btn" id="endNextChapter">Następny rozdział →</button>
-    </div>
   `;
+}
+
+function renderInlineFooterEnd(){
+  return `<div class="pageFooter">
+    <button class="btn flat" id="prevPage">← Poprzednia strona</button>
+    <button class="btn" id="endNextChapter">Następny rozdział →</button>
+  </div>`;
 }
 
 function renderProgress(){
@@ -667,7 +670,7 @@ function renderFinalExam(){
 $$("#showFlash").onclick = startFlashcards;
 $$("#showQuiz").onclick = ()=>startQuiz();
 $$("#nextChapter").onclick = ()=>{ state.current = Math.min(state.current+1, syllabus.length-1); state.page=0; renderChapter(); };
-$$("#fullExamBtn").onclick = renderFinalExam;
+// usunięto przycisk egzaminu końcowego
 $$("#resetBtn").onclick = ()=>{ if(confirm("Wyczyścić zapisane wyniki?")){ localStorage.removeItem("istqb_results"); state.results={}; renderProgress(); }}
 
 // Init
