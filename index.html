@@ -149,6 +149,7 @@ const syllabus = [
         title:"1.1 Co to jest testowanie?",
         html:`<p>Systemy oprogramowania są nieodłączną częścią naszego codziennego życia. Jednocześnie większość z nas miała zapewne do czynienia z oprogramowaniem, które nie zadziałało tak, jak powinno. Nieprawidłowe funkcjonowanie oprogramowania może powodować wiele problemów, w tym straty finansowe, stratę czasu, utratę reputacji firmy, a w skrajnych przypadkach nawet utratę zdrowia lub życia. Odpowiedzią na ten problem jest właśnie testowanie oprogramowania, które pozwala ocenić jego jakość i zmniejszyć ryzyko wystąpienia awarii podczas eksploatacji.</p>
         <p>Testowanie oprogramowania to zbiór czynności mających na celu wykrycie defektów i dokonanie oceny jakości produktów pracy związanych z oprogramowaniem. W trakcie testowania produkty pracy te są nazywane przedmiotami testów. Powszechnie panuje błędne przekonanie, że testowanie polega wyłącznie na wykonywaniu testów, czyli uruchamianiu oprogramowania i sprawdzaniu uzyskanych rezultatów. W rzeczywistości jednak testowanie oprogramowania obejmuje również inne czynności i musi być dopasowane do cyklu wytwarzania oprogramowania.</p>
+        <p>Inne nieporozumienie polega na postrzeganiu testowania jako czynności skupionej wyłącznie na weryfikowaniu przedmiotu testów. Chociaż w ramach testowania rzeczywiście sprawdza się, czy system spełnia wyspecyfikowane wymagania, to jednak przeprowadza się również walidację, której zadaniem jest sprawdzenie, czy system odpowiada na potrzeby użytkowników i innych interesariuszy w swoim środowisku produkcyjnym. 
         <p>Weryfikacja sprawdza zgodność ze specyfikacją, a walidacja — czy system odpowiada na potrzeby użytkowników i innych interesariuszy. Testowanie może mieć charakter dynamiczny (uruchamianie oprogramowania) lub statyczny (przeglądy i analiza statyczna). Testowanie wymaga również planowania, zarządzania, szacowania, monitorowania i nadzoru. Testerzy korzystają z narzędzi, ale testowanie to w dużej mierze praca umysłowa.</p>
         <h3>1.1.1 Cele testów</h3>
         <ul>
@@ -159,9 +160,20 @@ const syllabus = [
           <li>Sprawdzanie spełnienia wymagań oraz zgodności umownej, prawnej i regulacyjnej.</li>
           <li>Dostarczanie interesariuszom informacji do podejmowania decyzji i budowanie zaufania.</li>
           <li>Sprawdzanie kompletności i zgodności z oczekiwaniami interesariuszy.</li>
+        </ul>`
+      },
+      {
+        id:"1.1.2",
+        title:"1.1.2 Testowanie a debugowanie",
+        html:`<p>Testowanie i debugowanie to dwie różne czynności. Testowanie pozwala wywołać awarie, które są skutkiem defektów w oprogramowaniu (testowanie dynamiczne), lub znaleźć defekty bezpośrednio w przedmiocie testów (testowanie statyczne).</p>
+        <p>Gdy w ramach testowania dynamicznego zostanie wywołana awaria, rozpoczyna się debugowanie, którego celem jest znalezienie przyczyn danej awarii (defektów), a następnie ich przeanalizowanie i wyeliminowanie. Typowy proces debugowania obejmuje:</p>
+        <ul>
+          <li>odtworzenie awarii,</li>
+          <li>przeprowadzenie diagnozy (tj. znalezienie defektu),</li>
+          <li>usunięcie defektu.</li>
         </ul>
-        <h3>1.1.2 Testowanie a debugowanie</h3>
-        <p>Testowanie i debugowanie to dwie różne czynności. Testowanie pozwala wywołać awarie (skutek defektów) lub znaleźć defekty bezpośrednio w artefaktach. Po awarii następuje debugowanie: odtworzenie awarii, diagnoza (znalezienie defektu) i usunięcie defektu. Potem wykonuje się testowanie potwierdzające i – w razie potrzeby – testy regresji. Przy testowaniu statycznym debugowanie polega na usunięciu wskazanego defektu.</p>`
+        <p>Następnie wykonywane jest testowanie potwierdzające, które pozwala sprawdzić, czy wprowadzone poprawki doprowadziły do rozwiązania problemu. W optymalnych warunkach testowanie potwierdzające wykonuje osoba, która wcześniej przeprowadzała początkowy test. W dalszej kolejności można również wykonać testowanie regresji, aby upewnić się, że wprowadzone poprawki nie powodują awarii w innych obszarach przedmiotu testów.</p>
+        <p>W przypadku wykrycia defektu podczas testowania statycznego debugowanie obejmuje usunięcie takiego defektu. Nie ma przy tym potrzeby odtwarzania ani diagnozowania problemu, ponieważ testowanie statyczne pozwala wykrywać defekty w sposób bezpośredni i nie może powodować awarii.</p>`
       },
       {
         id:"1.2",
